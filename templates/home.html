@@ -271,11 +271,15 @@
     <div class="row align-items-center">
       <div class="col-md-6 mb-4 mb-md-0">
         <div class="img-box position-relative overflow-hidden rounded shadow">
-          <video class="w-100 rounded" autoplay controls muted>
+          {% comment %} <video class="w-100 rounded" autoplay controls muted>
             <source src=" {% static "media/video/vid.mp4" %}" type="video/mp4">
             <!-- <source src="WhatsApp Video 2024-09-12 at 8.31.48 PM.mp4" type="video/ogg"> -->
             Your browser does not support the video tag.
-          </video>
+          </video> {% endcomment %}
+         
+          <img class="w-100 rounded" src="{% static 'images/home/img3.jpg' %}" alt="Home Image">
+          
+
         </div>
       </div>
       <div class="col-md-6">

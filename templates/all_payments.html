@@ -70,7 +70,8 @@ All Payments
                         <tbody>
                             {% for payment in payments %}
                             <tr>
-                                <td>{{ payment.student.name }}</td>
+                                <td><a href="{% url 'student_profile' payment.student.id %}"
+                                    class="text-decoration-none">{{ payment.student.name }}</a></td>
                                 <td>{{ payment.student.board }}</td>
                                 <td>{{ payment.student.student_class }}</td>
                                 <td>{{ payment.student.subject }}</td>
