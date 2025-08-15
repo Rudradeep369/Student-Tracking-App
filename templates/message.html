@@ -1,12 +1,323 @@
 {% load static %}
 
+<style>
+    /* Professional Message Styling with Animations */
+    .message-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        max-width: 400px;
+        width: 100%;
+    }
+
+    .message-item {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin-bottom: 15px;
+        overflow: hidden;
+        transform: translateX(100%);
+        animation: slideInRight 0.5s ease-out forwards;
+        position: relative;
+        border-left: 5px solid;
+    }
+
+    .message-item.success {
+        border-left-color: #10b981;
+        background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+    }
+
+    .message-item.error {
+        border-left-color: #ef4444;
+        background: linear-gradient(135deg, #fef2f2 0%, #fef7f7 100%);
+    }
+
+    .message-item.warning {
+        border-left-color: #f59e0b;
+        background: linear-gradient(135deg, #fffbeb 0%, #fefce8 100%);
+    }
+
+    .message-item.info {
+        border-left-color: #3b82f6;
+        background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+    }
+
+    .message-content {
+        display: flex;
+        align-items: center;
+        padding: 18px 20px;
+        gap: 15px;
+    }
+
+    .message-icon {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: white;
+        animation: pulse 2s infinite;
+    }
+
+    .message-icon.success {
+        background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .message-icon.error {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .message-icon.warning {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .message-icon.info {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+
+    .message-text-content {
+        flex-grow: 1;
+    }
+
+    .message-title {
+        font-weight: 700;
+        font-size: 1rem;
+        margin: 0 0 5px 0;
+        color: #1f2937;
+    }
+
+    .message-text {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        color: #4b5563;
+    }
+
+    .message-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: transparent;
+        border: none;
+        color: #6b7280;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .message-close:hover {
+        background: rgba(0,0,0,0.1);
+        color: #374151;
+        transform: rotate(90deg);
+    }
+
+    .message-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        background: rgba(0,0,0,0.2);
+        animation: progressBar 5s linear forwards;
+    }
+
+    .message-progress.success {
+        background: #10b981;
+    }
+
+    .message-progress.error {
+        background: #ef4444;
+    }
+
+    .message-progress.warning {
+        background: #f59e0b;
+    }
+
+    .message-progress.info {
+        background: #3b82f6;
+    }
+
+    /* Animations */
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOutRight {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    @keyframes progressBar {
+        from {
+            width: 100%;
+        }
+        to {
+            width: 0%;
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .message-container {
+            top: 10px;
+            right: 10px;
+            left: 10px;
+            max-width: none;
+        }
+
+        .message-content {
+            padding: 15px;
+            gap: 12px;
+        }
+
+        .message-icon {
+            width: 35px;
+            height: 35px;
+            font-size: 1rem;
+        }
+
+        .message-title {
+            font-size: 0.9rem;
+        }
+
+        .message-text {
+            font-size: 0.8rem;
+        }
+    }
+
+    /* Auto-dismiss animation */
+    .message-item.dismissing {
+        animation: slideOutRight 0.5s ease-in forwards;
+    }
+</style>
+
 {% if messages %}
-        <div class="message-section">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-0" role="alert">
-                    <p class="message-text  mb-0">{{ message }}</p>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div class="message-container">
+    {% for message in messages %}
+        <div class="message-item {{ message.tags }}" data-auto-dismiss="true">
+            <div class="message-content">
+                <div class="message-icon {{ message.tags }}">
+                    {% if message.tags == 'success' %}
+                        <i class="fas fa-check"></i>
+                    {% elif message.tags == 'error' %}
+                        <i class="fas fa-times"></i>
+                    {% elif message.tags == 'warning' %}
+                        <i class="fas fa-exclamation-triangle"></i>
+                    {% elif message.tags == 'info' %}
+                        <i class="fas fa-info"></i>
+                    {% else %}
+                        <i class="fas fa-bell"></i>
+                    {% endif %}
                 </div>
-            {% endfor %}
+                <div class="message-text-content">
+                    <div class="message-title">
+                        {% if message.tags == 'success' %}
+                            Success!
+                        {% elif message.tags == 'error' %}
+                            Error!
+                        {% elif message.tags == 'warning' %}
+                            Warning!
+                        {% elif message.tags == 'info' %}
+                            Information
+                        {% else %}
+                            Notification
+                        {% endif %}
+                    </div>
+                    <div class="message-text">{{ message }}</div>
+                </div>
+            </div>
+            <button type="button" class="message-close" onclick="dismissMessage(this)">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="message-progress {{ message.tags }}"></div>
         </div>
-    {% endif %}
+    {% endfor %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-dismiss messages after 5 seconds
+    const messages = document.querySelectorAll('[data-auto-dismiss="true"]');
+    
+    messages.forEach(function(message, index) {
+        // Stagger the animation delays for multiple messages
+        message.style.animationDelay = (index * 0.2) + 's';
+        
+        setTimeout(function() {
+            if (message && message.parentNode) {
+                dismissMessage(message.querySelector('.message-close'));
+            }
+        }, 5000 + (index * 500)); // Stagger auto-dismiss timing
+    });
+});
+
+function dismissMessage(button) {
+    const messageItem = button.closest('.message-item');
+    if (messageItem) {
+        messageItem.classList.add('dismissing');
+        
+        // Remove the element after animation completes
+        setTimeout(function() {
+            if (messageItem.parentNode) {
+                messageItem.parentNode.removeChild(messageItem);
+            }
+        }, 500);
+    }
+}
+
+// Add click-to-dismiss functionality
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.message-item') && !e.target.closest('.message-close')) {
+        const messageItem = e.target.closest('.message-item');
+        const closeButton = messageItem.querySelector('.message-close');
+        if (closeButton) {
+            dismissMessage(closeButton);
+        }
+    }
+});
+</script>
+{% endif %}

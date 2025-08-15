@@ -6,229 +6,561 @@
     .time-field {
         display: none;
     }
+    
+    /* Professional Color Palette */
+    :root {
+        --primary-blue: #2563eb;
+        --secondary-blue: #1e40af;
+        --accent-blue: #3b82f6;
+        --light-blue: #dbeafe;
+        --success-green: #059669;
+        --warning-orange: #d97706;
+        --danger-red: #dc2626;
+        --dark-gray: #374151;
+        --medium-gray: #6b7280;
+        --light-gray: #f3f4f6;
+        --white: #ffffff;
+        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --gradient-warning: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    }
+
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+
+    .main-container {
+        background: var(--white);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        margin: 20px auto;
+        overflow: hidden;
+    }
+
+    .dashboard-header {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+    }
+
+    .dashboard-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200"><defs><radialGradient id="a" cx="1000" cy="200" r="600"><stop offset="0" stop-color="rgba(255,255,255,0.1)"/><stop offset="1" stop-color="rgba(255,255,255,0)"/></radialGradient></defs><rect width="1000" height="200" fill="url(%23a)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .dashboard-title {
+        position: relative;
+        z-index: 2;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .stats-card {
+        background: var(--white);
+        border-radius: 15px;
+        padding: 25px;
+        text-align: center;
+        border: none;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stats-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-primary);
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+
+    .stats-card.total-students::before {
+        background: var(--gradient-primary);
+    }
+
+    .stats-card.cbse-students::before {
+        background: var(--gradient-success);
+    }
+
+    .stats-card.wbbse-students::before {
+        background: var(--gradient-warning);
+    }
+
+    .stats-card.icse-students::before {
+        background: var(--gradient-secondary);
+    }
+
+    .stats-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--dark-gray);
+        margin: 10px 0;
+    }
+
+    .stats-label {
+        color: var(--medium-gray);
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .calendar-sidebar {
+        background: var(--white);
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .action-buttons-container {
+        background: var(--white);
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+    }
+
+    .action-btn {
+        border-radius: 12px;
+        font-weight: 600;
+        padding: 12px 20px;
+        transition: all 0.3s ease;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .action-btn.create-batch {
+        background: var(--gradient-success);
+        color: white;
+    }
+
+    .action-btn.view-batch {
+        background: var(--gradient-primary);
+        color: white;
+    }
+
+    .action-btn.add-teacher {
+        background: var(--gradient-warning);
+        color: white;
+    }
+
+    .action-btn.all-payments {
+        background: var(--gradient-secondary);
+        color: white;
+    }
+
+    .action-btn.achievement {
+        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        color: var(--dark-gray);
+    }
+
+    .action-btn.view-students {
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        color: var(--dark-gray);
+    }
+
+    .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        color: white !important;
+    }
+
+    .data-table-container {
+        background: var(--white);
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .data-table-header {
+        background: var(--light-gray);
+        padding: 25px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .data-table-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--dark-gray);
+        margin: 0;
+    }
+
+    .search-filter-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .search-input, .filter-select {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 8px 12px;
+        transition: border-color 0.3s ease;
+    }
+
+    .search-input:focus, .filter-select:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .btn-search, .btn-filter {
+        background: var(--primary-blue);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        padding: 8px 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-search:hover, .btn-filter:hover {
+        background: var(--secondary-blue);
+        transform: translateY(-1px);
+    }
+
+    .table-modern {
+        margin: 0;
+    }
+
+    .table-modern thead th {
+        background: var(--dark-gray);
+        color: white;
+        font-weight: 600;
+        border: none;
+        padding: 15px;
+    }
+
+    .table-modern tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+    .table-modern tbody tr:hover {
+        background-color: var(--light-blue);
+    }
+
+    .table-modern tbody td {
+        padding: 12px 15px;
+        border: none;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .student-link {
+        color: var(--primary-blue);
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .student-link:hover {
+        color: var(--secondary-blue);
+    }
+
+    .due-amount {
+        font-weight: 700;
+        color: var(--danger-red);
+    }
+
+    .modal-modern .modal-header {
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .modal-modern .modal-body {
+        background: var(--light-gray);
+        padding: 30px;
+    }
+
+    .btn-create-batch {
+        background: var(--gradient-primary);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        padding: 12px 30px;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .container-wrapper {
+        padding: 0;
+        margin: 0;
+    }
 </style>
 <link rel="stylesheet" href="{% static 'css/index.css' %}">
 {% endblock style %}
 
 {% block body %}
 {% include "message.html" %}
-<div style="background-color: whitesmoke;">
-<div class="container-fluid py-4">
-    <h1 class="text-center mb-4">Student Management</h1>
+<div class="container-wrapper">
+    <div class="container-fluid main-container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">
+                <i class="fas fa-graduation-cap me-3"></i>Student Management Dashboard
+            </h1>
+            <p class="lead mb-0" style="position: relative; z-index: 2;">Comprehensive student tracking and management system</p>
+        </div>
 
-    <div class="row g-4">
-        <!-- Sidebar -->
-        <div class="col-lg-3 col-md-4 col-sm-12">
-            <div class="card shadow-md border-0 rounded-4">
-                <div class="card-body">
-                    <div class="calendar">
-                        <div class="calendar-header d-flex justify-content-between align-items-center">
-                            <button id="prev-month" class="btn btn-outline-primary">&lt;</button>
-                            <div class="d-flex flex-grow-1 justify-content-center">
-                                <span id="month-year" class="fw-bold"></span>
+        <div class="container-fluid py-4">
+            <div class="row g-4">
+                <!-- Sidebar -->
+                <div class="col-lg-3 col-md-4 col-sm-12">
+                    <div class="calendar-sidebar">
+                        <div class="card-body p-3">
+                            <div class="calendar">
+                                <div class="calendar-header d-flex justify-content-between align-items-center">
+                                    <button id="prev-month" class="btn btn-outline-primary">&lt;</button>
+                                    <div class="d-flex flex-grow-1 justify-content-center">
+                                        <span id="month-year" class="fw-bold"></span>
+                                    </div>
+                                    <button id="next-month" class="btn btn-outline-primary">&gt;</button>
+                                </div>
+
+                                <div class="calendar-body mt-2">
+                                    <table class="calendar-table table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-danger">Sun</th>
+                                                <th>Mon</th>
+                                                <th>Tue</th>
+                                                <th>Wed</th>
+                                                <th>Thu</th>
+                                                <th>Fri</th>
+                                                <th>Sat</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="calendar-days">
+                                            <!-- Days will be dynamically generated here -->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            <button id="next-month" class="btn btn-outline-primary">&gt;</button>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="calendar-body mt-2">
-                            <table class="calendar-table table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th class="text-danger">Sun</th>
-                                        <th>Mon</th>
-                                        <th>Tue</th>
-                                        <th>Wed</th>
-                                        <th>Thu</th>
-                                        <th>Fri</th>
-                                        <th>Sat</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="calendar-days">
-                                    <!-- Days will be dynamically generated here -->
-                                </tbody>
-                            </table>
+                <!-- Main Content -->
+                <div class="col-lg-9 col-md-8 col-sm-12">
+                    <!-- Statistics Section -->
+                    <div class="row mb-4 g-3">
+                        <div class="col-6 col-md-6 col-lg-3">
+                            <div class="stats-card total-students">
+                                <div class="stats-number">{{ total_students }}</div>
+                                <div class="stats-label">Total Students</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-6 col-lg-3">
+                            <div class="stats-card cbse-students">
+                                <div class="stats-number">{{ cbse_students }}</div>
+                                <div class="stats-label">CBSE Students</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-6 col-lg-3">
+                            <div class="stats-card wbbse-students">
+                                <div class="stats-number">{{ wbbse_students }}</div>
+                                <div class="stats-label">WBBSE Students</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-6 col-lg-3">
+                            <div class="stats-card icse-students">
+                                <div class="stats-number">{{ icse_students }}</div>
+                                <div class="stats-label">ICSE Students</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons-container">
+                        <div class="row g-3">
+                            <div class="col-6 col-md-6 col-lg-4">
+                                <a href="#" class="action-btn create-batch w-100" data-bs-toggle="modal" data-bs-target="#createBatchModal">
+                                    <i class="fas fa-plus-circle me-2"></i>Create Batch
+                                </a>
+                            </div>
+                            <div class="col-6 col-md-6 col-lg-4">
+                                <a href="{% url 'view_batches' %}" class="action-btn view-batch w-100">
+                                    <i class="fas fa-eye me-2"></i>View Batches
+                                </a>
+                            </div>
+                            <div class="col-6 col-md-6 col-lg-4">
+                                <a href="{% url 'add_teacher' %}" class="action-btn add-teacher w-100">
+                                    <i class="fas fa-user-plus me-2"></i>Add Teacher
+                                </a>
+                            </div>
+                            <div class="col-6 col-md-6 col-lg-4">
+                                <a href="{% url 'all_payments' %}" class="action-btn all-payments w-100">
+                                    <i class="fas fa-money-bill-wave me-2"></i>All Payments
+                                </a>
+                            </div>
+                            <div class="col-6 col-md-6 col-lg-4">
+                                <a href="{% url 'achievement' %}" class="action-btn achievement w-100">
+                                    <i class="fas fa-trophy me-2"></i>Achievements
+                                </a>
+                            </div>
+                            <div class="col-6 col-md-6 col-lg-4">
+                                <a href="{% url 'all_students' %}" class="action-btn view-students w-100">
+                                    <i class="fas fa-users me-2"></i>View All Students
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Main Content -->
-        <div class="col-lg-9 col-md-8 col-sm-12">
-            <!-- Statistics Section -->
-            <div class="row mb-4 g-2">
-                <div class="col-6 col-md-6 col-lg-3">
-                    <div class="card shadow-md text-center border-0 rounded-4 h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Total Students</h5>
-                            <p class="card-text display-6">{{ total_students }}</p>
+            <!-- Student Table Section -->
+            <div class="data-table-container">
+                <div class="data-table-header">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="data-table-title">
+                            <i class="fas fa-table me-2"></i>Student Database
+                        </h2>
+                        <div class="search-filter-container">
+                            <!-- Search Form -->
+                            <form method="GET" action="{% url 'index' %}" class="d-flex align-items-center me-2" role="search">
+                                <input class="search-input me-2" type="search" placeholder="Search students..." aria-label="Search" name="search" value="{{ search }}">
+                                <button class="btn-search" type="submit">
+                                    <i class="fas fa-search me-1"></i>Search
+                                </button>
+                            </form>
+                        
+                            <!-- Filter Form -->
+                            <form action="{% url 'filter_student' %}" method="GET" class="d-flex align-items-center gap-2">
+                                <select class="filter-select" name="Board" title="board_select">
+                                    <option value="" {% if board_filter == '' %}selected{% endif %}>All Boards</option>
+                                    <option value="CBSE" {% if board_filter == 'CBSE' %}selected{% endif %}>CBSE</option>
+                                    <option value="WBBSE" {% if board_filter == 'WBBSE' %}selected{% endif %}>WBBSE</option>
+                                    <option value="ICSE" {% if board_filter == 'ICSE' %}selected{% endif %}>ICSE</option>
+                                </select>
+                        
+                                <select class="filter-select" name="Class" title="board_class">
+                                    <option value="" {% if class_filter == '' %}selected{% endif %}>All Classes</option>
+                                    <option value="1" {% if class_filter == '1' %}selected{% endif %}>1</option>
+                                    <option value="2" {% if class_filter == '2' %}selected{% endif %}>2</option>
+                                    <option value="3" {% if class_filter == '3' %}selected{% endif %}>3</option>
+                                    <option value="4" {% if class_filter == '4' %}selected{% endif %}>4</option>
+                                    <option value="5" {% if class_filter == '5' %}selected{% endif %}>5</option>
+                                    <option value="6" {% if class_filter == '6' %}selected{% endif %}>6</option>
+                                    <option value="7" {% if class_filter == '7' %}selected{% endif %}>7</option>
+                                    <option value="8" {% if class_filter == '8' %}selected{% endif %}>8</option>
+                                    <option value="9" {% if class_filter == '9' %}selected{% endif %}>9</option>
+                                    <option value="10" {% if class_filter == '10' %}selected{% endif %}>10</option>
+                                    <option value="11" {% if class_filter == '11' %}selected{% endif %}>11</option>
+                                    <option value="12" {% if class_filter == '12' %}selected{% endif %}>12</option>
+                                </select>
+                        
+                                <input type="text" name="Subject" class="search-input" placeholder="Subject" value="{{ subject }}">
+                        
+                                <button type="submit" class="btn-filter">
+                                    <i class="fas fa-filter me-1"></i>Filter
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-6 col-lg-3">
-                    <div class="card shadow-md text-center border-0 rounded-4 h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">CBSE Students</h5>
-                            <p class="card-text display-6">{{ cbse_students }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-6 col-lg-3">
-                    <div class="card shadow-md text-center border-0 rounded-4 h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">WBBSE Students</h5>
-                            <p class="card-text display-6">{{ wbbse_students }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-6 col-lg-3">
-                    <div class="card shadow-md text-center border-0 rounded-4 h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">ICSE Students</h5>
-                            <p class="card-text display-6">{{ icse_students }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
 
-            <div class="card shadow-md border-0 m-0 p-0 rounded-4">
-                <div class="card-body pb-0">
-                    <div class="row mb-4 g-2">
-                        <div class="col-6 col-md-6 col-lg-3">
-                            <a href="#" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#createBatchModal">Create Batch</a>
-                        </div>
-                        <div class="col-6 col-md-6 col-lg-3">
-                            <a href="{% url 'view_batches' %}" class="btn btn-info w-100">View Batch</a>
-                        </div>
-                        <div class="col-6 col-md-6 col-lg-3">
-                            <a href="{% url 'add_teacher' %}" class="btn btn-warning w-100">Add Teacher</a>
-                        </div>
-                        <div class="col-6 col-md-6 col-lg-3">
-                            <a href="{% url 'all_payments' %}" class="btn btn-dark w-100">All Payments</a>
-                        </div>
-                        <div class="col-6 col-md-6 col-lg-3">
-                            <a href="{% url 'achievement' %}" class="btn btn-primary w-100">Achievement</a>
-                        </div>
-                        <div class="col-6 col-md-6 col-lg-3">
-                            <a href="{% url 'all_students' %}" class="btn btn-success w-100">
-                                <i class="bi bi-people-fill me-2"></i>View All Students
-                            </a>
-                        </div>
-                    </div>
+                <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                    <table class="table table-modern text-center m-0">
+                        <thead class="sticky-top">
+                            <tr>
+                                <th scope="col"><i class="fas fa-hashtag me-1"></i>Sl No.</th>
+                                <th scope="col"><i class="fas fa-user me-1"></i>Name</th>
+                                <th scope="col"><i class="fas fa-school me-1"></i>Board</th>
+                                <th scope="col"><i class="fas fa-graduation-cap me-1"></i>Class</th>
+                                <th scope="col"><i class="fas fa-book me-1"></i>Subject</th>
+                                <th scope="col"><i class="fas fa-phone me-1"></i>Phone</th>
+                                <th scope="col"><i class="fas fa-money-bill-wave me-1"></i>Total Due</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>
+                                    <a href="{% url 'student_profile' student.id %}" class="student-link">
+                                        {{ student.name }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">{{ student.board }}</span>
+                                </td>
+                                <td>{{ student.student_class }}</td>
+                                <td>{{ student.subject }}</td>
+                                <td>{{ student.phone_number }}</td>
+                                <td class="{% if student.total_due > 0 %}due-amount{% endif %}">
+                                    {% if student.total_due > 0 %}
+                                        <i class="fas fa-exclamation-triangle me-1"></i>₹{{ student.total_due }}
+                                    {% else %}
+                                        <i class="fas fa-check-circle me-1 text-success"></i>Paid
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center py-4">
+                                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                                    <div class="text-muted">No students found.</div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-                
-            </div>
-            
-            
-        </div>
-    </div>
-
-    <!-- Student Table Section -->
-    <div class="card shadow-md border-0 mt-4 rounded-4">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="card-title">Student Data</h5>
-                <div class="search d-flex flex-wrap align-items-center gap-2">
-                    <!-- Search Form -->
-                    <form method="GET" action="{% url 'index' %}" class="d-flex align-items-center me-2" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="{{ search }}">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                
-                    <!-- Filter Form -->
-                    <form action="{% url 'filter_student' %}" method="GET" class="d-flex align-items-center gap-2">
-                        <select class="form-select" name="Board" title="board_select">
-                            <option value="" {% if board_filter == '' %}selected{% endif %}>Filter by Board</option>
-                            <option value="CBSE" {% if board_filter == 'CBSE' %}selected{% endif %}>CBSE</option>
-                            <option value="WBBSE" {% if board_filter == 'WBBSE' %}selected{% endif %}>WBBSE</option>
-                            <option value="ICSE" {% if board_filter == 'ICSE' %}selected{% endif %}>ICSE</option>
-                        </select>
-                
-                        <select class="form-select" name="Class" title="board_class">
-                            <option value="" {% if class_filter == '' %}selected{% endif %}>Filter by Class</option>
-                            <option value="1" {% if class_filter == '1' %}selected{% endif %}>1</option>
-                            <option value="2" {% if class_filter == '2' %}selected{% endif %}>2</option>
-                            <option value="3" {% if class_filter == '3' %}selected{% endif %}>3</option>
-                            <option value="4" {% if class_filter == '4' %}selected{% endif %}>4</option>
-                            <option value="5" {% if class_filter == '5' %}selected{% endif %}>5</option>
-                            <option value="6" {% if class_filter == '6' %}selected{% endif %}>6</option>
-                            <option value="7" {% if class_filter == '7' %}selected{% endif %}>7</option>
-                            <option value="8" {% if class_filter == '8' %}selected{% endif %}>8</option>
-                            <option value="9" {% if class_filter == '9' %}selected{% endif %}>9</option>
-                            <option value="10" {% if class_filter == '10' %}selected{% endif %}>10</option>
-                            <option value="11" {% if class_filter == '11' %}selected{% endif %}>11</option>
-                            <option value="12" {% if class_filter == '12' %}selected{% endif %}>12</option>
-                        </select>
-                
-                        <input type="text" name="Subject" class="form-control" placeholder="Enter Subject" value="{{ subject }}">
-                
-                        <button type="submit" class="btn btn-outline-dark">Filter</button>
-                    </form>
-                </div>
-                
-            </div>
-
-            <div class="table-responsive"style="max-height: 500px; overflow-y: auto;">
-                <table class="table table-striped text-wrap text-center m-0">
-                    <thead class="table-dark sticky-top z-1">
-                        <tr>
-                            <th scope="col">Sl no.</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Board</th>
-                            <th scope="col">Class</th>
-                            <th scope="col">Subject</th>
-                            <th scope="col">Phone no.</th>
-                            <th scope="col">Total Due</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for student in students %}
-                        <tr>
-                            <th scope="row">{{ forloop.counter }}</th>
-                            <td class="text-wrap"><a href="{% url 'student_profile' student.id %}"
-                                    class="text-decoration-none">{{ student.name}}</a>
-                            </td>
-                            <td>{{ student.board }}</td>
-                            <td>{{ student.student_class }}</td>
-                            <td>{{ student.subject }}</td>
-                            <td>{{ student.phone_number }}</td>
-                            <td class="{% if student.total_due > 0 %} text-danger fw-semibold{% endif %}">{{ student.total_due }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="7" class="text-center">No students found.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Create Batch Model -->
-     
-    <div class="modal fade" id="createBatchModal" tabindex="-1" aria-labelledby="createBatchModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-         
-                <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title" id="createBatchModalLabel">Create New Batch</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
+<!-- Create Batch Modal -->
+<div class="modal fade" id="createBatchModal" tabindex="-1" aria-labelledby="createBatchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-modern">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createBatchModalLabel">
+                    <i class="fas fa-plus-circle me-2"></i>Create New Batch
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-                <div class="modal-body bg-light">
-                    <form action="{% url 'create_batch' %}" method="post">
-                        {% csrf_token %}
+            <div class="modal-body">
+                <form action="{% url 'create_batch' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-container">
                         {{ batch_form.as_p }}
-                        <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-dark btn-lg">Create Batch</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn-create-batch">
+                            <i class="fas fa-plus me-2"></i>Create Batch
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 </div>
