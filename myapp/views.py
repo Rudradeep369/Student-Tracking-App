@@ -384,6 +384,9 @@ def payment_record(request, student_id):
         payment_method = request.POST.get('payment_method')
         payment_date = request.POST.get('payment_date')
         payment_month = request.POST.getlist('payment_months')
+        
+        # Ensure payment_month values are strings
+        payment_month = [str(month) for month in payment_month]
 
         student_fees = Decimal(student.fees)
         due_amount = (student_fees * len(payment_month)) - amount
