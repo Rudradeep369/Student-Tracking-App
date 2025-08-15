@@ -615,7 +615,6 @@ def home(request):
 def class_details(request):
     return render(request, "class_details.html")
 
-@login_required(login_url='login')
 def achievement(request):
     context = {}
     
@@ -634,10 +633,20 @@ def achievement(request):
     else:
         form = AchievementForm()
 
-    achievements = Achievement.objects.all()
+    achievements = Achievement.objects.all().order_by('-id')  # Fetch all achievements ordered by date
+    
+    # Calculate statistics
+    total_achievements = achievements.count()
+    students_with_90_plus = achievements.filter(score__gte=90).count()
+    latest_score = achievements.first().score if achievements.exists() else 0
+    unique_students = achievements.values('student_name').distinct().count()
     
     context['form'] = form
     context['achievements'] = achievements
+    context['total_achievements'] = total_achievements
+    context['students_with_90_plus'] = students_with_90_plus
+    context['latest_score'] = latest_score
+    context['unique_students'] = unique_students
     
     return render(request, 'achievement.html', context)
 
