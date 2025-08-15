@@ -698,3 +698,53 @@ def remove_teacher_from_batch(request, pk, teacher_id):
         messages.success(request, f'Successfully removed teacher {teacher.name} from batch {batch.batch_name}')
     
     return redirect('batch_detail', pk=pk)
+
+# Teacher Profile Page
+@login_required(login_url='login')
+def teacher_profile(request, teacher_id):
+    teacher = get_object_or_404(Teacher, id=teacher_id)
+    batches = Batch.objects.filter(teachers=teacher)
+    
+    # Get all students from batches taught by this teacher
+    students_in_batches = []
+    for batch in batches:
+        batch_students = batch.students.all()
+        for student in batch_students:
+            if student not in students_in_batches:
+                students_in_batches.append(student)
+    
+    context = {
+        'teacher': teacher,
+        'batches': batches,
+        'students': students_in_batches,
+        'total_batches': batches.count(),
+        'total_students': len(students_in_batches),
+    }
+    
+    return render(request, 'teacher_profile.html', context)
+
+# All Teachers Page
+@login_required(login_url='login')
+def all_teachers(request):
+    teachers = Teacher.objects.all().order_by('name')
+    
+    # Add statistics for each teacher
+    teachers_with_stats = []
+    for teacher in teachers:
+        batches = Batch.objects.filter(teachers=teacher)
+        total_students = 0
+        for batch in batches:
+            total_students += batch.students.count()
+        
+        teachers_with_stats.append({
+            'teacher': teacher,
+            'total_batches': batches.count(),
+            'total_students': total_students,
+        })
+    
+    context = {
+        'teachers_with_stats': teachers_with_stats,
+        'total_teachers': teachers.count(),
+    }
+    
+    return render(request, 'all_teachers.html', context)

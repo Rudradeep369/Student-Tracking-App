@@ -125,15 +125,20 @@
                                     </div>
                                 {% endif %}
                                 <h6 class="card-title mb-2">{{ teacher.name }}</h6>
-                                <p class="card-text small text-muted mb-2">{{ teacher.subject }}</p>
+                                <p class="card-text small text-muted mb-2">{{ teacher.subject_teaches }}</p>
                                 <p class="card-text small text-muted mb-3">{{ teacher.phone_number }}</p>
-                                <form action="{% url 'remove_teacher_from_batch' batch.id teacher.id %}" method="post" class="d-inline">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-outline-danger btn-sm" 
-                                            onclick="return confirm('Are you sure you want to remove {{ teacher.name }} from this batch?')">
-                                        <i class="bi bi-person-dash me-1"></i>Remove
-                                    </button>
-                                </form>
+                                <div class="d-flex gap-2">
+                                    <a href="{% url 'teacher_profile' teacher.id %}" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-person me-1"></i>Profile
+                                    </a>
+                                    <form action="{% url 'remove_teacher_from_batch' batch.id teacher.id %}" method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-danger btn-sm" 
+                                                onclick="return confirm('Are you sure you want to remove {{ teacher.name }} from this batch?')">
+                                            <i class="bi bi-person-dash me-1"></i>Remove
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
