@@ -114,6 +114,76 @@ def filter_students(request):
             'batch_form': BatchForm(),
         }
     return render(request, 'index.html', context)
+
+
+@login_required(login_url='login')
+def all_students(request):
+    """View to display all students with search and filtering options"""
+    search_query = request.GET.get("search", "")
+    board_filter = request.GET.get("board", "")
+    class_filter = request.GET.get("class", "")
+    
+    students = Student.objects.all()
+    
+    # Apply search filter
+    if search_query:
+        students = students.filter(
+            Q(name__icontains=search_query) |
+            Q(phone_number__icontains=search_query) |
+            Q(board__icontains=search_query) |
+            Q(student_class__icontains=search_query) |
+            Q(parent_name__icontains=search_query)
+        )
+    
+    # Apply board filter
+    if board_filter:
+        students = students.filter(board=board_filter)
+    
+    # Apply class filter
+    if class_filter:
+        students = students.filter(student_class=class_filter)
+    
+    # Get unique values for filter dropdowns
+    boards = Student.objects.values_list('board', flat=True).distinct()
+    classes = Student.objects.values_list('student_class', flat=True).distinct().order_by('student_class')
+    
+    total_students = students.count()
+    
+    context = {
+        'students': students,
+        'total_students': total_students,
+        'search': search_query,
+        'board_filter': board_filter,
+        'class_filter': class_filter,
+        'boards': boards,
+        'classes': classes,
+        'student_form': StudentForm(),  # Add student form for potential modal use
+    }
+    return render(request, 'all_students.html', context)
+
+
+@login_required(login_url='login')
+def add_student(request):
+    """View to add a new student"""
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            student = form.save()
+            messages.success(request, f'Student "{student.name}" has been added successfully!')
+            return redirect('all_students')
+        else:
+            # If form has errors, show them
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f'{field}: {error}')
+    else:
+        form = StudentForm()
+    
+    context = {
+        'form': form,
+        'page_title': 'Add New Student'
+    }
+    return render(request, 'add_student.html', context)
         
 # Student Profile Page
 @login_required(login_url='login')
@@ -413,6 +483,39 @@ def payment_record(request, student_id):
 @login_required(login_url='login')
 def all_payment(request):
     context = {}
+    
+    # Handle payment recording
+    if request.method == 'POST':
+        student_id = request.POST.get('student_id')
+        if student_id:
+            student = get_object_or_404(Student, id=student_id)
+            amount = Decimal(request.POST['payment'])
+            payment_method = request.POST.get('payment_method')
+            payment_date = request.POST.get('payment_date')
+            payment_month = request.POST.getlist('payment_months')
+            
+            # Ensure payment_month values are strings
+            payment_month = [str(month) for month in payment_month]
+
+            student_fees = Decimal(student.fees)
+            due_amount = (student_fees * len(payment_month)) - amount
+
+            if due_amount < 0:
+                due_amount = due_amount
+
+            payment = Payment.objects.create(
+                student=student,
+                amount=amount,
+                due_amount=due_amount,
+                payment_method=payment_method,
+                date=payment_date,
+                months=payment_month
+            )
+            payment.save()
+
+            messages.success(request, f'Payment recorded successfully for {student.name}!')
+            return redirect('all_payments')
+    
     payments = Payment.objects.all().order_by('-date')
 
     # Date range filter
@@ -440,6 +543,8 @@ def all_payment(request):
 
     context['payments'] = payments
     context['search'] = search_query  # Pass search query back to template to maintain the input
+    context['students'] = Student.objects.all().order_by('name')  # For the payment form dropdown
+    context['payment_form'] = PaymentForm()  # Add payment form to context
     return render(request, 'all_payments.html', context)
 
 
