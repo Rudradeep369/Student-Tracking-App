@@ -43,7 +43,7 @@ class Payment(models.Model):
     due_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     payment_method= models.CharField(max_length=100, choices=[('CASH', 'CASH'), ('UPI', 'UPI'), ('CARD', 'CARD')], default='CASH')
     date = models.DateField(default=timezone.now)
-    months = MultiSelectField(choices=MONTH_CHOICES, default=['1'], max_length=100)
+    months = MultiSelectField(choices=MONTH_CHOICES, default='1', max_length=100)
     modification  = models.CharField(blank=True, null=True, default="", max_length=50)
 
     def __str__(self):
