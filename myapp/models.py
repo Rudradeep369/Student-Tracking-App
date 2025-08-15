@@ -33,9 +33,9 @@ class Parent(models.Model):
 
 class Payment(models.Model):
     MONTH_CHOICES = [
-        (1, 'January'), (2, 'February'), (3, 'March'), (4, 'April'),
-        (5, 'May'), (6, 'June'), (7, 'July'), (8, 'August'),
-        (9, 'September'), (10, 'October'), (11, 'November'), (12, 'December')
+        ('1', 'January'), ('2', 'February'), ('3', 'March'), ('4', 'April'),
+        ('5', 'May'), ('6', 'June'), ('7', 'July'), ('8', 'August'),
+        ('9', 'September'), ('10', 'October'), ('11', 'November'), ('12', 'December')
     ]
 
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='payments')
@@ -43,7 +43,7 @@ class Payment(models.Model):
     due_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     payment_method= models.CharField(max_length=100, choices=[('CASH', 'CASH'), ('UPI', 'UPI'), ('CARD', 'CARD')], default='CASH')
     date = models.DateField(default=timezone.now)
-    months = MultiSelectField(choices=MONTH_CHOICES, default=["1"])
+    months = MultiSelectField(choices=MONTH_CHOICES, default=['1'], max_length=100)
     modification  = models.CharField(blank=True, null=True, default="", max_length=50)
 
     def __str__(self):
