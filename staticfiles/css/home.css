@@ -1,0 +1,258 @@
+
+.font-style-heading{
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.underline-heading::after {
+  content: '';
+  display: block;
+  width: 70px; 
+  height: 1px;  
+  background-color: #000; 
+  margin: 8px auto 0; 
+}
+
+
+/* Banner ---------------- */
+.banner {
+  height: 60vh;
+}
+
+.banner img {
+  opacity: 0.4;
+  object-fit: cover;
+}
+
+.banner .container {
+  padding: 3rem;
+}
+
+/* Text animation  */
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(50px); /* Optional, adds a slight upward movement */
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-out; /* Apply the fade-in animation */
+}
+
+.fade-in-delay {
+  animation: fadeIn 1.5s ease-out forwards; /* Slightly delayed animation for the paragraph */
+}
+/* -- */
+.social-btn {
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Additional styling for buttons */
+.btn-outline-light {
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+.btn-outline-light i {
+  color: #ffffff;
+}
+
+.btn-outline-light:hover {
+  color: #000000;
+  border-color: #000000;
+}
+
+.btn-outline-light:hover i {
+  color: #000000;
+}
+
+.btn {
+  white-space: nowrap;
+}
+
+@media (max-width: 576px) {
+  .btn-lg {
+    font-size: 0.875rem; 
+    padding: 0.5rem 1rem; 
+  }
+}
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  
+    .social-btn {
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards;
+    }
+  
+    /* Additional styling for buttons */
+    .btn-outline-light {
+      color: #ffffff;
+      border-color: #ffffff;
+    }
+    
+    .btn-outline-light i {
+      color: #ffffff;
+    }
+    
+    .btn-outline-light:hover {
+      color: #000000;
+      border-color: #000000;
+    }
+    
+    .btn-outline-light:hover i {
+      color: #000000;
+    }
+    /* -- */
+
+/* ------------------ */
+
+/* class Cards  ----------*/
+
+
+.card-shadow {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-shadow:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 0 8px 22px rgba(0, 0, 0, 0.25);
+}
+
+.card-title {
+  color: #0D7C66;
+}
+
+/* ----------------- */
+
+/* Achivement */
+
+.achievement-track {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.achievement-item {
+  flex: 0 0 auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-right: 20px;
+}
+
+.achievement-item img {
+  transition: transform 0.4s ease-in-out;
+}
+
+.achievement-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 24px rgba(41, 60, 182, 0.3);
+}
+
+.achievement-item img:hover {
+  transform: scale(1.20);
+}
+
+@media (max-width: 768px) {
+  .achievement-item {
+      min-width: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .achievement-item {
+      min-width: 160px;
+  }
+}
+
+/* ---------------- */
+
+/* about us */
+
+
+@media (max-width: 758px) {
+  .black-box{
+    background-color: rgba(2, 2, 2,75%);
+    /* opacity: 25%; */
+  }
+}
+
+/* ------------------ */
+
+/* teacher ----------- */
+.bt-ts:hover {
+  color: rgb(92, 99, 106);
+  background-color: white;
+
+}
+
+.custom-control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+}
+
+
+.mentor-image {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+}
+
+
+.custom-control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+}
+
+.mentor-image {
+  border-radius: 10px;
+}
+.modal-content {
+  border-radius: 15px;
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #000; 
+  border-radius: 50%;
+}
+.carousel-control-prev,
+.carousel-control-next {
+  filter: invert(1); 
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ----------------- */
+  
+
+
+

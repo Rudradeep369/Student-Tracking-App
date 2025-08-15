@@ -1,0 +1,155 @@
+/* More compact calendar design */
+.calendar {
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.calendar-header {
+    background: #4ba2ff;
+    /* Solid color for a clean look */
+    color: white;
+    text-align: center;
+    padding: 6px 0;
+    /* Further reduced padding */
+    font-size: 1rem;
+    /* Smaller font size */
+    font-weight: bold;
+    position: relative;
+}
+
+.calendar-header button {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 1rem;
+    padding: 4px 6px;
+    /* Adjusted padding */
+    border-radius: 4px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: background 0.3s;
+    cursor: pointer;
+}
+
+.calendar-header button:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+#prev-month {
+    left: 6px;
+}
+
+#next-month {
+    right: 6px;
+}
+
+.calendar-body {
+    padding: 8px;
+    /* Reduced padding */
+    background-color: #f4f4f4;
+    /* Light gray background */
+}
+
+.calendar-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.calendar-table th,
+.calendar-table td {
+    text-align: center;
+    padding: 4px;
+    /* Further reduced padding */
+    font-size: 0.75rem;
+    /* Smaller font size */
+    background-color: #ffffff;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.calendar-table th {
+    background-color: #e9ecef;
+    /* Light gray header */
+    color: #495057;
+    font-weight: bold;
+}
+
+.calendar-table td:hover {
+    background-color: #e2e6ea;
+    cursor: pointer;
+}
+
+.today {
+    background-color: #238bfa !important;
+    /* Highlight today's date */
+    color: white;
+    font-weight: bold;
+}
+
+
+
+
+
+
+.batch-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+
+
+/* notification  */
+.alert {
+    width: fit-content;
+    animation: slideInFromRight 0.5s forwards,
+        slideOutToRight 0.5s forwards;
+    animation-delay: 0s, 5s;
+}
+
+.alert-error {
+    background-color: #f44336;
+    color: white;
+}
+
+.message-section {
+    position: fixed;
+    /* bottom: 0; */
+    right: 0;
+    z-index: 1000;
+
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutToRight {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* ----------- */
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

@@ -1,0 +1,26 @@
+
+#payment-record{
+	/* margin-top: 20px;
+	margin-bottom: 20px; */
+	padding: 20px;
+	border: 1px solid #e0e0e0;
+	border-radius: 5px;
+	width: 50vw;
+
+	
+}
+@media screen and (max-width: 768px){
+	#payment-record{
+		width: 90vw;
+	}
+}
+
+.content{
+	display: flex;
+	flex-direction: column;
+}
+
+.dialog-close{
+	width: fit-content;
+	align-self: flex-end;
+}
