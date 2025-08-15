@@ -43,7 +43,7 @@ class Payment(models.Model):
     due_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     payment_method= models.CharField(max_length=100, choices=[('CASH', 'CASH'), ('UPI', 'UPI'), ('CARD', 'CARD')], default='CASH')
     date = models.DateField(default=timezone.now)
-    months = MultiSelectField(choices=MONTH_CHOICES, default=[1])
+    months = MultiSelectField(choices=MONTH_CHOICES, default=["1"])
     modification  = models.CharField(blank=True, null=True, default="", max_length=50)
 
     def __str__(self):
@@ -74,7 +74,7 @@ class Batch(models.Model):
     subject_name = models.CharField(max_length=100)
     batch_name = models.CharField(max_length=100, default="")
     batch_times = models.JSONField(default=dict)  # Store time for each day as a JSON object
-    batch_day = MultiSelectField(choices=DAYS)
+    batch_day = MultiSelectField(choices=DAYS,default=["MON"])
     class_level = models.IntegerField(choices=[(1,1),(2,2),(3,3),(4,4),(5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10), (11, 11), (12, 12)])
     class_mode = models.CharField(max_length=100, choices=[('ONLINE', 'ONLINE'), ('OFFLINE', 'OFFLINE')], default='ONLINE')  
     start_date = models.DateField(default=timezone.now) 
