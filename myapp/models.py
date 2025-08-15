@@ -1,6 +1,9 @@
 from django.db import models
 from django.utils import timezone
 from multiselectfield import MultiSelectField
+from django.db.models.signals import post_delete, pre_save
+from django.dispatch import receiver
+import os
 
 class Student(models.Model):
     name = models.CharField(max_length=100)
@@ -97,3 +100,54 @@ class Achievement(models.Model):
 
     def __str__(self):
         return self.student_name
+
+
+# Signal handlers for automatic media file deletion
+@receiver(post_delete, sender=Teacher)
+def delete_teacher_image_on_delete(sender, instance, **kwargs):
+    """Delete teacher image file when Teacher instance is deleted."""
+    if instance.profile_image:
+        if os.path.isfile(instance.profile_image.path):
+            os.remove(instance.profile_image.path)
+
+
+@receiver(post_delete, sender=Achievement)
+def delete_achievement_image_on_delete(sender, instance, **kwargs):
+    """Delete achievement image file when Achievement instance is deleted."""
+    if instance.image:
+        if os.path.isfile(instance.image.path):
+            os.remove(instance.image.path)
+
+
+@receiver(pre_save, sender=Teacher)
+def delete_teacher_image_on_change(sender, instance, **kwargs):
+    """Delete old teacher image file when Teacher image is updated."""
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = Teacher.objects.get(pk=instance.pk).profile_image
+    except Teacher.DoesNotExist:
+        return False
+
+    new_file = instance.profile_image
+    if not old_file == new_file:
+        if old_file and os.path.isfile(old_file.path):
+            os.remove(old_file.path)
+
+
+@receiver(pre_save, sender=Achievement)
+def delete_achievement_image_on_change(sender, instance, **kwargs):
+    """Delete old achievement image file when Achievement image is updated."""
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = Achievement.objects.get(pk=instance.pk).image
+    except Achievement.DoesNotExist:
+        return False
+
+    new_file = instance.image
+    if not old_file == new_file:
+        if old_file and os.path.isfile(old_file.path):
+            os.remove(old_file.path)

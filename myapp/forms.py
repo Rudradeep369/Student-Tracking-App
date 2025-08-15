@@ -135,8 +135,38 @@ class AchievementForm(forms.ModelForm):
 
         widgets = {
             'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'student_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter student name'}),
-            'class_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter class'}),
-            'score': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter score'}),
-            'board_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter board name'}),
+            'student_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter student name', 'required': True}),
+            'class_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter class', 'required': True}),
+            'score': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter score', 'min': '0', 'max': '100', 'step': '0.01', 'required': True}),
+            'board_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter board name', 'required': True}),
         }
+    
+    def clean_score(self):
+        score = self.cleaned_data.get('score')
+        if score is not None:
+            if score < 0 or score > 100:
+                raise forms.ValidationError("Score must be between 0 and 100.")
+        return score
+    
+    def clean_student_name(self):
+        student_name = self.cleaned_data.get('student_name')
+        if student_name:
+            if len(student_name.strip()) < 2:
+                raise forms.ValidationError("Student name must be at least 2 characters long.")
+        return student_name.strip()
+    
+    def clean_class_name(self):
+        class_name = self.cleaned_data.get('class_name')
+        if class_name:
+            class_name = class_name.strip()
+            if not class_name:
+                raise forms.ValidationError("Class name is required.")
+        return class_name
+    
+    def clean_board_name(self):
+        board_name = self.cleaned_data.get('board_name')
+        if board_name:
+            board_name = board_name.strip()
+            if not board_name:
+                raise forms.ValidationError("Board name is required.")
+        return board_name

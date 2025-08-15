@@ -209,6 +209,11 @@ class BatchDetailView(LoginRequiredMixin, DetailView):
             )
         else:
             context['remaining_students'] = Student.objects.exclude(id__in=self.object.students.all())
+        
+        # Add teacher-related context
+        context['assigned_teachers'] = self.object.teachers.all()
+        context['available_teachers'] = Teacher.objects.exclude(id__in=self.object.teachers.all())
+        
         context['student_form'] = StudentForm()
         return context
 
@@ -364,10 +369,8 @@ def edit_teacher(request, teacher_id):
 def delete_teacher(request, teacher_id):
     teacher = get_object_or_404(Teacher, id=teacher_id)
     if request.method == 'POST':
-        if teacher.profile_image:
-            teacher.profile_image.delete()
-        teacher.delete()
-        messages.success(request, 'Teacher table Deleted successfully!')
+        teacher.delete()  # Signal handler will automatically delete the image
+        messages.success(request, 'Teacher deleted successfully!')
         return redirect('add_teacher')
 
 
@@ -510,12 +513,19 @@ def class_details(request):
 @login_required(login_url='login')
 def achievement(request):
     context = {}
+    
     if request.method == 'POST':
         form = AchievementForm(request.POST, request.FILES) 
         if form.is_valid():
             form.save()
             messages.success(request, 'Achievement added successfully!')
             return redirect('achievement')
+        else:
+            # Form is not valid, add error messages
+            print(f"Form errors: {form.errors}")
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f'{field}: {error}')
     else:
         form = AchievementForm()
 
@@ -552,8 +562,34 @@ def delete_achievement(request, achievement_id):
     achievement = get_object_or_404(Achievement, id=achievement_id)
 
     if request.method == 'POST':
-        if achievement.image and achievement.image.path:
-            achievement.image.delete()
-        achievement.delete()
+        achievement.delete()  # Signal handler will automatically delete the image
         messages.success(request, 'Achievement deleted successfully!')
         return redirect('achievement')
+
+
+# Teacher Assignment Views
+@login_required(login_url='login')
+def assign_teacher_to_batch(request, pk):
+    batch = get_object_or_404(Batch, pk=pk)
+    if request.method == 'POST':
+        teacher_ids = request.POST.getlist('teachers_to_assign')
+        if teacher_ids:
+            teachers = Teacher.objects.filter(id__in=teacher_ids)
+            batch.teachers.add(*teachers)
+            teacher_names = [teacher.name for teacher in teachers]
+            messages.success(request, f'Successfully assigned teachers: {", ".join(teacher_names)} to batch {batch.batch_name}')
+        else:
+            messages.warning(request, 'No teachers selected to assign.')
+    return redirect('batch_detail', pk=pk)
+
+
+@login_required(login_url='login')
+def remove_teacher_from_batch(request, pk, teacher_id):
+    batch = get_object_or_404(Batch, pk=pk)
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    
+    if request.method == 'POST':
+        batch.teachers.remove(teacher)
+        messages.success(request, f'Successfully removed teacher {teacher.name} from batch {batch.batch_name}')
+    
+    return redirect('batch_detail', pk=pk)
