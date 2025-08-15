@@ -1,93 +1,440 @@
 {% load static %}
 <!-- Footer -->
-<footer class="pt-5 pb-4">
-    <div class="container">
-        <div class="row text-center text-md-start">
-            
-            <!-- Continuous Gallery Section -->
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-                <h5 class="text-center">Some of Our Memories</h5>
-                <div class="gallery-container p-3 mb-3">
-                    <div class="gallery">
-                        <img src="{% static 'images/home/img1.jpg' %}" class="gallery-image" alt="Image 1">
-                        <img src="{% static 'images/home/img13.jpg' %}" class="gallery-image" alt="Image 2">
-                        <img src="{% static 'images/home/img8.jpg' %}" class="gallery-image" alt="Image 3">
-                        <img src="{% static 'images/home/img6.jpg' %}" class="gallery-image" alt="Image 4">
-                        <img src="{% static 'images/home/img3.jpg' %}" class="gallery-image" alt="Image 5">
-                        <img src="{% static 'images/home/img4.jpg' %}" class="gallery-image" alt="Image 6">
+<footer class="modern-footer">
+    <div class="footer-background">
+        <!-- Animated Background Elements -->
+        <div class="footer-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        
+        <!-- Wave Animation -->
+        <div class="footer-waves">
+            <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none">
+                <defs>
+                    <path id="gentle-wave" d="m-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+                </defs>
+                <g class="parallax">
+                    <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7)" />
+                    <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+                    <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+                    <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <div class="container footer-content">
+        <div class="row">
+            <!-- Company Info Section -->
+            <div class="col-lg-6 col-md-6 mb-4">
+                <div class="footer-section">
+                    <div class="brand-section">
+                        <div class="brand-logo">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="brand-name">Learners Point</h3>
+                        <p class="brand-tagline">Empowering minds, shaping futures</p>
+                    </div>
+                    <p class="company-description">
+                        We are dedicated to providing quality education and fostering academic excellence. 
+                        Our comprehensive student management system helps institutions deliver exceptional learning experiences.
+                    </p>
+                    
+                    <!-- Single Image Display Section -->
+                    <div class="footer-gallery">
+                        <h6 class="gallery-title">
+                            <i class="fas fa-images me-2"></i>Our Memories
+                        </h6>
+                        <div class="single-image-container">
+                            <div class="image-display">
+                                <div class="image-slide active">
+                                    <img src="{% static 'images/home/img1.jpg' %}" alt="Memory 1">
+                                </div>
+                                <div class="image-slide">
+                                    <img src="{% static 'images/home/img13.jpg' %}" alt="Memory 2">
+                                </div>
+                                <div class="image-slide">
+                                    <img src="{% static 'images/home/img8.jpg' %}" alt="Memory 3">
+                                </div>
+                                <div class="image-slide">
+                                    <img src="{% static 'images/home/img6.jpg' %}" alt="Memory 4">
+                                </div>
+                                <div class="image-slide">
+                                    <img src="{% static 'images/home/img3.jpg' %}" alt="Memory 5">
+                                </div>
+                                <div class="image-slide">
+                                    <img src="{% static 'images/home/img4.jpg' %}" alt="Memory 6">
+                                </div>
+                            </div>
+                            <div class="image-indicators">
+                                <span class="indicator active" data-slide="0"></span>
+                                <span class="indicator" data-slide="1"></span>
+                                <span class="indicator" data-slide="2"></span>
+                                <span class="indicator" data-slide="3"></span>
+                                <span class="indicator" data-slide="4"></span>
+                                <span class="indicator" data-slide="5"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Quick Links Section -->
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-                <h5>Quick Links</h5>
-                <ul class="list-unstyled">
-                    <li class="mb-2">
-                        <a href="#" class="text-white text-decoration-none d-flex align-items-center justify-content-center justify-content-md-start">
-                            <i class="bi bi-house-fill me-2"></i> Home
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="#" class="text-white text-decoration-none d-flex align-items-center justify-content-center justify-content-md-start">
-                            <i class="bi bi-gear-fill me-2"></i> Services
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="#" class="text-white text-decoration-none d-flex align-items-center justify-content-center justify-content-md-start">
-                            <i class="bi bi-info-circle-fill me-2"></i> About
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-white text-decoration-none d-flex align-items-center justify-content-center justify-content-md-start">
-                            <i class="bi bi-envelope-fill me-2"></i> Contact
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Contact Info Section -->
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-                <h5>Contact Us</h5>
-                <ul class="list-unstyled">
-                    <li class="mb-2 d-flex align-items-center justify-content-center justify-content-md-start">
-                        <i class="bi bi-telephone-fill me-2"></i> +91 6290860023
-                    </li>
-                    <li class="mb-2 d-flex align-items-center justify-content-center justify-content-md-start">
-                        <i class="bi bi-envelope-fill me-2"></i> learnerspoint519@gmail.com
-                    </li>
-                    <li class="d-flex align-items-center justify-content-center justify-content-md-start">
-                        <i class="bi bi-geo-alt-fill me-2"></i> Rajarhat Bishnupur Shibtala, Kolkata - 700135
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Social Media Section -->
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-                <h5 class="text-center">Connect With Us</h5>
-                <div class="d-flex justify-content-center gap-3">
-                    <a href="https://facebook.com/yourpage" target="_blank" class="text-white fs-4">
-                        <i class="bi bi-facebook"></i>
-                    </a>
-                    <a href="https://twitter.com/yourprofile" target="_blank" class="text-white fs-4">
-                        <i class="bi bi-twitter-x"></i>
-                    </a>
-                    <a href="https://instagram.com/yourprofile" target="_blank" class="text-white fs-4">
-                        <i class="bi bi-instagram"></i>
-                    </a>
-                    <a href="https://linkedin.com/in/yourprofile" target="_blank" class="text-white fs-4">
-                        <i class="bi bi-linkedin"></i>
-                    </a>
+            <!-- Contact & Gallery Section -->
+            <div class="col-lg-6 col-md-6 mb-4">
+                <div class="footer-section">
+                    <h5 class="section-title">
+                        <i class="fas fa-address-book me-2"></i>Get in Touch
+                    </h5>
+                    
+                    <!-- Contact Info -->
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-details">
+                                <span class="contact-label">Address</span>
+                                <span class="contact-value">Rajarhat Bishnupur Shibtala, Kolkata - 700135</span>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-details">
+                                <span class="contact-label">Phone</span>
+                                <span class="contact-value">+91 6290860023</span>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-details">
+                                <span class="contact-label">Email</span>
+                                <span class="contact-value">learnerspoint519@gmail.com</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <hr>
-
-        <div class="row">
-            <div class="col text-center mt-3">
-                <p class="small mb-0">&copy; 2024 Your Company. All Rights Reserved.</p>
+        <!-- Social Media & Copyright Section -->
+        <div class="footer-bottom">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="social-section">
+                        <h6 class="social-title">Follow Us</h6>
+                        <div class="social-links">
+                            <a href="https://facebook.com/yourpage" target="_blank" class="social-link facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://twitter.com/yourprofile" target="_blank" class="social-link twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://instagram.com/yourprofile" target="_blank" class="social-link instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://linkedin.com/in/yourprofile" target="_blank" class="social-link linkedin">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="https://youtube.com/yourchannel" target="_blank" class="social-link youtube">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            <a href="https://github.com/yourprofile" target="_blank" class="social-link github">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="copyright-section">
+                        <p class="copyright-text">
+                            &copy; {{ current_year|default:"2024" }} <strong>Learners Point</strong>. All Rights Reserved.
+                        </p>
+                        <div class="footer-links-bottom">
+                            <a href="#">Privacy Policy</a>
+                            <span class="separator">|</span>
+                            <a href="#">Terms of Service</a>
+                            <span class="separator">|</span>
+                            <a href="#">Cookie Policy</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
 </footer>
+
+<script>
+// Footer JavaScript Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Back to Top Button
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    // Show/Hide back to top button
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    });
+    
+    // Smooth scroll to top
+    backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+    
+    // Gallery image click functionality
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    galleryItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const img = this.querySelector('img');
+            if (img) {
+                // Create modal for image preview
+                showImageModal(img.src, img.alt);
+            }
+        });
+    });
+    
+    // Social link click tracking
+    const socialLinks = document.querySelectorAll('.social-link');
+    socialLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            const platform = this.classList[1]; // get the platform class
+            console.log(`Clicked on ${platform} social link`);
+            // You can add analytics tracking here
+        });
+    });
+    
+    // Animate elements when they come into view
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Apply animation to footer sections
+    document.querySelectorAll('.footer-section, .footer-bottom').forEach(section => {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(20px)';
+        section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(section);
+    });
+});
+
+// Helper Functions
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function showNotification(message, type) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `footer-notification ${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    // Add styles
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#059669' : '#dc2626'};
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        z-index: 10000;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
+function showImageModal(src, alt) {
+    // Create modal overlay
+    const modal = document.createElement('div');
+    modal.className = 'image-modal';
+    modal.innerHTML = `
+        <div class="modal-overlay">
+            <div class="modal-content">
+                <button class="modal-close">&times;</button>
+                <img src="${src}" alt="${alt}" class="modal-image">
+            </div>
+        </div>
+    `;
+    
+    // Add styles
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    `;
+    
+    const overlay = modal.querySelector('.modal-overlay');
+    overlay.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    `;
+    
+    const content = modal.querySelector('.modal-content');
+    content.style.cssText = `
+        position: relative;
+        max-width: 90%;
+        max-height: 90%;
+    `;
+    
+    const closeBtn = modal.querySelector('.modal-close');
+    closeBtn.style.cssText = `
+        position: absolute;
+        top: -40px;
+        right: 0;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 30px;
+        cursor: pointer;
+        z-index: 10001;
+    `;
+    
+    const image = modal.querySelector('.modal-image');
+    image.style.cssText = `
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 10px;
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Close modal functionality
+    const closeModal = () => {
+        if (modal.parentNode) {
+            modal.parentNode.removeChild(modal);
+        }
+    };
+    
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+            closeModal();
+        }
+    });
+    
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+}
+
+// Single Image Carousel Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('.image-slide');
+    const indicators = document.querySelectorAll('.indicator');
+    let currentSlide = 0;
+    let slideInterval;
+
+    function showSlide(index) {
+        // Remove active class from all slides and indicators
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(indicator => indicator.classList.remove('active'));
+        
+        // Add active class to current slide and indicator
+        slides[index].classList.add('active');
+        indicators[index].classList.add('active');
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    function startSlideshow() {
+        slideInterval = setInterval(nextSlide, 3000); // Change image every 3 seconds
+    }
+
+    function stopSlideshow() {
+        clearInterval(slideInterval);
+    }
+
+    // Add click event to indicators
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            currentSlide = index;
+            showSlide(currentSlide);
+            stopSlideshow();
+            startSlideshow(); // Restart the slideshow
+        });
+    });
+
+    // Pause slideshow on hover
+    const container = document.querySelector('.single-image-container');
+    if (container) {
+        container.addEventListener('mouseenter', stopSlideshow);
+        container.addEventListener('mouseleave', startSlideshow);
+    }
+
+    // Start the slideshow
+    startSlideshow();
+});
+</script>
