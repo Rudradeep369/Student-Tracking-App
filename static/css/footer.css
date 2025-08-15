@@ -301,6 +301,42 @@
     line-height: 1.4;
 }
 
+/* Contact Map Section */
+.contact-map-section {
+    margin-top: 25px;
+}
+
+.contact-map-section .map-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #ffd700;
+    text-align: left;
+}
+
+.contact-map-section .google-map-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.contact-map-section .google-map-container:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.contact-map-section .google-map-container iframe {
+    filter: grayscale(0.3) contrast(1.1);
+    transition: all 0.3s ease;
+}
+
+.contact-map-section .google-map-container:hover iframe {
+    filter: grayscale(0) contrast(1.2);
+}
+
 /* Single Image Display Section */
 .footer-gallery {
     margin-top: 25px;
@@ -525,6 +561,41 @@
     color: rgba(255, 255, 255, 0.5);
 }
 
+/* Map Section */
+.map-section {
+    text-align: center;
+}
+
+.map-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #ffd700;
+}
+
+.google-map-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.google-map-container:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.google-map-container iframe {
+    filter: grayscale(0.3) contrast(1.1);
+    transition: all 0.3s ease;
+}
+
+.google-map-container:hover iframe {
+    filter: grayscale(0) contrast(1.2);
+}
+
 /* Back to Top Button */
 .back-to-top {
     position: fixed;
@@ -576,6 +647,18 @@
         margin-top: 20px;
     }
 
+    .contact-map-section {
+        margin-top: 20px;
+    }
+
+    .contact-map-section .google-map-container {
+        margin: 0 auto;
+    }
+
+    .contact-map-section .google-map-container iframe {
+        height: 150px;
+    }
+
     .single-image-container {
         height: 160px;
         max-width: 250px;
@@ -614,6 +697,10 @@
 
     .contact-icon {
         margin: 0 auto 10px;
+    }
+
+    .contact-map-section .google-map-container iframe {
+        height: 120px;
     }
 
     .single-image-container {
