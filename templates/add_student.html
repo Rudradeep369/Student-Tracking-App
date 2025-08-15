@@ -1,221 +1,583 @@
 {% extends "base.html" %}
 {% block title %}Add New Student{% endblock title %}
 {% load static %}
+
 {% block style %}
-<link rel="stylesheet" href="{% static 'css/index.css' %}">
 <style>
-    .form-container {
-        background-color: #f8f9fa;
-        border-radius: 15px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Professional Color Palette */
+    :root {
+        --primary-blue: #2563eb;
+        --secondary-blue: #1e40af;
+        --accent-blue: #3b82f6;
+        --light-blue: #dbeafe;
+        --success-green: #059669;
+        --warning-orange: #d97706;
+        --danger-red: #dc2626;
+        --dark-gray: #374151;
+        --medium-gray: #6b7280;
+        --light-gray: #f3f4f6;
+        --white: #ffffff;
+        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --gradient-warning: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+        --gradient-danger: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
     }
-    .form-header {
-        background: linear-gradient(135deg, #28a745, #20c997);
+
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+
+    .main-container {
+        background: var(--white);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        margin: 20px;
+        overflow: hidden;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .header-section {
+        background: var(--gradient-primary);
         color: white;
-        border-radius: 15px 15px 0 0;
-        padding: 20px;
+        padding: 30px;
+        text-align: center;
+        position: relative;
     }
-    .required-field {
-        color: #dc3545;
+
+    .header-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200"><defs><radialGradient id="a" cx="1000" cy="200" r="600"><stop offset="0" stop-color="rgba(255,255,255,0.1)"/><stop offset="1" stop-color="rgba(255,255,255,0)"/></radialGradient></defs><rect width="1000" height="200" fill="url(%23a)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .page-title {
+        position: relative;
+        z-index: 2;
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin: 0;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .page-subtitle {
+        position: relative;
+        z-index: 2;
+        font-size: 1.1rem;
+        margin: 15px 0 0 0;
+        opacity: 0.9;
+    }
+
+    .btn-back {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: rgba(255,255,255,0.2);
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 12px;
+        color: white;
+        padding: 8px 15px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        z-index: 3;
+    }
+
+    .btn-back:hover {
+        background: rgba(255,255,255,0.3);
+        transform: translateY(-2px);
+        color: white;
+    }
+
+    .content-section {
+        padding: 40px;
+    }
+
+    .form-container {
+        background: var(--light-gray);
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    .section-title {
+        color: var(--dark-gray);
+        font-weight: 700;
+        font-size: 1.3rem;
+        margin-bottom: 25px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--light-blue);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        margin-bottom: 25px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group.full-width {
+        grid-column: span 2;
+    }
+
+    .form-label-modern {
+        font-weight: 600;
+        color: var(--dark-gray);
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .required-indicator {
+        color: var(--danger-red);
+        font-weight: 700;
+        margin-left: 3px;
+    }
+
+    .form-control-modern {
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 12px 16px;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        background: var(--white);
+    }
+
+    .form-control-modern:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        outline: none;
+        background: var(--white);
+    }
+
+    .form-control-modern:hover {
+        border-color: var(--accent-blue);
+    }
+
+    .input-group-modern {
+        display: flex;
+        align-items: stretch;
+    }
+
+    .input-group-text-modern {
+        background: var(--primary-blue);
+        color: white;
+        border: 2px solid var(--primary-blue);
+        border-right: none;
+        border-radius: 10px 0 0 10px;
+        padding: 12px 16px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-group-modern .form-control-modern {
+        border-left: none;
+        border-radius: 0 10px 10px 0;
+    }
+
+    .input-group-modern .form-control-modern:focus {
+        border-left: 2px solid var(--primary-blue);
+    }
+
+    .error-message {
+        color: var(--danger-red);
+        font-size: 0.85rem;
+        margin-top: 5px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-top: 40px;
+        padding-top: 25px;
+        border-top: 2px solid #e5e7eb;
+    }
+
+    .btn-submit {
+        background: var(--gradient-success);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        padding: 15px 40px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        color: white;
+    }
+
+    .btn-cancel {
+        background: var(--medium-gray);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        padding: 15px 40px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .btn-cancel:hover {
+        background: var(--dark-gray);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        color: white;
+    }
+
+    .info-card {
+        background: rgba(37, 99, 235, 0.1);
+        border: 1px solid var(--light-blue);
+        border-radius: 15px;
+        padding: 20px;
+        margin-top: 25px;
+    }
+
+    .info-title {
+        color: var(--primary-blue);
+        font-weight: 700;
+        font-size: 1rem;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .info-list li {
+        color: var(--dark-gray);
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .info-list li::before {
+        content: '•';
+        color: var(--primary-blue);
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+
+    @media (max-width: 768px) {
+        .main-container {
+            margin: 10px;
+            border-radius: 15px;
+        }
+
+        .header-section {
+            padding: 20px;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+        }
+
+        .btn-back {
+            position: static;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .content-section {
+            padding: 20px;
+        }
+
+        .form-container {
+            padding: 20px;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 1;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn-submit,
+        .btn-cancel {
+            width: 100%;
+        }
+    }
+
+    /* Custom styling for Django form fields */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+        border: 2px solid #e5e7eb !important;
+        border-radius: 10px !important;
+        padding: 12px 16px !important;
+        transition: all 0.3s ease !important;
+        font-size: 1rem !important;
+        background: var(--white) !important;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    input[type="number"]:focus,
+    input[type="date"]:focus,
+    select:focus,
+    textarea:focus {
+        border-color: var(--primary-blue) !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+        outline: none !important;
+    }
+
+    input[type="text"]:hover,
+    input[type="email"]:hover,
+    input[type="tel"]:hover,
+    input[type="number"]:hover,
+    input[type="date"]:hover,
+    select:hover,
+    textarea:hover {
+        border-color: var(--accent-blue) !important;
+    }
+
+    .input-group .form-control {
+        border-left: none !important;
+        border-radius: 0 10px 10px 0 !important;
+    }
+
+    .input-group .form-control:focus {
+        border-left: 2px solid var(--primary-blue) !important;
     }
 </style>
 {% endblock style %}
 
 {% block body %}
 {% include "message.html" %}
-<div style="background-color: whitesmoke;">
-<div class="container-fluid py-4">
+<div class="main-container">
     <!-- Header Section -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-success">Add New Student</h1>
-        <a href="{% url 'all_students' %}" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left me-2"></i>Back to All Students
+    <div class="header-section">
+        <a href="{% url 'all_students' %}" class="btn-back">
+            <i class="fas fa-arrow-left me-2"></i>Back to Students
         </a>
+        <h1 class="page-title">
+            <i class="fas fa-user-plus me-3"></i>Add New Student
+        </h1>
+        <p class="page-subtitle">Complete student registration form</p>
     </div>
 
-    <div class="row justify-content-center">
-        <div class="col-lg-8 col-md-10">
-            <div class="form-container">
-                <div class="form-header text-center">
-                    <h3 class="mb-0">
-                        <i class="bi bi-person-plus-fill me-2"></i>Student Registration Form
-                    </h3>
-                    <p class="mb-0 mt-2">Please fill in all the required information</p>
+    <div class="content-section">
+        <div class="form-container">
+            <form method="POST" novalidate>
+                {% csrf_token %}
+                
+                <!-- Personal Information Section -->
+                <div class="section-title">
+                    <i class="fas fa-user"></i>Personal Information
                 </div>
                 
-                <div class="p-4">
-                    <form method="POST" novalidate>
-                        {% csrf_token %}
-                        
-                        <div class="row">
-                            <!-- Student Name -->
-                            <div class="col-md-6 mb-3">
-                                <label for="{{ form.name.id_for_label }}" class="form-label">
-                                    {{ form.name.label }} <span class="required-field">*</span>
-                                </label>
-                                {{ form.name }}
-                                {% if form.name.errors %}
-                                    <div class="text-danger small mt-1">
-                                        {% for error in form.name.errors %}
-                                            <div>{{ error }}</div>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.name.id_for_label }}" class="form-label-modern">
+                            <i class="fas fa-user"></i>
+                            {{ form.name.label }}
+                            <span class="required-indicator">*</span>
+                        </label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                {% for error in form.name.errors %}{{ error }}{% endfor %}
                             </div>
+                        {% endif %}
+                    </div>
 
-                            <!-- Phone Number -->
-                            <div class="col-md-6 mb-3">
-                                <label for="{{ form.phone_number.id_for_label }}" class="form-label">
-                                    {{ form.phone_number.label }} <span class="required-field">*</span>
-                                </label>
-                                {{ form.phone_number }}
-                                {% if form.phone_number.errors %}
-                                    <div class="text-danger small mt-1">
-                                        {% for error in form.phone_number.errors %}
-                                            <div>{{ error }}</div>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                    <div class="form-group">
+                        <label for="{{ form.phone_number.id_for_label }}" class="form-label-modern">
+                            <i class="fas fa-phone"></i>
+                            {{ form.phone_number.label }}
+                            <span class="required-indicator">*</span>
+                        </label>
+                        {{ form.phone_number }}
+                        {% if form.phone_number.errors %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                {% for error in form.phone_number.errors %}{{ error }}{% endfor %}
                             </div>
-                        </div>
-
-                        <div class="row">
-                            <!-- Alternate Phone Number -->
-                            <div class="col-md-6 mb-3">
-                                <label for="{{ form.phone_number2.id_for_label }}" class="form-label">
-                                    {{ form.phone_number2.label }}
-                                </label>
-                                {{ form.phone_number2 }}
-                                {% if form.phone_number2.errors %}
-                                    <div class="text-danger small mt-1">
-                                        {% for error in form.phone_number2.errors %}
-                                            <div>{{ error }}</div>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-
-                            <!-- Board -->
-                            <div class="col-md-6 mb-3">
-                                <label for="{{ form.board.id_for_label }}" class="form-label">
-                                    {{ form.board.label }} <span class="required-field">*</span>
-                                </label>
-                                {{ form.board }}
-                                {% if form.board.errors %}
-                                    <div class="text-danger small mt-1">
-                                        {% for error in form.board.errors %}
-                                            <div>{{ error }}</div>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <!-- Class -->
-                            <div class="col-md-6 mb-3">
-                                <label for="{{ form.student_class.id_for_label }}" class="form-label">
-                                    {{ form.student_class.label }} <span class="required-field">*</span>
-                                </label>
-                                {{ form.student_class }}
-                                {% if form.student_class.errors %}
-                                    <div class="text-danger small mt-1">
-                                        {% for error in form.student_class.errors %}
-                                            <div>{{ error }}</div>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-
-                            <!-- Subject -->
-                            <div class="col-md-6 mb-3">
-                                <label for="{{ form.subject.id_for_label }}" class="form-label">
-                                    {{ form.subject.label }} <span class="required-field">*</span>
-                                </label>
-                                {{ form.subject }}
-                                {% if form.subject.errors %}
-                                    <div class="text-danger small mt-1">
-                                        {% for error in form.subject.errors %}
-                                            <div>{{ error }}</div>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <!-- Admission Date -->
-                            <div class="col-md-6 mb-3">
-                                <label for="{{ form.addmission_date.id_for_label }}" class="form-label">
-                                    {{ form.addmission_date.label }} <span class="required-field">*</span>
-                                </label>
-                                {{ form.addmission_date }}
-                                {% if form.addmission_date.errors %}
-                                    <div class="text-danger small mt-1">
-                                        {% for error in form.addmission_date.errors %}
-                                            <div>{{ error }}</div>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-
-                            <!-- Fees -->
-                            <div class="col-md-6 mb-3">
-                                <label for="{{ form.fees.id_for_label }}" class="form-label">
-                                    {{ form.fees.label }} <span class="required-field">*</span>
-                                </label>
-                                <div class="input-group">
-                                    <span class="input-group-text">₹</span>
-                                    {{ form.fees }}
-                                </div>
-                                {% if form.fees.errors %}
-                                    <div class="text-danger small mt-1">
-                                        {% for error in form.fees.errors %}
-                                            <div>{{ error }}</div>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <div class="d-flex justify-content-between">
-                                    <a href="{% url 'all_students' %}" class="btn btn-outline-secondary">
-                                        <i class="bi bi-x-circle me-2"></i>Cancel
-                                    </a>
-                                    <button type="submit" class="btn btn-success btn-lg">
-                                        <i class="bi bi-check-circle me-2"></i>Add Student
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                        {% endif %}
+                    </div>
                 </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.phone_number2.id_for_label }}" class="form-label-modern">
+                            <i class="fas fa-phone-alt"></i>
+                            {{ form.phone_number2.label }}
+                        </label>
+                        {{ form.phone_number2 }}
+                        {% if form.phone_number2.errors %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                {% for error in form.phone_number2.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.addmission_date.id_for_label }}" class="form-label-modern">
+                            <i class="fas fa-calendar-alt"></i>
+                            {{ form.addmission_date.label }}
+                            <span class="required-indicator">*</span>
+                        </label>
+                        {{ form.addmission_date }}
+                        {% if form.addmission_date.errors %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                {% for error in form.addmission_date.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Academic Information Section -->
+                <div class="section-title">
+                    <i class="fas fa-graduation-cap"></i>Academic Information
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.board.id_for_label }}" class="form-label-modern">
+                            <i class="fas fa-school"></i>
+                            {{ form.board.label }}
+                            <span class="required-indicator">*</span>
+                        </label>
+                        {{ form.board }}
+                        {% if form.board.errors %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                {% for error in form.board.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.student_class.id_for_label }}" class="form-label-modern">
+                            <i class="fas fa-chalkboard"></i>
+                            {{ form.student_class.label }}
+                            <span class="required-indicator">*</span>
+                        </label>
+                        {{ form.student_class }}
+                        {% if form.student_class.errors %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                {% for error in form.student_class.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.subject.id_for_label }}" class="form-label-modern">
+                            <i class="fas fa-book"></i>
+                            {{ form.subject.label }}
+                            <span class="required-indicator">*</span>
+                        </label>
+                        {{ form.subject }}
+                        {% if form.subject.errors %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                {% for error in form.subject.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.fees.id_for_label }}" class="form-label-modern">
+                            <i class="fas fa-rupee-sign"></i>
+                            {{ form.fees.label }}
+                            <span class="required-indicator">*</span>
+                        </label>
+                        <div class="input-group-modern">
+                            <span class="input-group-text-modern">₹</span>
+                            {{ form.fees }}
+                        </div>
+                        {% if form.fees.errors %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                {% for error in form.fees.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <a href="{% url 'all_students' %}" class="btn-cancel">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-save me-2"></i>Add Student
+                    </button>
+                </div>
+            </form>
+
+            <!-- Information Card -->
+            <div class="info-card">
+                <div class="info-title">
+                    <i class="fas fa-info-circle"></i>Important Notes
+                </div>
+                <ul class="info-list">
+                    <li>All fields marked with <span class="required-indicator">*</span> are required</li>
+                    <li>Phone numbers should be valid 10-digit numbers</li>
+                    <li>Admission date cannot be in the future</li>
+                    <li>Monthly fees should be a valid amount in rupees</li>
+                    <li>Student will be available for batch assignment after registration</li>
+                </ul>
             </div>
         </div>
     </div>
-
-    <!-- Information Card -->
-    <div class="row justify-content-center mt-4">
-        <div class="col-lg-8 col-md-10">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h6 class="card-title text-muted">
-                        <i class="bi bi-info-circle me-2"></i>Important Notes:
-                    </h6>
-                    <ul class="mb-0 text-muted small">
-                        <li>All fields marked with <span class="required-field">*</span> are required</li>
-                        <li>Phone numbers should be valid 10-digit numbers</li>
-                        <li>Admission date cannot be in the future</li>
-                        <li>Monthly fees should be a valid amount</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 </div>
 
 <script>
@@ -236,17 +598,48 @@ document.addEventListener('DOMContentLoaded', function() {
         requiredFields.forEach(field => {
             if (!field.value.trim()) {
                 isValid = false;
-                field.classList.add('is-invalid');
+                field.style.borderColor = 'var(--danger-red)';
             } else {
-                field.classList.remove('is-invalid');
+                field.style.borderColor = '#e5e7eb';
             }
         });
         
         if (!isValid) {
             e.preventDefault();
-            alert('Please fill in all required fields.');
+            // Create and show a professional error message
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'alert alert-danger';
+            errorDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 10000;
+                background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+                font-weight: 600;
+            `;
+            errorDiv.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>Please fill in all required fields.';
+            document.body.appendChild(errorDiv);
+            
+            setTimeout(() => {
+                if (errorDiv.parentNode) {
+                    errorDiv.parentNode.removeChild(errorDiv);
+                }
+            }, 3000);
         }
     });
+
+    // Add parent link functionality
+    // Note: Parent details can be added after student registration
+    const infoCard = document.querySelector('.info-card .info-list');
+    if (infoCard) {
+        const parentInfo = document.createElement('li');
+        parentInfo.innerHTML = 'Parent details can be added after student registration from the student profile page';
+        infoCard.appendChild(parentInfo);
+    }
 });
 </script>
 {% endblock body %}
