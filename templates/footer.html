@@ -1,6 +1,7 @@
 {% load static %}
 <!-- Footer -->
-<footer class="modern-footer">
+<a class="visually-hidden-focusable" href="#top">Skip to top</a>
+<footer class="modern-footer" role="contentinfo">
     <div class="footer-background">
         <!-- Animated Background Elements -->
         <div class="footer-particles">
@@ -170,22 +171,22 @@
                     <div class="social-section">
                         <h6 class="social-title">Follow Us</h6>
                         <div class="social-links">
-                            <a href="https://facebook.com/yourpage" target="_blank" class="social-link facebook">
+                            <a href="https://facebook.com/yourpage" target="_blank" rel="noopener noreferrer" class="social-link facebook" aria-label="Facebook">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
-                            <a href="https://twitter.com/yourprofile" target="_blank" class="social-link twitter">
+                            <a href="https://twitter.com/yourprofile" target="_blank" rel="noopener noreferrer" class="social-link twitter" aria-label="Twitter">
                                 <i class="fab fa-twitter"></i>
                             </a>
-                            <a href="https://instagram.com/yourprofile" target="_blank" class="social-link instagram">
+                            <a href="https://instagram.com/yourprofile" target="_blank" rel="noopener noreferrer" class="social-link instagram" aria-label="Instagram">
                                 <i class="fab fa-instagram"></i>
                             </a>
-                            <a href="https://linkedin.com/in/yourprofile" target="_blank" class="social-link linkedin">
+                            <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" class="social-link linkedin" aria-label="LinkedIn">
                                 <i class="fab fa-linkedin-in"></i>
                             </a>
-                            <a href="https://youtube.com/yourchannel" target="_blank" class="social-link youtube">
+                            <a href="https://youtube.com/yourchannel" target="_blank" rel="noopener noreferrer" class="social-link youtube" aria-label="YouTube">
                                 <i class="fab fa-youtube"></i>
                             </a>
-                            <a href="https://github.com/yourprofile" target="_blank" class="social-link github">
+                            <a href="https://github.com/yourprofile" target="_blank" rel="noopener noreferrer" class="social-link github" aria-label="GitHub">
                                 <i class="fab fa-github"></i>
                             </a>
                         </div>
@@ -210,9 +211,9 @@
     </div>
 
     <!-- Back to Top Button -->
-    <div class="back-to-top" id="backToTop">
-        <i class="fas fa-chevron-up"></i>
-    </div>
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-chevron-up" aria-hidden="true"></i>
+    </button>
 </footer>
 
 <script>
