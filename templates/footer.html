@@ -53,31 +53,31 @@
                         <div id="footerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
                             <div class="carousel-inner rounded-4 shadow-lg">
                                 <div class="carousel-item active">
-                                    <img src="{% static 'images/home/img1.jpg' %}" class="d-block w-100" alt="Students studying" loading="lazy">
+                                    <img src="{% static 'images/home/img1.jpg' %}" class="d-block w-100 h-100" alt="Students studying" loading="lazy">
                                     <div class="carousel-caption d-none d-md-block">
                                         <h6 class="fw-bold">Interactive Learning</h6>
                                     </div>
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="{% static 'images/home/img13.jpg' %}" class="d-block w-100" alt="Group discussion" loading="lazy">
+                                    <img src="{% static 'images/home/img13.jpg' %}" class="d-block w-100 h-100" alt="Group discussion" loading="lazy">
                                     <div class="carousel-caption d-none d-md-block">
                                         <h6 class="fw-bold">Group Discussions</h6>
                                     </div>
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="{% static 'images/home/img8.jpg' %}" class="d-block w-100" alt="Science experiments" loading="lazy">
+                                    <img src="{% static 'images/home/img8.jpg' %}" class="d-block w-100 h-100" alt="Science experiments" loading="lazy">
                                     <div class="carousel-caption d-none d-md-block">
                                         <h6 class="fw-bold">Practical Learning</h6>
                                     </div>
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="{% static 'images/home/img6.jpg' %}" class="d-block w-100" alt="Student achievements" loading="lazy">
+                                    <img src="{% static 'images/home/img6.jpg' %}" class="d-block w-100 h-100" alt="Student achievements" loading="lazy">
                                     <div class="carousel-caption d-none d-md-block">
                                         <h6 class="fw-bold">Student Achievements</h6>
                                     </div>
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="{% static 'images/home/img3.jpg' %}" class="d-block w-100" alt="Digital learning" loading="lazy">
+                                    <img src="{% static 'images/home/img3.jpg' %}" class="d-block w-100 h-100" alt="Digital learning" loading="lazy">
                                     <div class="carousel-caption d-none d-md-block">
                                         <h6 class="fw-bold">Digital Learning</h6>
                                     </div>
@@ -100,6 +100,64 @@
                             </div>
                         </div>
                     </div>
+                    <style>
+                    /* Responsive carousel height and image fit */
+                    .footer-gallery .carousel-inner {
+                        aspect-ratio: 16/9;
+                        width: 100%;
+                        min-height: 220px;
+                        max-height: 400px;
+                    }
+                    .footer-gallery .carousel-item img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        aspect-ratio: 16/9;
+                        border-radius: 0.75rem;
+                    }
+                    #footerCarousel {
+                        max-width: 450px;
+                        width: 100%;
+                        margin: 0;
+                    }
+                    @media (max-width: 1200px) {
+                        #footerCarousel {
+                            max-width: 400px;
+                        }
+                        .footer-gallery .carousel-inner {
+                            min-height: 200px;
+                            max-height: 350px;
+                        }
+                    }
+                    @media (max-width: 992px) {
+                        #footerCarousel {
+                            max-width: 350px;
+                        }
+                        .footer-gallery .carousel-inner {
+                            min-height: 180px;
+                            max-height: 300px;
+                        }
+                    }
+                    @media (max-width: 767px) {
+                        #footerCarousel {
+                            max-width: 100%;
+                        }
+                        .footer-gallery .carousel-inner {
+                            min-height: 160px;
+                            max-height: 250px;
+                            aspect-ratio: 16/10;
+                        }
+                        .footer-gallery .carousel-item img {
+                            aspect-ratio: 16/10;
+                        }
+                    }
+                    @media (max-width: 576px) {
+                        .footer-gallery .carousel-inner {
+                            min-height: 140px;
+                            max-height: 200px;
+                        }
+                    }
+                    </style>
                 </div>
             </div>
 
