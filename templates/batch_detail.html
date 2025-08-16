@@ -1,157 +1,660 @@
 {% extends "base.html" %}
 {% block title %}Batch Details{% endblock title %}
 {% load static %}
+
 {% block style %}
-    <link rel="stylesheet" href="{% static "css/batch_details.css" %}">
+<style>
+    /* Professional Color Palette */
+    :root {
+        --primary-blue: #2563eb;
+        --secondary-blue: #1e40af;
+        --accent-blue: #3b82f6;
+        --light-blue: #dbeafe;
+        --success-green: #059669;
+        --warning-orange: #d97706;
+        --danger-red: #dc2626;
+        --dark-gray: #374151;
+        --medium-gray: #6b7280;
+        --light-gray: #f3f4f6;
+        --white: #ffffff;
+        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --gradient-warning: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+        --gradient-danger: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    }
+
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+
+    .main-container {
+        background: var(--white);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        margin: 20px;
+        overflow: hidden;
+    }
+
+    .header-section {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 30px;
+        position: relative;
+    }
+
+    .header-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200"><defs><radialGradient id="a" cx="1000" cy="200" r="600"><stop offset="0" stop-color="rgba(255,255,255,0.1)"/><stop offset="1" stop-color="rgba(255,255,255,0)"/></radialGradient></defs><rect width="1000" height="200" fill="url(%23a)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .header-info {
+        position: relative;
+        z-index: 2;
+    }
+
+    .header-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .header-value {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #e0f2fe;
+    }
+
+    .info-card {
+        background: var(--white);
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+        border: none;
+    }
+
+    .info-card-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--dark-gray);
+        margin-bottom: 15px;
+    }
+
+    .info-item {
+        background: var(--light-gray);
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-left: 4px solid var(--primary-blue);
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: var(--medium-gray);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--dark-gray);
+        margin-top: 5px;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .section-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--dark-gray);
+        margin: 0;
+    }
+
+    .btn-modern {
+        border-radius: 8px;
+        font-weight: 600;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+        border: none;
+        margin-right: 10px;
+    }
+
+    .btn-primary-modern {
+        background: var(--gradient-primary);
+        color: white;
+    }
+
+    .btn-success-modern {
+        background: var(--gradient-success);
+        color: white;
+    }
+
+    .btn-danger-modern {
+        background: var(--gradient-danger);
+        color: white;
+    }
+
+    .btn-warning-modern {
+        background: var(--gradient-warning);
+        color: white;
+    }
+
+    .btn-modern:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        color: white !important;
+    }
+
+    .search-container {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .search-input {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 8px 15px;
+        transition: border-color 0.3s ease;
+        min-width: 200px;
+    }
+
+    .search-input:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .btn-search {
+        background: var(--success-green);
+        border: 2px solid var(--success-green);
+        border-radius: 8px;
+        color: white;
+        padding: 8px 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-search:hover {
+        background: transparent;
+        color: var(--success-green);
+    }
+
+    .table-container {
+        background: var(--white);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .table-modern {
+        margin: 0;
+    }
+
+    .table-modern thead th {
+        background: var(--dark-gray);
+        color: white;
+        font-weight: 600;
+        border: none;
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+
+    .table-modern tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+    .table-modern tbody tr:hover {
+        background-color: var(--light-blue);
+    }
+
+    .table-modern tbody td {
+        padding: 12px 15px;
+        border: none;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 0.9rem;
+    }
+
+    .student-link {
+        color: var(--primary-blue);
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .student-link:hover {
+        color: var(--secondary-blue);
+    }
+
+    .teacher-card {
+        background: var(--white);
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        border: none;
+        height: 100%;
+    }
+
+    .teacher-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+
+    .teacher-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid var(--light-blue);
+    }
+
+    .teacher-avatar-placeholder {
+        width: 80px;
+        height: 80px;
+        background: var(--gradient-primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+
+    .teacher-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--dark-gray);
+        margin-bottom: 5px;
+    }
+
+    .teacher-subject {
+        color: var(--medium-gray);
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+    .teacher-phone {
+        color: var(--medium-gray);
+        font-size: 0.8rem;
+        margin-bottom: 15px;
+    }
+
+    .btn-teacher-action {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary-modern {
+        border: 2px solid var(--primary-blue);
+        color: var(--primary-blue);
+        background: transparent;
+    }
+
+    .btn-outline-primary-modern:hover {
+        background: var(--primary-blue);
+        color: white;
+    }
+
+    .btn-outline-danger-modern {
+        border: 2px solid var(--danger-red);
+        color: var(--danger-red);
+        background: transparent;
+    }
+
+    .btn-outline-danger-modern:hover {
+        background: var(--danger-red);
+        color: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: var(--medium-gray);
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 15px;
+        color: var(--light-gray);
+    }
+
+    .modal-modern .modal-header {
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .modal-modern .modal-body {
+        background: var(--light-gray);
+        padding: 30px;
+    }
+
+    .modal-modern .modal-footer {
+        background: var(--light-gray);
+        border: none;
+        padding: 20px 30px;
+    }
+
+    .form-control-modern {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 10px 15px;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-control-modern:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .schedule-display {
+        background: var(--light-blue);
+        border-radius: 8px;
+        padding: 12px;
+        margin: 5px 0;
+        border-left: 4px solid var(--primary-blue);
+    }
+
+    .schedule-day {
+        font-weight: 700;
+        color: var(--dark-gray);
+        text-transform: uppercase;
+    }
+
+    .schedule-time {
+        color: var(--medium-gray);
+        font-size: 0.9rem;
+    }
+</style>
 {% endblock style %}
 
 {% block body %}
 {% include "message.html" %}
-<div style="background-color: whitesmoke;">
-<div class="container py-4">
+<div class="main-container">
     <!-- Header Section -->
-    <div class="d-flex flex-wrap mb-4 text-center">
-        <div class="p-2 flex-fill">
-            <h2 class="text-uppercase fw-bold">Class: <span class="text-primary">{{ batch.class_level }}</span></h2>
-        </div>
-        <div class="p-2 flex-fill">
-            <h2 class="text-uppercase fw-bold">Batch Name: <span class="text-primary">{{ batch.batch_name }}</span></h2>
-        </div>
-        <div class="p-2 flex-fill">
-            <h2 class="text-uppercase fw-bold">Subject: <span class="text-primary">{{ batch.subject_name }}</span></h2>
+    <div class="header-section">
+        <div class="row text-center header-info">
+            <div class="col-md-4 mb-3 mb-md-0">
+                <div class="header-title">Class</div>
+                <div class="header-value">{{ batch.class_level }}</div>
+            </div>
+            <div class="col-md-4 mb-3 mb-md-0">
+                <div class="header-title">{{ batch.batch_name }}</div>
+                <div class="header-value">{{ batch.subject_name }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="header-title">Total Students</div>
+                <div class="header-value">{{ batch.students.count }}</div>
+            </div>
         </div>
     </div>
-    
-    
-    <!-- Batch Details Card -->
-    <div class="card my-4 shadow-sm border-0">
-        <div class="card-body">
-            <div class="d-flex flex-wrap mb-4">
-                <div class="p-2 flex-fill">
-                    <h5 class="card-title">Batch Day: <span class="text-uppercase text-primary">{{ batch.batch_day }}</span></h5>
+    <div class="container py-4">
+        <!-- Batch Details Card -->
+        <div class="info-card">
+            <h5 class="info-card-title">
+                <i class="fas fa-info-circle me-2"></i>Batch Information
+            </h5>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="info-item">
+                        <div class="info-label">Batch Days</div>
+                        <div class="info-value">{{ batch.batch_day }}</div>
+                    </div>
                 </div>
-                <div class="p-2 flex-fill">
-                    <h5 class="card-title">Batch Starts: <span class="text text-primary">{{ batch.start_date }}</span></h5>
+                <div class="col-md-4">
+                    <div class="info-item">
+                        <div class="info-label">Start Date</div>
+                        <div class="info-value">
+                            <i class="fas fa-calendar me-1"></i>{{ batch.start_date }}
+                        </div>
+                    </div>
                 </div>
-                <div class="p-2 flex-fill">
-                    <h5 class="card-title">Total Students: <span class="text text-primary">{{ batch.students.count }}</span></h5>
+                <div class="col-md-4">
+                    <div class="info-item">
+                        <div class="info-label">Schedule</div>
+                        <div class="info-value">
+                            {% for key, value in batch.batch_times.items %}
+                            <div class="schedule-display">
+                                <span class="schedule-day">{{ key }}</span> - 
+                                <span class="schedule-time">{{ value }}</span>
+                            </div>
+                            {% empty %}
+                            <span class="text-muted">No schedule set</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Students in the Batch -->
+        <div class="info-card">
+            <div class="section-header">
+                <h5 class="section-title">
+                    <i class="fas fa-users me-2"></i>Students in This Batch
+                </h5>
+                <div class="search-container">
+                    <form class="d-flex" role="search" method="GET">
+                        {% csrf_token %}
+                        <input class="search-input" name="search_batch_student" type="text" placeholder="Search students..." aria-label="Search" value="{{ request.GET.search_batch_student }}">
+                        <button class="btn-search" type="submit">
+                            <i class="fas fa-search me-1"></i>Search
+                        </button>
+                    </form>
+                    <button type="button" class="btn-modern btn-danger-modern" id="toggleDelete">
+                        <i class="fas fa-user-minus me-1"></i>Remove Student
+                    </button>
                 </div>
             </div>
             
-        </div>
-    </div>
-
-    <!-- Students in the Batch -->
-    <div class="card my-4 shadow-sm border-0">
-        <div class="card-body">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
-                <h5 class="card-title mb-2 mb-md-0">Students in This Batch</h5>
-                <div class="d-flex flex-column flex-md-row align-items-center">
-                    <form class="d-inline-flex mb-2 mb-md-0 me-3" role="search" method="GET"> {% csrf_token %}
-                        <input class="form-control me-2" name="search_batch_student" type="text" placeholder="Search students..." aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                    <button type="button" class="btn btn-danger" id="toggleDelete">Remove Student</button>
-                </div>
-            </div>
-            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
-                <table class="table table-striped text-center">
-                    <thead class="table-dark sticky-top z-1">
-                        <tr>
-                            <th scope="col">Slno.</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Phone Number</th>
-                            <th scope="col">Board</th>
-                            <th scope="col">Class</th>
-                            <th scope="col">Subjects</th>
-                            <th scope="col" class="delete-column d-none">Remove</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for student in students %}
-                        <tr>
-                            <th scope="row">{{ forloop.counter }}</th>
-                            <td><a href="{% url 'student_profile' student.id %}" class="text-decoration-none">{{ student.name }}</a></td>
-                            <td>{{ student.phone_number }}</td>
-                            <td>{{ student.board }}</td>
-                            <td>{{ student.student_class }}</td>
-                            <td>{{ batch.subject_name }}</td>
-                            <td class="delete-column d-none">
-                                <form action="{% url 'remove_student_from_batch' batch.id student.id %}" method="post" class="d-inline">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="bi bi-trash-fill"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="8" class="text-center text-muted">No students in this batch.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <button type="button" class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
-                Add New Student
-            </button>
-        </div>
-    </div>
-
-    <!-- Add Existing Students -->
-    <div class="card mb-4 shadow-sm border-0">
-        <div class="card-body">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
-                <h5 class="card-title mb-4">Add Existing Students</h5>
-                <div class="d-flex flex-column flex-md-row align-items-center">
-                        <form class="d-inline-flex mb-2 mb-md-0 me-3" role="search" method="GET"> {% csrf_token %}
-                            <input class="form-control me-2" name="search_remaining_student" type="text" placeholder="Search students..." aria-label="Search">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
-                </div>
-            </div>
-            <form method="post" action="{% url 'add_existing_students' batch.id %}">
-                {% csrf_token %}
-                <div class="table-container" style="max-height: 250px; overflow-y: auto;">
-                    <table class="table table-striped z-n1 text-wrap text-center m-0">
-                        <thead class="table-dark sticky-top">
+            <div class="table-container">
+                <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                    <table class="table table-modern text-center">
+                        <thead class="sticky-top">
                             <tr>
-                                <th scope="col">Slno.</th>
-                                <th scope="col">Select</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Class</th>
-                                <th scope="col">Board</th>
-                                <th scope="col">Phone Number</th>
+                                <th scope="col"><i class="fas fa-hashtag me-1"></i>Sl No.</th>
+                                <th scope="col"><i class="fas fa-user me-1"></i>Name</th>
+                                <th scope="col"><i class="fas fa-phone me-1"></i>Phone</th>
+                                <th scope="col"><i class="fas fa-school me-1"></i>Board</th>
+                                <th scope="col"><i class="fas fa-graduation-cap me-1"></i>Class</th>
+                                <th scope="col"><i class="fas fa-book me-1"></i>Subject</th>
+                                <th scope="col" class="delete-column d-none"><i class="fas fa-trash me-1"></i>Remove</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for student in remaining_students %}
-                                <tr>
-                                    <th scope="row">{{ forloop.counter }}</th>
-                                    <td>
-                                        <input type="checkbox" name="existing_students" value="{{ student.id }}" 
-                                            {% if student in batch.students.all %} 
-                                            disabled 
-                                            {% endif %}
-                                        >
-                                    </td>
-                                    <td><a href="{% url 'student_profile' student.id %}" class="text-decoration-none">{{ student.name }}</a></td>
-                                    <td>{{ student.student_class }}</td>
-                                    <td>{{ student.board }}</td>
-                                    <td>{{ student.phone_number }}</td>
-                                </tr>
+                            {% for student in students %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>
+                                    <a href="{% url 'student_profile' student.id %}" class="student-link">
+                                        {{ student.name }}
+                                    </a>
+                                </td>
+                                <td>{{ student.phone_number }}</td>
+                                <td>
+                                    <span class="badge bg-primary">{{ student.board }}</span>
+                                </td>
+                                <td>{{ student.student_class }}</td>
+                                <td>{{ batch.subject_name }}</td>
+                                <td class="delete-column d-none">
+                                    <form action="{% url 'remove_student_from_batch' batch.id student.id %}" method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-danger-modern btn-teacher-action">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
                             {% empty %}
-                                <tr>
-                                    <td colspan="7" class="text-center text-muted">No students available.</td>
-                                </tr>
+                            <tr>
+                                <td colspan="7" class="empty-state">
+                                    <i class="fas fa-users"></i>
+                                    <div>No students in this batch</div>
+                                </td>
+                            </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
-                <div class="d-flex flex-column flex-md-row justify-content-between mt-3">
-                    <button type="submit" class="btn btn-primary">Add Students</button>
-                    <button type="button" id="unselectButton" class="btn btn-outline-secondary mt-2 mt-md-0">Unselect All</button>
+            </div>
+            
+            <div class="mt-3">
+                <button type="button" class="btn-modern btn-success-modern" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                    <i class="fas fa-user-plus me-2"></i>Add New Student
+                </button>
+            </div>
+        </div>
+
+        <!-- Teachers in the Batch -->
+        <div class="info-card">
+            <div class="section-header">
+                <h5 class="section-title">
+                    <i class="fas fa-chalkboard-teacher me-2"></i>Teachers Assigned to This Batch
+                </h5>
+                <button type="button" class="btn-modern btn-primary-modern" data-bs-toggle="modal" data-bs-target="#assignTeacherModal">
+                    <i class="fas fa-user-plus me-2"></i>Assign Teachers
+                </button>
+            </div>
+
+            {% if assigned_teachers %}
+                <div class="row">
+                    {% for teacher in assigned_teachers %}
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="teacher-card">
+                            <div class="card-body text-center">
+                                {% if teacher.profile_image %}
+                                    <img src="{{ teacher.profile_image.url }}" alt="{{ teacher.name }}" class="teacher-avatar mb-3">
+                                {% else %}
+                                    <div class="teacher-avatar-placeholder mb-3">
+                                        <i class="fas fa-user text-white" style="font-size: 2rem;"></i>
+                                    </div>
+                                {% endif %}
+                                <h6 class="teacher-name">{{ teacher.name }}</h6>
+                                <p class="teacher-subject">{{ teacher.subject_teaches }}</p>
+                                <p class="teacher-phone">
+                                    <i class="fas fa-phone me-1"></i>{{ teacher.phone_number }}
+                                </p>
+                                <div class="d-flex gap-2 justify-content-center">
+                                    <a href="{% url 'teacher_profile' teacher.id %}" class="btn btn-outline-primary-modern btn-teacher-action">
+                                        <i class="fas fa-user me-1"></i>Profile
+                                    </a>
+                                    <form action="{% url 'remove_teacher_from_batch' batch.id teacher.id %}" method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-danger-modern btn-teacher-action" 
+                                                onclick="return confirm('Are you sure you want to remove {{ teacher.name }} from this batch?')">
+                                            <i class="fas fa-user-minus me-1"></i>Remove
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-user-slash"></i>
+                    <div class="fs-5 mb-2">No teachers assigned to this batch yet</div>
+                    <div class="text-muted">Click "Assign Teachers" to add teachers to this batch</div>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Add Existing Students -->
+        <div class="info-card">
+            <div class="section-header">
+                <h5 class="section-title">
+                    <i class="fas fa-user-plus me-2"></i>Add Existing Students
+                </h5>
+                <div class="search-container">
+                    <form class="d-flex" role="search" method="GET">
+                        {% csrf_token %}
+                        <input class="search-input" name="search_remaining_student" type="text" placeholder="Search students..." aria-label="Search" value="{{ request.GET.search_remaining_student }}">
+                        <button class="btn-search" type="submit">
+                            <i class="fas fa-search me-1"></i>Search
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <form method="post" action="{% url 'add_existing_students' batch.id %}">
+                {% csrf_token %}
+                <div class="table-container">
+                    <div style="max-height: 250px; overflow-y: auto;">
+                        <table class="table table-modern text-center">
+                            <thead class="sticky-top">
+                                <tr>
+                                    <th scope="col"><i class="fas fa-hashtag me-1"></i>Sl No.</th>
+                                    <th scope="col"><i class="fas fa-check-square me-1"></i>Select</th>
+                                    <th scope="col"><i class="fas fa-user me-1"></i>Name</th>
+                                    <th scope="col"><i class="fas fa-graduation-cap me-1"></i>Class</th>
+                                    <th scope="col"><i class="fas fa-school me-1"></i>Board</th>
+                                    <th scope="col"><i class="fas fa-phone me-1"></i>Phone</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in remaining_students %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>
+                                            <input type="checkbox" name="existing_students" value="{{ student.id }}" 
+                                                class="form-check-input"
+                                                {% if student in batch.students.all %} 
+                                                disabled 
+                                                {% endif %}
+                                            >
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'student_profile' student.id %}" class="student-link">
+                                                {{ student.name }}
+                                            </a>
+                                        </td>
+                                        <td>{{ student.student_class }}</td>
+                                        <td>
+                                            <span class="badge bg-primary">{{ student.board }}</span>
+                                        </td>
+                                        <td>{{ student.phone_number }}</td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="6" class="empty-state">
+                                            <i class="fas fa-users"></i>
+                                            <div>No students available to add</div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between mt-3 flex-wrap gap-2">
+                    <button type="submit" class="btn-modern btn-primary-modern">
+                        <i class="fas fa-user-plus me-2"></i>Add Selected Students
+                    </button>
+                    <button type="button" id="unselectButton" class="btn-modern" style="background: var(--medium-gray); color: white;">
+                        <i class="fas fa-times me-2"></i>Unselect All
+                    </button>
                 </div>
             </form>
         </div>
@@ -161,23 +664,102 @@
 <!-- Bootstrap Modal for Adding New Student -->
 <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #343a40; color: white;">
-                <h5 class="modal-title" id="addStudentModalLabel">Add New Student</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: #6c757d;"></button>
+        <div class="modal-content modal-modern">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addStudentModalLabel">
+                    <i class="fas fa-user-plus me-2"></i>Add New Student
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" style="background-color: #f8f9fa;">
-                <form method="post" action="{% url 'add_new_student' batch.id %}" >
+            <div class="modal-body">
+                <form method="post" action="{% url 'add_new_student' batch.id %}">
                     {% csrf_token %}
-                    <div class="add_student_form fw-medium">
+                    <div class="add_student_form">
                         {{ student_form.as_p }}
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Student</button>
+                    <div class="text-end mt-4">
+                        <button type="button" class="btn-modern" style="background: var(--medium-gray); color: white;" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn-modern btn-primary-modern">
+                            <i class="fas fa-user-plus me-1"></i>Add Student
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Bootstrap Modal for Assigning Teachers -->
+<div class="modal fade" id="assignTeacherModal" tabindex="-1" aria-labelledby="assignTeacherModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-modern">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignTeacherModalLabel">
+                    <i class="fas fa-chalkboard-teacher me-2"></i>Assign Teachers to Batch
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% if available_teachers %}
+                    <form method="post" action="{% url 'assign_teacher_to_batch' batch.id %}">
+                        {% csrf_token %}
+                        <p class="mb-3 text-muted">
+                            <i class="fas fa-info-circle me-1"></i>Select teachers to assign to this batch:
+                        </p>
+                        <div class="row">
+                            {% for teacher in available_teachers %}
+                            <div class="col-md-6 mb-3">
+                                <div class="teacher-card">
+                                    <div class="card-body">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="teachers_to_assign" 
+                                                   value="{{ teacher.id }}" id="teacher{{ teacher.id }}">
+                                            <label class="form-check-label w-100" for="teacher{{ teacher.id }}">
+                                                <div class="d-flex align-items-center">
+                                                    {% if teacher.profile_image %}
+                                                        <img src="{{ teacher.profile_image.url }}" alt="{{ teacher.name }}" 
+                                                             class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                                    {% else %}
+                                                        <div class="teacher-avatar-placeholder me-3" style="width: 50px; height: 50px;">
+                                                            <i class="fas fa-user text-white"></i>
+                                                        </div>
+                                                    {% endif %}
+                                                    <div>
+                                                        <h6 class="mb-1">{{ teacher.name }}</h6>
+                                                        <small class="text-muted">{{ teacher.subject }}</small><br>
+                                                        <small class="text-muted">
+                                                            <i class="fas fa-phone me-1"></i>{{ teacher.phone_number }}
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="text-end mt-3">
+                            <button type="button" class="btn-modern" style="background: var(--medium-gray); color: white;" data-bs-dismiss="modal">
+                                <i class="fas fa-times me-1"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn-modern btn-primary-modern">
+                                <i class="fas fa-user-check me-1"></i>Assign Selected Teachers
+                            </button>
+                        </div>
+                    </form>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-user-check"></i>
+                        <div class="fs-5 mb-2">All teachers are already assigned</div>
+                        <div class="text-muted">You can remove teachers from the batch to reassign them later</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
 
 

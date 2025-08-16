@@ -114,6 +114,76 @@ def filter_students(request):
             'batch_form': BatchForm(),
         }
     return render(request, 'index.html', context)
+
+
+@login_required(login_url='login')
+def all_students(request):
+    """View to display all students with search and filtering options"""
+    search_query = request.GET.get("search", "")
+    board_filter = request.GET.get("board", "")
+    class_filter = request.GET.get("class", "")
+    
+    students = Student.objects.all()
+    
+    # Apply search filter
+    if search_query:
+        students = students.filter(
+            Q(name__icontains=search_query) |
+            Q(phone_number__icontains=search_query) |
+            Q(board__icontains=search_query) |
+            Q(student_class__icontains=search_query) |
+            Q(parent_name__icontains=search_query)
+        )
+    
+    # Apply board filter
+    if board_filter:
+        students = students.filter(board=board_filter)
+    
+    # Apply class filter
+    if class_filter:
+        students = students.filter(student_class=class_filter)
+    
+    # Get unique values for filter dropdowns
+    boards = Student.objects.values_list('board', flat=True).distinct()
+    classes = Student.objects.values_list('student_class', flat=True).distinct().order_by('student_class')
+    
+    total_students = students.count()
+    
+    context = {
+        'students': students,
+        'total_students': total_students,
+        'search': search_query,
+        'board_filter': board_filter,
+        'class_filter': class_filter,
+        'boards': boards,
+        'classes': classes,
+        'student_form': StudentForm(),  # Add student form for potential modal use
+    }
+    return render(request, 'all_students.html', context)
+
+
+@login_required(login_url='login')
+def add_student(request):
+    """View to add a new student"""
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            student = form.save()
+            messages.success(request, f'Student "{student.name}" has been added successfully!')
+            return redirect('all_students')
+        else:
+            # If form has errors, show them
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f'{field}: {error}')
+    else:
+        form = StudentForm()
+    
+    context = {
+        'form': form,
+        'page_title': 'Add New Student'
+    }
+    return render(request, 'add_student.html', context)
         
 # Student Profile Page
 @login_required(login_url='login')
@@ -209,6 +279,11 @@ class BatchDetailView(LoginRequiredMixin, DetailView):
             )
         else:
             context['remaining_students'] = Student.objects.exclude(id__in=self.object.students.all())
+        
+        # Add teacher-related context
+        context['assigned_teachers'] = self.object.teachers.all()
+        context['available_teachers'] = Teacher.objects.exclude(id__in=self.object.teachers.all())
+        
         context['student_form'] = StudentForm()
         return context
 
@@ -364,10 +439,8 @@ def edit_teacher(request, teacher_id):
 def delete_teacher(request, teacher_id):
     teacher = get_object_or_404(Teacher, id=teacher_id)
     if request.method == 'POST':
-        if teacher.profile_image:
-            teacher.profile_image.delete()
-        teacher.delete()
-        messages.success(request, 'Teacher table Deleted successfully!')
+        teacher.delete()  # Signal handler will automatically delete the image
+        messages.success(request, 'Teacher deleted successfully!')
         return redirect('add_teacher')
 
 
@@ -410,6 +483,39 @@ def payment_record(request, student_id):
 @login_required(login_url='login')
 def all_payment(request):
     context = {}
+    
+    # Handle payment recording
+    if request.method == 'POST':
+        student_id = request.POST.get('student_id')
+        if student_id:
+            student = get_object_or_404(Student, id=student_id)
+            amount = Decimal(request.POST['payment'])
+            payment_method = request.POST.get('payment_method')
+            payment_date = request.POST.get('payment_date')
+            payment_month = request.POST.getlist('payment_months')
+            
+            # Ensure payment_month values are strings
+            payment_month = [str(month) for month in payment_month]
+
+            student_fees = Decimal(student.fees)
+            due_amount = (student_fees * len(payment_month)) - amount
+
+            if due_amount < 0:
+                due_amount = due_amount
+
+            payment = Payment.objects.create(
+                student=student,
+                amount=amount,
+                due_amount=due_amount,
+                payment_method=payment_method,
+                date=payment_date,
+                months=payment_month
+            )
+            payment.save()
+
+            messages.success(request, f'Payment recorded successfully for {student.name}!')
+            return redirect('all_payments')
+    
     payments = Payment.objects.all().order_by('-date')
 
     # Date range filter
@@ -437,6 +543,8 @@ def all_payment(request):
 
     context['payments'] = payments
     context['search'] = search_query  # Pass search query back to template to maintain the input
+    context['students'] = Student.objects.all().order_by('name')  # For the payment form dropdown
+    context['payment_form'] = PaymentForm()  # Add payment form to context
     return render(request, 'all_payments.html', context)
 
 
@@ -507,22 +615,38 @@ def home(request):
 def class_details(request):
     return render(request, "class_details.html")
 
-@login_required(login_url='login')
 def achievement(request):
     context = {}
+    
     if request.method == 'POST':
         form = AchievementForm(request.POST, request.FILES) 
         if form.is_valid():
             form.save()
             messages.success(request, 'Achievement added successfully!')
             return redirect('achievement')
+        else:
+            # Form is not valid, add error messages
+            print(f"Form errors: {form.errors}")
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f'{field}: {error}')
     else:
         form = AchievementForm()
 
-    achievements = Achievement.objects.all()
+    achievements = Achievement.objects.all().order_by('-id')  # Fetch all achievements ordered by date
+    
+    # Calculate statistics
+    total_achievements = achievements.count()
+    students_with_90_plus = achievements.filter(score__gte=90).count()
+    latest_score = achievements.first().score if achievements.exists() else 0
+    unique_students = achievements.values('student_name').distinct().count()
     
     context['form'] = form
     context['achievements'] = achievements
+    context['total_achievements'] = total_achievements
+    context['students_with_90_plus'] = students_with_90_plus
+    context['latest_score'] = latest_score
+    context['unique_students'] = unique_students
     
     return render(request, 'achievement.html', context)
 
@@ -552,8 +676,84 @@ def delete_achievement(request, achievement_id):
     achievement = get_object_or_404(Achievement, id=achievement_id)
 
     if request.method == 'POST':
-        if achievement.image and achievement.image.path:
-            achievement.image.delete()
-        achievement.delete()
+        achievement.delete()  # Signal handler will automatically delete the image
         messages.success(request, 'Achievement deleted successfully!')
         return redirect('achievement')
+
+
+# Teacher Assignment Views
+@login_required(login_url='login')
+def assign_teacher_to_batch(request, pk):
+    batch = get_object_or_404(Batch, pk=pk)
+    if request.method == 'POST':
+        teacher_ids = request.POST.getlist('teachers_to_assign')
+        if teacher_ids:
+            teachers = Teacher.objects.filter(id__in=teacher_ids)
+            batch.teachers.add(*teachers)
+            teacher_names = [teacher.name for teacher in teachers]
+            messages.success(request, f'Successfully assigned teachers: {", ".join(teacher_names)} to batch {batch.batch_name}')
+        else:
+            messages.warning(request, 'No teachers selected to assign.')
+    return redirect('batch_detail', pk=pk)
+
+
+@login_required(login_url='login')
+def remove_teacher_from_batch(request, pk, teacher_id):
+    batch = get_object_or_404(Batch, pk=pk)
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    
+    if request.method == 'POST':
+        batch.teachers.remove(teacher)
+        messages.success(request, f'Successfully removed teacher {teacher.name} from batch {batch.batch_name}')
+    
+    return redirect('batch_detail', pk=pk)
+
+# Teacher Profile Page
+@login_required(login_url='login')
+def teacher_profile(request, teacher_id):
+    teacher = get_object_or_404(Teacher, id=teacher_id)
+    batches = Batch.objects.filter(teachers=teacher)
+    
+    # Get all students from batches taught by this teacher
+    students_in_batches = []
+    for batch in batches:
+        batch_students = batch.students.all()
+        for student in batch_students:
+            if student not in students_in_batches:
+                students_in_batches.append(student)
+    
+    context = {
+        'teacher': teacher,
+        'batches': batches,
+        'students': students_in_batches,
+        'total_batches': batches.count(),
+        'total_students': len(students_in_batches),
+    }
+    
+    return render(request, 'teacher_profile.html', context)
+
+# All Teachers Page
+@login_required(login_url='login')
+def all_teachers(request):
+    teachers = Teacher.objects.all().order_by('name')
+    
+    # Add statistics for each teacher
+    teachers_with_stats = []
+    for teacher in teachers:
+        batches = Batch.objects.filter(teachers=teacher)
+        total_students = 0
+        for batch in batches:
+            total_students += batch.students.count()
+        
+        teachers_with_stats.append({
+            'teacher': teacher,
+            'total_batches': batches.count(),
+            'total_students': total_students,
+        })
+    
+    context = {
+        'teachers_with_stats': teachers_with_stats,
+        'total_teachers': teachers.count(),
+    }
+    
+    return render(request, 'all_teachers.html', context)

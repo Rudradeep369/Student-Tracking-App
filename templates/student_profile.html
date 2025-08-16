@@ -1,210 +1,565 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Student Profile{% endblock title %}
+{% load batch_extras %}
+{% block title %}{{ student.name }} - Student Profile{% endblock title %}
 {% block style %}
 <link rel="stylesheet" href="{% static "css/student_profile.css" %}">
+<style>
+    .student-header {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        border-radius: 15px 15px 0 0;
+        padding: 30px;
+    }
+    .info-card {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-left: 4px solid #007bff;
+    }
+    .info-item {
+        margin-bottom: 15px;
+    }
+    .info-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 5px;
+    }
+    .info-value {
+        font-size: 1.1em;
+        color: #212529;
+    }
+    .badge-custom {
+        font-size: 0.9em;
+        padding: 8px 12px;
+    }
+    .section-title {
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+</style>
 {% endblock style %}
 
 {% block body %}
 {% include "message.html" %}
 <div style="background-color: whitesmoke;">
 <div class="container py-5">
-    <div class="card border-0 shadow-sm">
+    <div class="card border-0 shadow-lg">
+        <!-- Student Header -->
+        <div class="student-header">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="mb-2">{{ student.name }}</h1>
+                    <p class="mb-2 h5">
+                        <span class="badge badge-custom bg-light text-dark me-2">{{ student.get_board_display }}</span>
+                        <span class="badge badge-custom bg-light text-dark me-2">Class {{ student.student_class }}</span>
+                        <span class="badge badge-custom bg-light text-dark">{{ student.subject }}</span>
+                    </p>
+                    <p class="mb-0 h6 opacity-75">Student ID: {{ student.id }}</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="d-flex flex-column flex-md-row justify-content-end">
+                        <a href="{% url 'edit_student' student.id %}" class="btn btn-light mb-2 me-md-2">
+                            <i class="bi bi-pencil-fill me-2"></i>Edit Profile
+                        </a>
+                        <form method="post" action="{% url 'delete_student' student.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-light mb-2" 
+                                    onclick="return confirm('Are you sure you want to delete this profile?');">
+                                <i class="bi bi-trash-fill me-2"></i>Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="card-body p-4">
+            <!-- Student Details Section -->
             <div class="row mb-4">
-                <!-- Left Column: Profile Details -->
-                <div class="col-md-7">
-                    <h2 class="mb-3">{{ student.name }}</h2>
-                    <p class="text-muted">{{ student.get_board_display }} | Class: {{ student.student_class }}</p>
-                    <p>
-                        <strong>Phone Number:</strong> 
-                        <a class="link-info link-offset-2 link-underline link-underline-opacity-0" href="tel:{{ student.phone_number }}">{{ student.phone_number }}</a>
-                    </p>
-                    <p>
-                        <strong>Alternate Phone Number:</strong> 
-                        <a class="link-info link-offset-2 link-underline link-underline-opacity-0" href="tel:{{ student.phone_number2 }}">{{ student.phone_number2 }}</a>
-                    </p>
-                    <p class="fs-5 text-primary"><strong>Fees:</strong> {{ student.fees }}</p>
-
-                    <button class="btn btn-dark mb-3" id="payment-record-dailog">Record Payment</button>
-
-                    <!-- Parent Details Section -->
-                    <div class="parent-details border p-3 rounded bg-light">
-                        {% if parent %}
-                        <p><strong>Father:</strong> {{ parent.father_name }}</p>
-                        <p><strong>Father's Phone:</strong> {{ parent.father_phone_number }}</p>
-                        <p><strong>Mother:</strong> {{ parent.mother_name }}</p>
-                        <p><strong>Mother's Phone:</strong> {{ parent.mother_phone_number }}</p>
-                        <a href="{% url 'edit_parent' parent.id student.id %}" class="btn btn-outline-secondary">Edit Parent Details</a>
-                        {% else %}
-                        <a href="{% url 'add_parent' student.id %}" class="btn btn-outline-secondary">Add Parent Details</a>
-                        {% endif %}
+                <!-- Personal Information -->
+                <div class="col-lg-6">
+                    <div class="info-card">
+                        <h5 class="section-title">
+                            <i class="bi bi-person-fill me-2"></i>Personal Information
+                        </h5>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Full Name</div>
+                            <div class="info-value">{{ student.name }}</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Primary Phone Number</div>
+                            <div class="info-value">
+                                {% if student.phone_number %}
+                                    <a href="tel:{{ student.phone_number }}" class="text-decoration-none">
+                                        <i class="bi bi-telephone-fill me-2"></i>{{ student.phone_number }}
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted">Not provided</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Alternate Phone Number</div>
+                            <div class="info-value">
+                                {% if student.phone_number2 %}
+                                    <a href="tel:{{ student.phone_number2 }}" class="text-decoration-none">
+                                        <i class="bi bi-telephone-fill me-2"></i>{{ student.phone_number2 }}
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted">Not provided</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Admission Date</div>
+                            <div class="info-value">
+                                <i class="bi bi-calendar-fill me-2"></i>{{ student.addmission_date|date:"F d, Y" }}
+                                <small class="text-muted">({{ student.addmission_date|timesince }} ago)</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Right Column: Actions -->
-                <div class="col-md-5 text-end">
-                    <a href="{% url 'edit_student' student.id %}" class="btn btn-primary mb-2 me-2">Edit Profile</a>
-                    <form method="post" action="{% url 'delete_student' student.id %}" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger mb-2" onclick="return confirm('Are you sure you want to delete this profile?');">Delete</button>
-                    </form>
+                <!-- Academic Information -->
+                <div class="col-lg-6">
+                    <div class="info-card">
+                        <h5 class="section-title">
+                            <i class="bi bi-book-fill me-2"></i>Academic Information
+                        </h5>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Board</div>
+                            <div class="info-value">
+                                <span class="badge bg-primary">{{ student.get_board_display }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Class</div>
+                            <div class="info-value">
+                                <span class="badge bg-success">Class {{ student.student_class }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Subject/Stream</div>
+                            <div class="info-value">
+                                <span class="badge bg-info">{{ student.subject }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Monthly Fees</div>
+                            <div class="info-value">
+                                <span class="h5 text-success">
+                                    <i class="bi bi-currency-rupee me-1"></i>{{ student.fees }}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Total Outstanding Due</div>
+                            <div class="info-value">
+                                <span class="h5 {% if student.total_due > 0 %}text-danger{% else %}text-success{% endif %}">
+                                    <i class="bi bi-currency-rupee me-1"></i>{{ student.total_due }}
+                                    {% if student.total_due == 0 %}
+                                        <small class="text-success">(All Clear)</small>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parent Information -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="info-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="section-title mb-0">
+                                <i class="bi bi-people-fill me-2"></i>Parent/Guardian Information
+                            </h5>
+                            {% if parent %}
+                                <a href="{% url 'edit_parent' parent.id student.id %}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-pencil-fill me-2"></i>Edit Parent Details
+                                </a>
+                            {% else %}
+                                <a href="{% url 'add_parent' student.id %}" class="btn btn-primary btn-sm">
+                                    <i class="bi bi-plus-circle me-2"></i>Add Parent Details
+                                </a>
+                            {% endif %}
+                        </div>
+                        
+                        {% if parent %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <div class="info-label">Father's Name</div>
+                                        <div class="info-value">{{ parent.father_name|default:"Not provided" }}</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Father's Phone</div>
+                                        <div class="info-value">
+                                            {% if parent.father_phone_number %}
+                                                <a href="tel:{{ parent.father_phone_number }}" class="text-decoration-none">
+                                                    <i class="bi bi-telephone-fill me-2"></i>{{ parent.father_phone_number }}
+                                                </a>
+                                            {% else %}
+                                                <span class="text-muted">Not provided</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <div class="info-label">Mother's Name</div>
+                                        <div class="info-value">{{ parent.mother_name|default:"Not provided" }}</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Mother's Phone</div>
+                                        <div class="info-value">
+                                            {% if parent.mother_phone_number %}
+                                                <a href="tel:{{ parent.mother_phone_number }}" class="text-decoration-none">
+                                                    <i class="bi bi-telephone-fill me-2"></i>{{ parent.mother_phone_number }}
+                                                </a>
+                                            {% else %}
+                                                <span class="text-muted">Not provided</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-3">
+                                <i class="bi bi-person-x display-4 text-muted mb-3"></i>
+                                <p class="text-muted">No parent information available. Click "Add Parent Details" to add information.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="info-card">
+                        <h5 class="section-title">
+                            <i class="bi bi-lightning-fill me-2"></i>Quick Actions
+                        </h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-success" id="payment-record-dailog">
+                                <i class="bi bi-credit-card me-2"></i>Record Payment
+                            </button>
+                            <a href="{% url 'all_students' %}" class="btn btn-outline-primary">
+                                <i class="bi bi-people me-2"></i>View All Students
+                            </a>
+                            <a href="{% url 'index' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-house me-2"></i>Back to Dashboard
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Payment Records Section -->
-            <div class="mt-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="mb-0">Payment Records</h4>
-                    <p class="mb-0 fs-3"><strong>Total Due:</strong>
-                        <span class="{% if student.total_due > 0 %}text-danger fw-semibold{% endif %}">{{ student.total_due }}</span>
-                    </p>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="info-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="section-title mb-0">
+                                <i class="bi bi-credit-card-fill me-2"></i>Payment Records
+                            </h5>
+                            <div class="text-end">
+                                <p class="mb-0 h6">Total Payments: 
+                                    <span class="badge bg-primary">{{ payments.count }}</span>
+                                </p>
+                                <p class="mb-0 h5">
+                                    <strong>Outstanding Due:</strong>
+                                    <span class="{% if student.total_due > 0 %}text-danger{% else %}text-success{% endif %}">
+                                        ₹{{ student.total_due }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        {% if payments %}
+                        <div class="table-responsive">
+                            <table class="table table-hover text-center mb-0">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Sr. No.</th>
+                                        <th>Amount Paid</th>
+                                        <th>Due Amount</th>
+                                        <th>Payment Method</th>
+                                        <th>Payment Date</th>
+                                        <th>Months Covered</th>
+                                        <th>Modifications</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for payment in payments %}
+                                    <tr>
+                                        <td><strong>{{ forloop.counter }}</strong></td>
+                                        <td>
+                                            <span class="text-success fw-bold">₹{{ payment.amount }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="{% if payment.due_amount > 0 %}text-danger{% else %}text-success{% endif %} fw-bold">
+                                                ₹{{ payment.due_amount }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-secondary">{{ payment.payment_method }}</span>
+                                        </td>
+                                        <td>{{ payment.date|date:"M d, Y" }}</td>
+                                        <td>
+                                            <small class="text-muted">
+                                                {% for month in payment.months %}
+                                                    {% if month == '1' %}Jan{% elif month == '2' %}Feb{% elif month == '3' %}Mar{% elif month == '4' %}Apr{% elif month == '5' %}May{% elif month == '6' %}Jun{% elif month == '7' %}Jul{% elif month == '8' %}Aug{% elif month == '9' %}Sep{% elif month == '10' %}Oct{% elif month == '11' %}Nov{% elif month == '12' %}Dec{% endif %}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </small>
+                                        </td>
+                                        <td>
+                                            {% if payment.modification %}
+                                                <small class="text-info">{{ payment.modification }}</small>
+                                            {% else %}
+                                                <small class="text-muted">None</small>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'update_payment' payment.id student.id %}" 
+                                               class="btn btn-outline-primary btn-sm">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-credit-card-2-front display-4 text-muted mb-3"></i>
+                            <p class="text-muted mb-0">No payment records yet.</p>
+                            <p class="small text-muted">Click "Record Payment" to add the first payment.</p>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
-                
-                {% if payments %}
-                <div class="table-responsive">
-                    <table class="table table-striped text-wrap text-center m-0">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Amount</th>
-                                <th>Due</th>
-                                <th>Payment Method</th>
-                                <th>Payment Date</th>
-                                <th>Payment of Months</th>
-                                <th>Deu Modification</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for payment in payments %}
-                            <tr>
-                                <td>{{ payment.amount }}</td>
-                                <td class="{% if payment.due_amount > 0 %} text-danger {% endif %}">{{ payment.due_amount }}</td>
-                                <td>{{ payment.payment_method }}</td>
-                                <td>{{ payment.date }}</td>
-                                <td>{{ payment.months }}</td>
-                                <td>
-                                    {% if payment.modification %}
-                                        {{ payment.modification }}
-                                    {% else %}
-                                        No modification
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <a href="{% url 'update_payment' payment.id student.id %}" class="btn btn-primary btn-sm me-2">Edit</a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                {% else %}
-                <p class="text-muted">No payment record yet.</p>
-                {% endif %}
             </div>
 
             <!-- Enrolled Batches Section -->
-            <div class="mt-4">
-                <h4>Enrolled Batches</h4>
-                {% if batches %}
-                <div class="table-responsive">
-                    <table class="table table-striped text-wrap text-center m-0">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Slno.</th>
-                                <th>Batch Name</th>
-                                <th>Subject</th>
-                                <th>Day / Time</th>
-                                <th>Start Date</th>
-                                <th>Teacher</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for batch in batches %}
-                            <tr>
-                                <th scope="row">{{ forloop.counter }}</th>
-                                <td><a href="{% url 'batch_detail' batch.id %}" class="text-decoration-none">{{ batch.batch_name }}</a></td>
-                                <td><a href="{% url 'batch_detail' batch.id %}" class="text-decoration-none">{{ batch.subject_name }}</a></td>
-                                <td>
-                                    <ul>
-                                        <ul class="list-unstyled m-0">
-                                            {% for key, value in batch.batch_times.items %}
-                                            <li>{{ key }} - {{ value }}</li>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="info-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="section-title mb-0">
+                                <i class="bi bi-collection-fill me-2"></i>Enrolled Batches
+                            </h5>
+                            <p class="mb-0 h6">
+                                Total Batches: <span class="badge bg-info">{{ batches.count }}</span>
+                            </p>
+                        </div>
+                        
+                        {% if batches %}
+                        <div class="table-responsive">
+                            <table class="table table-hover text-center mb-0">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Sr. No.</th>
+                                        <th>Batch Name</th>
+                                        <th>Subject</th>
+                                        <th>Class Level</th>
+                                        <th>Schedule</th>
+                                        <th>Start Date</th>
+                                        <th>Teachers</th>
+                                        <th>Mode</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for batch in batches %}
+                                    <tr>
+                                        <td><strong>{{ forloop.counter }}</strong></td>
+                                        <td>
+                                            <a href="{% url 'batch_detail' batch.id %}" class="text-decoration-none fw-bold">
+                                                {{ batch.batch_name }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-primary">{{ batch.subject_name }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-success">Class {{ batch.class_level }}</span>
+                                        </td>
+                                        <td>
+                                            <div class="small">
+                                                {% for day in batch.batch_day %}
+                                                    <div class="mb-1">
+                                                        <span class="badge bg-secondary me-1">{{ day }}</span>
+                                                        <span class="text-muted">{{ batch.batch_times|get_item:day|format_time }}</span>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </td>
+                                        <td>{{ batch.start_date|date:"M d, Y" }}</td>
+                                        <td>
+                                            {% for teacher in batch.teachers.all %}
+                                                <div class="small">
+                                                    <i class="bi bi-person-badge me-1"></i>{{ teacher.name }}
+                                                </div>
+                                            {% empty %}
+                                                <small class="text-muted">No teacher assigned</small>
                                             {% endfor %}
-                                        </ul>
-                                    </ul>
-                                </td>
-                                <td>{{ batch.start_date }}</td>
-                                <td>
-                                    <p>
-                                        {% for teacher in batch.teachers.all %}
-                                            <a href="{% url 'add_teacher' %}" class="text-decoration-none">{{ teacher.name }}</a>
-                                            {% if not forloop.last %}, {% endif %}
-                                        {% empty %}
-                                            No teacher assigned.
-                                        {% endfor %}
-                                    </p>
-                                    {% for teacher in batch.teachers.all %}
-            
+                                        </td>
+                                        <td>
+                                            <span class="badge {% if batch.class_mode == 'ONLINE' %}bg-info{% else %}bg-warning{% endif %}">
+                                                {{ batch.class_mode }}
+                                            </span>
+                                        </td>
+                                    </tr>
                                     {% endfor %}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-collection display-4 text-muted mb-3"></i>
+                            <p class="text-muted mb-0">No batches assigned to this student.</p>
+                            <p class="small text-muted">Contact administration to enroll in batches.</p>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
-                {% else %}
-                <p class="text-muted">No batches assigned to this student.</p>
-                {% endif %}
             </div>
         </div>
     </div>
 </div>
 
-<!-- Payment Record Dialog -->
-<dialog id="payment-record" class="rounded">
-    <div class="content p-4">
-        <h5 class="text-center fw-bold">Record Payment</h5>
-        <form action="{% url 'payment_record' student.id %}" method="post">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="payment" class="form-label">Payment Amount</label>
-                <input type="number" class="form-control" id="payment" name="payment" required>
-            </div>
-            <div class="mb-3">
-                <label for="payment_method" class="form-label">Payment Method</label>
-                <select class="form-control" id="payment_method" name="payment_method" required>
-                    <option value="Cash">Cash</option>
-                    <option value="UPI">UPI</option>
-                    <option value="Card">Card</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="payment_date" class="form-label">Payment Date</label>
-                <input type="date" class="form-control" id="payment_date" name="payment_date" required>
-            </div>
-            <div class="mb-3">
-                <label for="payment_months" class="form-label">Payment of Months</label>
-                <select class="form-control" id="payment_months" name="payment_months" multiple required>
-                    <option value="1">January</option>
-                    <option value="2">February</option>
-                    <option value="3">March</option>
-                    <option value="4">April</option>
-                    <option value="5">May</option>
-                    <option value="6">June</option>
-                    <option value="7">July</option>
-                    <option value="8">August</option>
-                    <option value="9">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Record Payment</button>
-        </form>
-        <button class="btn btn-danger w-100 mt-2 dialog-close" id="close-dialog">Close</button>
+<!-- Enhanced Payment Record Dialog -->
+<dialog id="payment-record" class="rounded shadow-lg" style="max-width: 500px; border: none;">
+    <div class="content p-0">
+        <div class="bg-success text-white p-4 rounded-top">
+            <h5 class="text-center fw-bold mb-0">
+                <i class="bi bi-credit-card-fill me-2"></i>Record Payment for {{ student.name }}
+            </h5>
+        </div>
+        <div class="p-4">
+            <form action="{% url 'payment_record' student.id %}" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="payment" class="form-label fw-bold">Payment Amount <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-text">₹</span>
+                        <input type="number" class="form-control" id="payment" name="payment" 
+                               placeholder="Enter amount" step="0.01" min="0" required>
+                    </div>
+                    <small class="text-muted">Monthly fees: ₹{{ student.fees }}</small>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="payment_method" class="form-label fw-bold">Payment Method <span class="text-danger">*</span></label>
+                    <select class="form-control" id="payment_method" name="payment_method" required>
+                        <option value="">Select payment method...</option>
+                        <option value="CASH">Cash</option>
+                        <option value="UPI">UPI</option>
+                        <option value="CARD">Card</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="payment_date" class="form-label fw-bold">Payment Date <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" id="payment_date" name="payment_date" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Payment for Months <span class="text-danger">*</span></label>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="payment_months" value="1" id="month1">
+                                <label class="form-check-label" for="month1">January</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="payment_months" value="2" id="month2">
+                                <label class="form-check-label" for="month2">February</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="payment_months" value="3" id="month3">
+                                <label class="form-check-label" for="month3">March</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="payment_months" value="4" id="month4">
+                                <label class="form-check-label" for="month4">April</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="payment_months" value="5" id="month5">
+                                <label class="form-check-label" for="month5">May</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="payment_months" value="6" id="month6">
+                                <label class="form-check-label" for="month6">June</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="payment_months" value="7" id="month7">
+                                <label class="form-check-label" for="month7">July</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="payment_months" value="8" id="month8">
+                                <label class="form-check-label" for="month8">August</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="payment_months" value="9" id="month9">
+                                <label class="form-check-label" for="month9">September</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="payment_months" value="10" id="month10">
+                                <label class="form-check-label" for="month10">October</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="payment_months" value="11" id="month11">
+                                <label class="form-check-label" for="month11">November</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="payment_months" value="12" id="month12">
+                                <label class="form-check-label" for="month12">December</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-success flex-fill">
+                        <i class="bi bi-check-circle me-2"></i>Record Payment
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary flex-fill dialog-close" id="close-dialog">
+                        <i class="bi bi-x-circle me-2"></i>Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </dialog>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Set today's date as default
+    const paymentDateInput = document.getElementById('payment_date');
+    const today = new Date().toISOString().split('T')[0];
+    paymentDateInput.value = today;
+});
+</script>
 </div>
 {% endblock body %}
 

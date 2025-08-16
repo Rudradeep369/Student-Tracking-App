@@ -4,94 +4,627 @@
 All Payments
 {% endblock title %}
 
+{% block style %}
+<style>
+    /* Professional Color Palette */
+    :root {
+        --primary-blue: #2563eb;
+        --secondary-blue: #1e40af;
+        --accent-blue: #3b82f6;
+        --light-blue: #dbeafe;
+        --success-green: #059669;
+        --warning-orange: #d97706;
+        --danger-red: #dc2626;
+        --dark-gray: #374151;
+        --medium-gray: #6b7280;
+        --light-gray: #f3f4f6;
+        --white: #ffffff;
+        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --gradient-warning: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    }
+
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+
+    .main-container {
+        background: var(--white);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        margin: 20px;
+        overflow: hidden;
+    }
+
+    .header-section {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 30px;
+        position: relative;
+    }
+
+    .header-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200"><defs><radialGradient id="a" cx="1000" cy="200" r="600"><stop offset="0" stop-color="rgba(255,255,255,0.1)"/><stop offset="1" stop-color="rgba(255,255,255,0)"/></radialGradient></defs><rect width="1000" height="200" fill="url(%23a)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .page-title {
+        position: relative;
+        z-index: 2;
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin: 0;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .btn-record-payment {
+        background: var(--gradient-success);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        padding: 12px 24px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 2;
+    }
+
+    .btn-record-payment:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        color: white;
+    }
+
+    .search-section {
+        background: var(--white);
+        padding: 25px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .search-input, .search-select {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 10px 15px;
+        transition: border-color 0.3s ease;
+    }
+
+    .search-input:focus, .search-select:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .btn-search {
+        background: var(--primary-blue);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        padding: 10px 20px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-search:hover {
+        background: var(--secondary-blue);
+        transform: translateY(-1px);
+    }
+
+    .btn-search-outline {
+        background: transparent;
+        border: 2px solid var(--success-green);
+        border-radius: 8px;
+        color: var(--success-green);
+        padding: 8px 18px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-search-outline:hover {
+        background: var(--success-green);
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .total-payment-card {
+        background: var(--gradient-success);
+        color: white;
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        margin: 20px 0;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    .total-amount {
+        font-size: 2rem;
+        font-weight: 800;
+        margin: 0;
+    }
+
+    .table-container {
+        background: var(--white);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    .table-modern {
+        margin: 0;
+    }
+
+    .table-modern thead th {
+        background: var(--dark-gray);
+        color: white;
+        font-weight: 600;
+        border: none;
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+
+    .table-modern tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+    .table-modern tbody tr:hover {
+        background-color: var(--light-blue);
+    }
+
+    .table-modern tbody td {
+        padding: 12px 15px;
+        border: none;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 0.9rem;
+    }
+
+    .student-link {
+        color: var(--primary-blue);
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .student-link:hover {
+        color: var(--secondary-blue);
+    }
+
+    .due-amount {
+        font-weight: 700;
+        color: var(--danger-red);
+    }
+
+    .board-badge {
+        background: var(--primary-blue);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .modal-modern .modal-header {
+        background: var(--gradient-success);
+        color: white;
+        border: none;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .modal-modern .modal-body {
+        background: var(--light-gray);
+        padding: 30px;
+    }
+
+    .modal-modern .modal-footer {
+        background: var(--light-gray);
+        border: none;
+        padding: 20px 30px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--dark-gray);
+        margin-bottom: 8px;
+    }
+
+    .form-control-modern {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 10px 15px;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-control-modern:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .btn-submit {
+        background: var(--gradient-success);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        padding: 12px 24px;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .btn-cancel {
+        background: var(--medium-gray);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        padding: 12px 24px;
+        font-weight: 600;
+    }
+
+    .alert-info-modern {
+        background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+        border: 1px solid var(--accent-blue);
+        border-radius: 10px;
+        color: var(--dark-gray);
+        padding: 15px;
+    }
+
+    .form-check-modern .form-check-input {
+        border: 2px solid var(--primary-blue);
+        border-radius: 4px;
+    }
+
+    .form-check-modern .form-check-input:checked {
+        background-color: var(--primary-blue);
+        border-color: var(--primary-blue);
+    }
+
+    .form-check-modern .form-check-label {
+        color: var(--dark-gray);
+        font-weight: 500;
+    }
+
+    .input-group-text-modern {
+        background: var(--light-gray);
+        border: 2px solid #e5e7eb;
+        border-right: none;
+        color: var(--medium-gray);
+        font-weight: 600;
+    }
+</style>
+{% endblock style %}
+
 {% block body %}
 {% include "message.html" %}
-<div style="background-color: whitesmoke;">
-    <div class="container-fluid">
-        <p class="fw-bold fs-1 text text-center">All Payments</p>
-        <div class="row mb-3">
-            <div class="col-12">
-                <form method="get" action="{% url 'all_payments' %}" class="d-flex align-items-center flex-wrap">
-                    {% csrf_token %}
-                    <!-- Date Range Form -->
-                    <div class="d-flex align-items-center me-3 flex-fill">
-                        <label for="start-date" class="form-label fw-medium me-2">Start Date</label>
-                        <input type="date" id="start-date" name="start_date" class="form-control me-3"
-                            value="{{ request.GET.start_date }}">
-                    </div>
-                    <div class="d-flex align-items-center me-3 flex-fill">
-                        <label for="end-date" class="form-label fw-medium me-2">End Date</label>
-                        <input type="date" id="end-date" name="end_date" class="form-control me-3"
-                            value="{{ request.GET.end_date }}">
-                    </div>
-                    <button type="submit" class="btn btn-primary me-3">Search</button>
+<div class="main-container">
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="page-title">
+                <i class="fas fa-money-bill-wave me-3"></i>Payment Management
+            </h1>
+            <button type="button" class="btn-record-payment" data-bs-toggle="modal" data-bs-target="#recordPaymentModal">
+                <i class="fas fa-plus-circle me-2"></i>Record Payment
+            </button>
+        </div>
+    </div>
+    <!-- Search and Filter Section -->
+    <div class="search-section">
+        <form method="get" action="{% url 'all_payments' %}" class="row g-3">
+            {% csrf_token %}
+            <!-- Date Range Form -->
+            <div class="col-md-3">
+                <label for="start-date" class="form-label">
+                    <i class="fas fa-calendar-alt me-1"></i>Start Date
+                </label>
+                <input type="date" id="start-date" name="start_date" class="form-control search-input"
+                    value="{{ request.GET.start_date }}">
+            </div>
+            <div class="col-md-3">
+                <label for="end-date" class="form-label">
+                    <i class="fas fa-calendar-alt me-1"></i>End Date
+                </label>
+                <input type="date" id="end-date" name="end_date" class="form-control search-input"
+                    value="{{ request.GET.end_date }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label d-block">&nbsp;</label>
+                <button type="submit" class="btn-search w-100">
+                    <i class="fas fa-search me-1"></i>Filter
+                </button>
+            </div>
 
-                    <!-- General Search Form -->
-                    <div class="d-flex align-items-center flex-fill">
-                        <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search"
-                            name="search" value="{{ search }}">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+            <!-- General Search Form -->
+            <div class="col-md-3">
+                <label for="search" class="form-label">
+                    <i class="fas fa-search me-1"></i>Search Students
+                </label>
+                <input class="form-control search-input" type="search" placeholder="Search by name..." 
+                       aria-label="Search" name="search" value="{{ search }}">
+            </div>
+            <div class="col-md-1">
+                <label class="form-label d-block">&nbsp;</label>
+                <button class="btn-search-outline w-100" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="container-fluid p-4">
+        {% if total_amount %}
+        <div class="total-payment-card">
+            <div class="d-flex align-items-center justify-content-center">
+                <i class="fas fa-coins fa-2x me-3"></i>
+                <div>
+                    <div class="fs-6 fw-medium">Total Payment Collected</div>
+                    <div class="total-amount">
+                        ₹{% if total_amount %}{{ total_amount }}{% else %}0{% endif %}
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-
-
-        {% if total_amount %}
-        <p class="text text-center fw-normal fs-4">
-            Total Payment :
-            <strong>
-                {% if total_amount %}
-                {{ total_amount }}
-                {% else %}
-                0
-                {% endif %}
-            </strong>
-        </p>
         {% endif %}
-        <div class="card border-0">
-            <div class="card-body">
-                <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-                    <table class="table table-striped align-middle text-center">
-                        <thead>
-                            <tr class="table-dark sticky-top">
-                                <th scope="col">Student</th>
-                                <th scope="col">Board</th>
-                                <th scope="col">Class</th>
-                                <th scope="col">Subject</th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Total Due</th>
-                                <th scope="col">Payment Method</th>
-                                <th scope="col">Payment Date</th>
-                                <th scope="col">Payment of Months</th>
-                                <th scope="col">Modification</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for payment in payments %}
-                            <tr>
-                                <td><a href="{% url 'student_profile' payment.student.id %}"
-                                    class="text-decoration-none">{{ payment.student.name }}</a></td>
-                                <td>{{ payment.student.board }}</td>
-                                <td>{{ payment.student.student_class }}</td>
-                                <td>{{ payment.student.subject }}</td>
-                                <td>{{ payment.amount }}</td>
-                                <td class="{% if payment.due_amount > 0 %} text-danger {% endif %}">{{payment.due_amount }}</td>
-                                <td>{{ payment.payment_method }}</td>
-                                <td>{{ payment.date }}</td>
-                                <td>{{ payment.months }}</td>
-                                <td>{{ payment.modification }}</td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="10" class="text-center">No payment record found.</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+        <!-- Payments Table -->
+        <div class="table-container">
+            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                <table class="table table-modern text-center">
+                    <thead class="sticky-top">
+                        <tr>
+                            <th scope="col"><i class="fas fa-user me-1"></i>Student</th>
+                            <th scope="col"><i class="fas fa-school me-1"></i>Board</th>
+                            <th scope="col"><i class="fas fa-graduation-cap me-1"></i>Class</th>
+                            <th scope="col"><i class="fas fa-book me-1"></i>Subject</th>
+                            <th scope="col"><i class="fas fa-rupee-sign me-1"></i>Amount</th>
+                            <th scope="col"><i class="fas fa-exclamation-triangle me-1"></i>Total Due</th>
+                            <th scope="col"><i class="fas fa-credit-card me-1"></i>Payment Method</th>
+                            <th scope="col"><i class="fas fa-calendar me-1"></i>Payment Date</th>
+                            <th scope="col"><i class="fas fa-calendar-check me-1"></i>Months</th>
+                            <th scope="col"><i class="fas fa-edit me-1"></i>Modification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payment in payments %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'student_profile' payment.student.id %}" class="student-link">
+                                    {{ payment.student.name }}
+                                </a>
+                            </td>
+                            <td>
+                                <span class="board-badge">{{ payment.student.board }}</span>
+                            </td>
+                            <td>{{ payment.student.student_class }}</td>
+                            <td>{{ payment.student.subject }}</td>
+                            <td>
+                                <span class="fw-bold text-success">₹{{ payment.amount }}</span>
+                            </td>
+                            <td class="{% if payment.due_amount > 0 %}due-amount{% else %}text-success fw-bold{% endif %}">
+                                {% if payment.due_amount > 0 %}
+                                    <i class="fas fa-exclamation-triangle me-1"></i>₹{{ payment.due_amount }}
+                                {% else %}
+                                    <i class="fas fa-check-circle me-1"></i>Paid
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary">{{ payment.payment_method }}</span>
+                            </td>
+                            <td>{{ payment.date }}</td>
+                            <td>{{ payment.months }}</td>
+                            <td>{{ payment.modification }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="10" class="text-center py-4">
+                                <i class="fas fa-money-bill-wave fa-3x text-muted mb-3"></i>
+                                <div class="text-muted">No payment records found.</div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal for Recording Payment -->
+<div class="modal fade" id="recordPaymentModal" tabindex="-1" aria-labelledby="recordPaymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-modern">
+            <div class="modal-header">
+                <h5 class="modal-title" id="recordPaymentModalLabel">
+                    <i class="fas fa-plus-circle me-2"></i>Record New Payment
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{% url 'all_payments' %}">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    
+                    <!-- Student Selection -->
+                    <div class="mb-3">
+                        <label for="student_id" class="form-label">
+                            <i class="fas fa-user me-1"></i>Select Student <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-control form-control-modern" id="student_id" name="student_id" required>
+                            <option value="">Choose a student...</option>
+                            {% for student in students %}
+                                <option value="{{ student.id }}" data-fees="{{ student.fees }}">
+                                    {{ student.name }} - Class {{ student.student_class }} ({{ student.board }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Payment Amount -->
+                    <div class="mb-3">
+                        <label for="payment" class="form-label">
+                            <i class="fas fa-rupee-sign me-1"></i>Payment Amount <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text input-group-text-modern">₹</span>
+                            <input type="number" class="form-control form-control-modern" id="payment" name="payment" 
+                                   placeholder="Enter payment amount" step="0.01" min="0" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Method -->
+                    <div class="mb-3">
+                        <label for="payment_method" class="form-label">
+                            <i class="fas fa-credit-card me-1"></i>Payment Method <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-control form-control-modern" id="payment_method" name="payment_method" required>
+                            <option value="">Select payment method...</option>
+                            <option value="CASH">💵 Cash</option>
+                            <option value="UPI">📱 UPI</option>
+                            <option value="CARD">💳 Card</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Payment Date -->
+                    <div class="mb-3">
+                        <label for="payment_date" class="form-label">
+                            <i class="fas fa-calendar me-1"></i>Payment Date <span class="text-danger">*</span>
+                        </label>
+                        <input type="date" class="form-control form-control-modern" id="payment_date" name="payment_date" required>
+                    </div>
+                    
+                    <!-- Payment Months -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fas fa-calendar-check me-1"></i>Payment for Months <span class="text-danger">*</span>
+                        </label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check form-check-modern mb-2">
+                                    <input class="form-check-input" type="checkbox" name="payment_months" value="1" id="month1">
+                                    <label class="form-check-label" for="month1">January</label>
+                                </div>
+                                <div class="form-check form-check-modern mb-2">
+                                    <input class="form-check-input" type="checkbox" name="payment_months" value="2" id="month2">
+                                    <label class="form-check-label" for="month2">February</label>
+                                </div>
+                                <div class="form-check form-check-modern mb-2">
+                                    <input class="form-check-input" type="checkbox" name="payment_months" value="3" id="month3">
+                                    <label class="form-check-label" for="month3">March</label>
+                                </div>
+                                <div class="form-check form-check-modern mb-2">
+                                    <input class="form-check-input" type="checkbox" name="payment_months" value="4" id="month4">
+                                    <label class="form-check-label" for="month4">April</label>
+                                </div>
+                                <div class="form-check form-check-modern mb-2">
+                                    <input class="form-check-input" type="checkbox" name="payment_months" value="5" id="month5">
+                                    <label class="form-check-label" for="month5">May</label>
+                                </div>
+                                <div class="form-check form-check-modern mb-2">
+                                    <input class="form-check-input" type="checkbox" name="payment_months" value="6" id="month6">
+                                    <label class="form-check-label" for="month6">June</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check form-check-modern mb-2">
+                                    <input class="form-check-input" type="checkbox" name="payment_months" value="7" id="month7">
+                                    <label class="form-check-label" for="month7">July</label>
+                                </div>
+                                <div class="form-check form-check-modern mb-2">
+                                    <input class="form-check-input" type="checkbox" name="payment_months" value="8" id="month8">
+                                    <label class="form-check-label" for="month8">August</label>
+                                </div>
+                                <div class="form-check form-check-modern mb-2">
+                                    <input class="form-check-input" type="checkbox" name="payment_months" value="9" id="month9">
+                                    <label class="form-check-label" for="month9">September</label>
+                                </div>
+                                <div class="form-check form-check-modern mb-2">
+                                    <input class="form-check-input" type="checkbox" name="payment_months" value="10" id="month10">
+                                    <label class="form-check-label" for="month10">October</label>
+                                </div>
+                                <div class="form-check form-check-modern mb-2">
+                                    <input class="form-check-input" type="checkbox" name="payment_months" value="11" id="month11">
+                                    <label class="form-check-label" for="month11">November</label>
+                                </div>
+                                <div class="form-check form-check-modern mb-2">
+                                    <input class="form-check-input" type="checkbox" name="payment_months" value="12" id="month12">
+                                    <label class="form-check-label" for="month12">December</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Student Fees Display -->
+                    <div class="mb-3" id="feesInfo" style="display: none;">
+                        <div class="alert alert-info-modern">
+                            <div class="row text-center">
+                                <div class="col-md-4">
+                                    <i class="fas fa-rupee-sign text-primary"></i>
+                                    <strong>Monthly Fees:</strong><br>₹<span id="studentFees">0</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <i class="fas fa-calculator text-warning"></i>
+                                    <strong>Total for Months:</strong><br>₹<span id="totalFees">0</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <i class="fas fa-exclamation-circle text-danger"></i>
+                                    <strong>Due Amount:</strong><br>₹<span id="dueAmount">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>Cancel
+                    </button>
+                    <button type="submit" class="btn btn-submit">
+                        <i class="fas fa-save me-1"></i>Record Payment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const studentSelect = document.getElementById('student_id');
+    const paymentInput = document.getElementById('payment');
+    const feesInfo = document.getElementById('feesInfo');
+    const studentFeesSpan = document.getElementById('studentFees');
+    const totalFeesSpan = document.getElementById('totalFees');
+    const dueAmountSpan = document.getElementById('dueAmount');
+    const monthCheckboxes = document.querySelectorAll('input[name="payment_months"]');
+    const paymentDateInput = document.getElementById('payment_date');
+    
+    // Set today's date as default
+    const today = new Date().toISOString().split('T')[0];
+    paymentDateInput.value = today;
+    
+    function calculateDue() {
+        const selectedStudent = studentSelect.options[studentSelect.selectedIndex];
+        const fees = selectedStudent.getAttribute('data-fees') || 0;
+        const selectedMonths = Array.from(monthCheckboxes).filter(cb => cb.checked).length;
+        const paymentAmount = parseFloat(paymentInput.value) || 0;
+        
+        const totalFees = fees * selectedMonths;
+        const dueAmount = totalFees - paymentAmount;
+        
+        studentFeesSpan.textContent = fees;
+        totalFeesSpan.textContent = totalFees;
+        dueAmountSpan.textContent = dueAmount;
+        
+        if (selectedStudent.value && selectedMonths > 0) {
+            feesInfo.style.display = 'block';
+        } else {
+            feesInfo.style.display = 'none';
+        }
+    }
+    
+    studentSelect.addEventListener('change', calculateDue);
+    paymentInput.addEventListener('input', calculateDue);
+    monthCheckboxes.forEach(cb => cb.addEventListener('change', calculateDue));
+});
+</script>
+
 {% endblock body %}
