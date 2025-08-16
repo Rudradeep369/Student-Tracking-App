@@ -1,10 +1,12 @@
 /* Modern Footer Styling */
 .modern-footer {
     position: relative;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4a90e2 0%, #7e57c2 50%, #764ba2 100%);
     color: white;
     overflow: hidden;
     margin-top: auto;
+    padding-top: 40px;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
 }
 
 /* Background Effects */
@@ -250,21 +252,26 @@
 /* Contact Info */
 .contact-info {
     margin-bottom: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
 }
 
 .contact-item {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 20px;
-    padding: 15px;
+    padding: 20px;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
+    border-radius: 15px;
     transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .contact-item:hover {
     background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .contact-icon {
@@ -343,81 +350,169 @@
 }
 
 .gallery-title {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 600;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     color: #ffd700;
-}
-
-.single-image-container {
-    position: relative;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    overflow: hidden;
-    height: 200px;
-    max-width: 300px;
-}
-
-.image-display {
-    position: relative;
-    width: 100%;
-    height: 180px;
-    overflow: hidden;
-}
-
-.image-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-}
-
-.image-slide.active {
-    opacity: 1;
-}
-
-.image-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
-}
-
-.image-slide:hover img {
-    transform: scale(1.02);
-}
-
-.image-indicators {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: 10px;
     gap: 8px;
 }
 
-.indicator {
+.gallery-title i {
+    font-size: 1.4rem;
+}
+
+#footerCarousel {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+#footerCarousel .carousel-inner {
+    border-radius: 12px;
+    overflow: hidden;
+    height: 250px;
+    width: 100%;
+}
+
+#footerCarousel .carousel-item {
+    height: 250px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#footerCarousel .carousel-item img {
+    height: 250px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.85);
+    transition: transform 0.5s ease, filter 0.3s ease;
+    aspect-ratio: 16/9;
+}
+
+#footerCarousel:hover .carousel-item img {
+    filter: brightness(1);
+}
+
+#footerCarousel .carousel-caption {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    border-radius: 8px;
+    padding: 8px 15px;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    max-width: 80%;
+}
+
+#footerCarousel .carousel-caption h6 {
+    margin: 0;
+    font-size: 0.9rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.footer-carousel-indicators {
+    position: absolute;
+    bottom: -25px;
+    margin-bottom: 0;
+}
+
+#footerCarousel .carousel-indicators button {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: none;
+    margin: 0 4px;
     transition: all 0.3s ease;
 }
 
-.indicator.active {
-    background: #ffd700;
+#footerCarousel .carousel-indicators button.active {
+    background-color: #ffd700;
     transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
-.indicator:hover {
-    background: rgba(255, 215, 0, 0.7);
-    transform: scale(1.1);
+#footerCarousel .carousel-control-prev,
+#footerCarousel .carousel-control-next {
+    width: 40px;
+    height: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#footerCarousel:hover .carousel-control-prev,
+#footerCarousel:hover .carousel-control-next {
+    opacity: 1;
+}
+
+#footerCarousel .carousel-control-prev-icon,
+#footerCarousel .carousel-control-next-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+}
+
+#footerCarousel .carousel-control-prev:hover .carousel-control-prev-icon {
+    transform: translateX(-3px);
+}
+
+#footerCarousel .carousel-control-next:hover .carousel-control-next-icon {
+    transform: translateX(3px);
+}
+
+@media (max-width: 768px) {
+    #footerCarousel .carousel-inner,
+    #footerCarousel .carousel-item,
+    #footerCarousel .carousel-item img {
+        height: 200px;
+    }
+
+    #footerCarousel .carousel-caption {
+        padding: 5px 10px;
+    }
+
+    #footerCarousel .carousel-caption h6 {
+        font-size: 0.8rem;
+    }
+
+    .footer-carousel-indicators {
+        bottom: -20px;
+    }
+
+    #footerCarousel .carousel-control-prev,
+    #footerCarousel .carousel-control-next {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    #footerCarousel .carousel-inner,
+    #footerCarousel .carousel-item,
+    #footerCarousel .carousel-item img {
+        height: 180px;
+    }
+
+    .gallery-title {
+        font-size: 1rem;
+    }
+
+    #footerCarousel .carousel-caption {
+        bottom: 10px;
+    }
 }
 
 /* Footer Bottom */
@@ -437,21 +532,25 @@
 
 .social-links {
     display: flex;
-    gap: 15px;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .social-link {
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(5px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .social-link::before {
@@ -628,27 +727,43 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+    .footer-content {
+        padding: 30px 20px;
+    }
+    
+    .contact-info {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
 @media (max-width: 768px) {
     .footer-content {
-        padding: 40px 0 20px;
+        padding: 30px 15px;
     }
 
     .social-links {
-        justify-content: center;
-        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .social-link {
+        width: 45px;
+        height: 45px;
     }
 
     .footer-links-bottom {
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
+        padding: 15px 0;
     }
 
     .copyright-section {
-        margin-top: 20px;
+        margin-top: 25px;
+        text-align: center;
     }
 
     .contact-map-section {
-        margin-top: 20px;
+        margin-top: 25px;
     }
 
     .contact-map-section .google-map-container {
@@ -656,73 +771,144 @@
     }
 
     .contact-map-section .google-map-container iframe {
-        height: 150px;
+        height: 200px;
     }
 
-    .single-image-container {
-        height: 160px;
-        max-width: 250px;
+    .brand-section {
+        padding: 0 15px;
     }
 
-    .image-display {
-        height: 140px;
+    .brand-name {
+        font-size: 1.8rem;
+    }
+
+    .brand-tagline {
+        font-size: 1rem;
+    }
+
+    .company-description {
+        padding: 0 15px;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .contact-item {
+        padding: 15px;
+    }
+
+    .section-title {
+        text-align: center;
+    }
+
+    .section-title::after {
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     .back-to-top {
-        bottom: 20px;
-        right: 20px;
+        bottom: 25px;
+        right: 25px;
         width: 45px;
         height: 45px;
-    }
-
-    /* Compact layout adjustments */
-    .brand-section {
-        margin-bottom: 20px;
-    }
-    
-    .company-description {
-        margin-bottom: 15px;
     }
 }
 
 @media (max-width: 576px) {
+    .modern-footer {
+        padding-top: 30px;
+    }
+
     .brand-name {
         font-size: 1.5rem;
+    }
+
+    .brand-tagline {
+        font-size: 0.9rem;
+    }
+
+    .company-description {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .contact-info {
+        grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .contact-item {
         flex-direction: column;
         text-align: center;
+        padding: 15px 10px;
     }
 
     .contact-icon {
         margin: 0 auto 10px;
+        width: 35px;
+        height: 35px;
     }
 
-    .contact-map-section .google-map-container iframe {
-        height: 120px;
+    .contact-icon i {
+        font-size: 1rem;
     }
 
-    .single-image-container {
-        height: 140px;
-        max-width: 200px;
+    .contact-label {
+        font-size: 0.85rem;
     }
 
-    .image-display {
-        height: 120px;
+    .contact-value {
+        font-size: 0.95rem;
     }
 
-    .image-indicators {
-        padding: 8px;
-        gap: 6px;
+    .social-links {
+        gap: 12px;
     }
 
-    .indicator {
-        width: 6px;
-        height: 6px;
+    .social-link {
+        width: 40px;
+        height: 40px;
+    }
+
+    .social-link i {
+        font-size: 1rem;
+    }
+
+    .footer-bottom {
+        padding: 20px 0;
+    }
+
+    .footer-links-bottom {
+        gap: 8px;
+    }
+
+    .footer-links-bottom a {
+        font-size: 0.85rem;
     }
 
     .footer-waves svg {
+        height: 30px;
+    }
+
+    .map-title, .social-title, .gallery-title {
+        font-size: 1rem;
+    }
+
+    .contact-map-section .google-map-container iframe {
+        height: 180px;
+    }
+
+    .copyright-text {
+        font-size: 0.9rem;
+    }
+
+    .back-to-top {
+        bottom: 15px;
+        right: 15px;
+        width: 40px;
         height: 40px;
+    }
+
+    .back-to-top i {
+        font-size: 0.9rem;
     }
 }
