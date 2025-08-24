@@ -54,33 +54,85 @@
     <!-- Body  -->
 
     <div class="container my-5">
-        <p class="text-center text-capitalize fs-2 fw-semibold font-style-heading underline-heading">Subjects We Teach</p>
-        <!-- Nav Tabs -->
-        <div class="d-flex justify-content-center">
-            <ul class="nav nav-tabs fw-semibold" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link active border-2" id="classes-5-7-tab" data-bs-toggle="tab" href="#classes-5-7" role="tab"
-                        aria-controls="classes-5-7" aria-selected="true">Classes 5-7</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link border-2" id="classes-8-10-tab" data-bs-toggle="tab" href="#classes-8-10" role="tab"
-                        aria-controls="classes-8-10" aria-selected="false">Classes 8-10</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link border-2" id="classes-11-12-tab" data-bs-toggle="tab" href="#classes-11-12" role="tab"
-                        aria-controls="classes-11-12" aria-selected="false">Classes 11-12</a>
-                </li>
-            </ul>
+  <p class="text-center text-capitalize fs-2 fw-semibold font-style-heading underline-heading">
+    Subjects We Teach
+  </p>
+
+  <!-- Nav Tabs -->
+  <div class="d-flex justify-content-center">
+    <ul class="nav nav-tabs fw-semibold" id="myTab" role="tablist">
+      <li class="nav-item"><a class="nav-link active" id="class5-tab" data-bs-toggle="tab" href="#class5" role="tab">Class 5</a></li>
+      <li class="nav-item"><a class="nav-link" id="class6-tab" data-bs-toggle="tab" href="#class6" role="tab">Class 6</a></li>
+      <li class="nav-item"><a class="nav-link" id="class7-tab" data-bs-toggle="tab" href="#class7" role="tab">Class 7</a></li>
+      <li class="nav-item"><a class="nav-link" id="class8-tab" data-bs-toggle="tab" href="#class8" role="tab">Class 8</a></li>
+      <li class="nav-item"><a class="nav-link" id="class9-tab" data-bs-toggle="tab" href="#class9" role="tab">Class 9</a></li>
+      <li class="nav-item"><a class="nav-link" id="class10-tab" data-bs-toggle="tab" href="#class10" role="tab">Class 10</a></li>
+      <li class="nav-item"><a class="nav-link" id="class11-tab" data-bs-toggle="tab" href="#class11" role="tab">Class 11</a></li>
+      <li class="nav-item"><a class="nav-link" id="class12-tab" data-bs-toggle="tab" href="#class12" role="tab">Class 12</a></li>
+    </ul>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content" id="myTabContent">
+
+    <!-- ========== CLASS 5 ========== -->
+    <div class="tab-pane fade show active" id="class5" role="tabpanel" aria-labelledby="class5-tab">
+      <div class="row g-4 mt-3 mb-3">
+        <!-- Science -->
+        <div class="col-md-4">
+          <div class="card h-100 rounded-4 shadow-sm">
+            <img src="https://images.unsplash.com/photo-1518152006812-edab29b069ac?w=400&h=200&fit=crop" class="card-img-top" alt="Science" style="height:200px;object-fit:cover;">
+            <div class="card-body">
+              <h5 class="card-title">Science</h5>
+              <p class="card-text">Introduction to physics, chemistry, biology, and environmental science.</p>
+              <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#study-5-1">Study Material</button>
+              <div id="study-5-1" class="collapse mt-3">
+                <button class="btn btn-outline-success">WBSE</button>
+                <button class="btn btn-outline-success">CBSE</button>
+                <button class="btn btn-outline-success">ICSE</button>
+              </div>
+            </div>
+          </div>
         </div>
+        <!-- English -->
+        <div class="col-md-4">
+          <div class="card h-100 rounded-4 shadow-sm">
+            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=200&fit=crop" class="card-img-top" alt="English" style="height:200px;object-fit:cover;">
+            <div class="card-body">
+              <h5 class="card-title">English</h5>
+              <p class="card-text">Grammar, reading comprehension, writing, and literature.</p>
+              <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#study-5-2">Study Material</button>
+              <div id="study-5-2" class="collapse mt-3">
+                <button class="btn btn-outline-success">WBSE</button>
+                <button class="btn btn-outline-success">CBSE</button>
+                <button class="btn btn-outline-success">ICSE</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Arts -->
+        <div class="col-md-4">
+          <div class="card h-100 rounded-4 shadow-sm">
+            <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=200&fit=crop&auto=format" class="card-img-top" alt="Arts" style="height:200px;object-fit:cover;">
+            <div class="card-body">
+              <h5 class="card-title">Arts</h5>
+              <p class="card-text">Introduction to various art forms, history, and techniques.</p>
+              <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#study-5-3">Study Material</button>
+              <div id="study-5-3" class="collapse mt-3">
+                <button class="btn btn-outline-success">WBSE</button>
+                <button class="btn btn-outline-success">CBSE</button>
+                <button class="btn btn-outline-success">ICSE</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-
-                <!-- Tab Content -->
-        <div class="tab-content" id="myTabContent">
-
-            <!-- Classes 5-7 -->
-            <div class="tab-pane fade show active" id="classes-5-7" role="tabpanel" aria-labelledby="classes-5-7-tab">
-                <div class="row g-4 mt-3 mb-3">
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+    <!-- ========== CLASS 6 ========== -->
+    <div class="tab-pane fade" id="class6" role="tabpanel" aria-labelledby="class6-tab">
+      <div class="row g-4 mt-3 mb-3">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4">
                         <div class="card h-100 border-1 rounded-4">
                             <img src="https://images.unsplash.com/photo-1518152006812-edab29b069ac?w=400&h=200&fit=crop&auto=format" 
                                  class="card-img-top" alt="Science" style="height: 200px; object-fit: cover;">
@@ -142,13 +194,81 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+      </div>
+    </div>
 
-            <!-- Classes 8-10 -->
-            <div class="tab-pane fade" id="classes-8-10" role="tabpanel" aria-labelledby="classes-8-10-tab">
-                <div class="row g-4 mt-3 mb-3">
+    <!-- ========== CLASS 7 ========== -->
+    <div class="tab-pane fade" id="class7" role="tabpanel" aria-labelledby="class7-tab">
+      <div class="row g-4 mt-3 mb-3">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1518152006812-edab29b069ac?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="Science" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Science</h5>
+                                <p class="card-text">Introduction to physics, chemistry, biology, and environmental science.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-5-7-1" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-5-7-1">Study Material</button>
+
+                                <div id="exploresub-buttons-5-7-1" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="English Literature" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">English</h5>
+                                <p class="card-text">Grammar, reading comprehension, writing, and literature.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-5-7-2" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-5-7-2">Study Material</button>
+
+                                <div id="exploresub-buttons-5-7-2" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="Arts and Painting" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Arts</h5>
+                                <p class="card-text">Introduction to various art forms, history, and techniques.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-5-7-3" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-5-7-3">Study Material</button>
+
+                                <div id="exploresub-buttons-5-7-3" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+      </div>
+    </div>
+
+    <!-- ========== CLASS 8 ========== -->
+    <div class="tab-pane fade" id="class8" role="tabpanel" aria-labelledby="class8-tab">
+      <div class="row g-4 mt-3 mb-3">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4">
                         <div class="card h-100 border-1 rounded-4">
                             <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400&h=200&fit=crop&auto=format" 
                                  class="card-img-top" alt="Mathematics" style="height: 200px; object-fit: cover;">
@@ -251,14 +371,234 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </div>    
+    </div>
+    </div>
 
-            <!-- Classes 11-12 -->
-            <div class="tab-pane fade" id="classes-11-12" role="tabpanel" aria-labelledby="classes-11-12-tab">
-                <div class="row g-4 mt-3 mb-3">
+    <!-- ========== CLASS 9 ========== -->
+    <div class="tab-pane fade" id="class9" role="tabpanel" aria-labelledby="class9-tab">
+      <div class="row g-4 mt-3 mb-3">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="Mathematics" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Mathematics</h5>
+                                <p class="card-text">Advanced algebra, trigonometry, geometry, and statistics.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-8-10-1" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-8-10-1">Study Material</button>
+
+                                <div id="exploresub-buttons-8-10-1" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="Physical Science" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Physical Science</h5>
+                                <p class="card-text">In-depth physics and chemistry concepts and applications.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-8-10-2" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-8-10-2">Study Material</button>
+
+                                <div id="exploresub-buttons-8-10-2" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="Life Science" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Life Science</h5>
+                                <p class="card-text">Advanced biology, ecology, and life sciences concepts.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-8-10-3" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-8-10-3">Study Material</button>
+
+                                <div id="exploresub-buttons-8-10-3" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="Arts" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Arts</h5>
+                                <p class="card-text">Creative arts, history, and cultural studies.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-8-10-4" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-8-10-4">Study Material</button>
+
+                                <div id="exploresub-buttons-8-10-4" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="English" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">English</h5>
+                                <p class="card-text">Advanced grammar, literature analysis, and writing skills.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-8-10-5" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-8-10-5">Study Material</button>
+
+                                <div id="exploresub-buttons-8-10-5" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+    </div>
+    </div>
+
+    <!-- ========== CLASS 10 ========== -->
+    <div class="tab-pane fade" id="class10" role="tabpanel" aria-labelledby="class10-tab">
+      <div class="row g-4 mt-3 mb-3">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="Mathematics" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Mathematics</h5>
+                                <p class="card-text">Advanced algebra, trigonometry, geometry, and statistics.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-8-10-1" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-8-10-1">Study Material</button>
+
+                                <div id="exploresub-buttons-8-10-1" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="Physical Science" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Physical Science</h5>
+                                <p class="card-text">In-depth physics and chemistry concepts and applications.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-8-10-2" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-8-10-2">Study Material</button>
+
+                                <div id="exploresub-buttons-8-10-2" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="Life Science" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Life Science</h5>
+                                <p class="card-text">Advanced biology, ecology, and life sciences concepts.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-8-10-3" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-8-10-3">Study Material</button>
+
+                                <div id="exploresub-buttons-8-10-3" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="Arts" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Arts</h5>
+                                <p class="card-text">Creative arts, history, and cultural studies.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-8-10-4" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-8-10-4">Study Material</button>
+
+                                <div id="exploresub-buttons-8-10-4" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="English" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">English</h5>
+                                <p class="card-text">Advanced grammar, literature analysis, and writing skills.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-8-10-5" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-8-10-5">Study Material</button>
+
+                                <div id="exploresub-buttons-8-10-5" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+    </div>
+    </div>
+
+    <!-- ========== CLASS 11 ========== -->
+    <div class="tab-pane fade" id="class11" role="tabpanel" aria-labelledby="class11-tab">
+      <div class="row g-4 mt-3 mb-3">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4">
                         <div class="card h-100 border-1 rounded-4">
                             <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400&h=200&fit=crop&auto=format" 
                                  class="card-img-top" alt="Mathematics" style="height: 200px; object-fit: cover;">
@@ -383,11 +723,143 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-        </div>
+      </div>
     </div>
+
+    <!-- ========== CLASS 12 ========== -->
+    <div class="tab-pane fade" id="class12" role="tabpanel" aria-labelledby="class12-tab">
+      <div class="row g-4 mt-3 mb-3">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="Mathematics" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Mathematics</h5>
+                                <p class="card-text">Calculus, advanced algebra, statistics, and higher mathematics.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-11-12-1" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-11-12-1">Study Material</button>
+
+                                <div id="exploresub-buttons-11-12-1" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="Physics" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Physics</h5>
+                                <p class="card-text">Advanced physics concepts, mechanics, thermodynamics, and modern physics.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-11-12-2" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-11-12-2">Study Material</button>
+
+                                <div id="exploresub-buttons-11-12-2" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="Biology" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Biology</h5>
+                                <p class="card-text">Advanced biology, genetics, ecology, and life sciences for medical entrance exams.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-11-12-3" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-11-12-3">Study Material</button>
+
+                                <div id="exploresub-buttons-11-12-3" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="Nutrition" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Nutrition</h5>
+                                <p class="card-text">Food science, nutrition principles, dietetics, and health management.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-11-12-4" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-11-12-4">Study Material</button>
+
+                                <div id="exploresub-buttons-11-12-4" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="English" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">English</h5>
+                                <p class="card-text">Advanced literature, writing skills, and exam preparation.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-11-12-5" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-11-12-5">Study Material</button>
+
+                                <div id="exploresub-buttons-11-12-5" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-1 rounded-4">
+                            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=200&fit=crop&auto=format" 
+                                 class="card-img-top" alt="Bengali" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Bengali</h5>
+                                <p class="card-text">Bengali literature, grammar, poetry, and cultural studies.</p>
+
+                                <button class="btn btn-primary" data-bs-toggle="collapse"
+                                    data-bs-target="#exploresub-buttons-11-12-6" aria-expanded="false"
+                                    aria-controls="exploresub-buttons-11-12-6">Study Material</button>
+
+                                <div id="exploresub-buttons-11-12-6" class="collapse mt-3">
+                                    <button type="button" class="btn btn-outline-success fw-medium">WBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">CBSE</button>
+                                    <button type="button" class="btn btn-outline-success fw-medium">ICSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
     <!-- Footer  -->
     {% include "footer.html" %}
