@@ -441,7 +441,9 @@ def delete_teacher(request, teacher_id):
     if request.method == 'POST':
         teacher.delete()  # Signal handler will automatically delete the image
         messages.success(request, 'Teacher deleted successfully!')
-        return redirect('add_teacher')
+        return redirect('all_teacher')
+    # For GET requests, redirect to teacher list or show confirmation
+    return redirect('all_teachers')
 
 
 # def clear_previous_due(student_id, due_amount):
