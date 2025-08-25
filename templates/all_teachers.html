@@ -616,9 +616,12 @@
                                 <button type="button" class="btn-modal-cancel" data-bs-dismiss="modal">
                                     <i class="fas fa-times me-2"></i>Cancel
                                 </button>
-                                <a href="{% url 'delete_teacher' teacher_stat.teacher.id %}" class="btn-modal-delete">
-                                    <i class="fas fa-trash me-2"></i>Delete Teacher
-                                </a>
+                                <form method="post" action="{% url 'delete_teacher' teacher_stat.teacher.id %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-modal-delete">
+                                        <i class="fas fa-trash me-2"></i>Delete Teacher
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
