@@ -60,6 +60,47 @@
         margin: 30px;
     }
 
+    /* Mobile responsive styles for form container */
+    @media (max-width: 768px) {
+        .form-container {
+            margin: 15px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .main-container {
+            margin: 10px;
+            border-radius: 15px;
+        }
+        
+        .header-section {
+            padding: 20px 15px;
+        }
+        
+        .page-title {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .form-container {
+            margin: 10px;
+            padding: 15px;
+        }
+        
+        .main-container {
+            margin: 5px;
+        }
+        
+        .page-title {
+            font-size: 1.75rem;
+        }
+        
+        .header-section {
+            padding: 15px 10px;
+        }
+    }
+
     .form-section-title {
         font-size: 1.5rem;
         font-weight: 700;
@@ -107,12 +148,31 @@
         text-decoration: none;
         display: inline-block;
         cursor: pointer;
+        min-width: 200px;
     }
 
     .btn-submit:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         color: white;
+    }
+
+    /* Mobile responsive styles for submit button */
+    @media (max-width: 768px) {
+        .btn-submit {
+            width: 100%;
+            min-width: unset;
+            padding: 18px 25px;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .btn-submit {
+            padding: 15px 20px;
+            font-size: 1rem;
+        }
     }
 
     .btn-back {
@@ -124,7 +184,12 @@
         font-weight: 600;
         transition: all 0.3s ease;
         text-decoration: none;
-        margin-right: 15px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 200px;
+        text-align: center;
+        white-space: nowrap;
     }
 
     .btn-back:hover {
@@ -133,11 +198,74 @@
         color: white;
     }
 
+    /* Mobile responsive styles for buttons */
+    @media (max-width: 768px) {
+        .btn-back {
+            width: 100%;
+            margin-bottom: 10px;
+            min-width: unset;
+            padding: 15px 20px;
+            font-size: 1rem;
+        }
+        
+        .btn-back:last-child {
+            margin-bottom: 0;
+        }
+        
+        .mobile-button-container {
+            width: 100%;
+        }
+        
+        .form-section-title {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .btn-back {
+            padding: 12px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-back i {
+            margin-right: 8px !important;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-control {
+            font-size: 16px; /* Prevents zoom on iOS */
+        }
+        
+        .col-md-6 {
+            margin-bottom: 20px;
+        }
+    }
+
     .recent-materials {
         background: var(--light-gray);
         border-radius: 15px;
         padding: 25px;
         margin: 30px;
+    }
+
+    /* Mobile responsive styles for recent materials */
+    @media (max-width: 768px) {
+        .recent-materials {
+            margin: 15px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .recent-materials {
+            margin: 10px;
+            padding: 15px;
+        }
     }
 
     .material-item {
@@ -212,17 +340,17 @@
 
     <!-- Form Section -->
     <div class="form-container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="form-section-title mb-0">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center mb-4">
+            <h2 class="form-section-title mb-3 mb-lg-0">
                 <i class="fas fa-plus-circle me-2"></i>New Study Material
             </h2>
-            <div>
-                <a href="{% url 'index' %}" class="btn-back">
-                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
-                </a>
-                <a href="{% url 'all_study_materials' %}" class="btn-back">
-                    <i class="fas fa-library me-2"></i>View All Materials
-                </a>
+            <div class="d-flex flex-column justify-content-end flex-sm-row gap-2 w-100 w-lg-auto mobile-button-container">
+              <a href="{% url 'index' %}" class="btn-back">
+                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+              </a>
+              <a href="{% url 'all_study_materials' %}" class="btn-back">
+                <i class="fas fa-library me-2"></i>View All Materials
+              </a>
             </div>
         </div>
 

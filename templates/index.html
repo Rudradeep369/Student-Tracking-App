@@ -367,6 +367,84 @@
         padding: 0;
         margin: 0;
     }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 992px) {
+        .search-filter-container {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 15px;
+        }
+
+        .search-filter-container form {
+            width: 100%;
+        }
+
+        .search-filter-container form.d-flex {
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .data-table-header .d-flex {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 20px;
+        }
+
+        .data-table-title {
+            text-align: center;
+            font-size: 1.3rem;
+        }
+
+        .search-filter-container {
+            gap: 20px;
+        }
+
+        .search-filter-container form {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .search-input, 
+        .filter-select, 
+        .btn-search, 
+        .btn-filter {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1rem;
+        }
+
+        .btn-search, 
+        .btn-filter {
+            border-radius: 10px;
+            font-weight: 700;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .data-table-title {
+            font-size: 1.1rem;
+        }
+
+        .data-table-title i {
+            font-size: 1em;
+        }
+
+        .search-input, 
+        .filter-select, 
+        .btn-search, 
+        .btn-filter {
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border-radius: 12px;
+        }
+
+        .search-input::placeholder {
+            font-size: 1rem;
+        }
+    }
 </style>
 <link rel="stylesheet" href="{% static 'css/index.css' %}">
 {% endblock style %}
@@ -514,7 +592,7 @@
             <!-- Student Table Section -->
             <div class="data-table-container">
                 <div class="data-table-header">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
                         <h2 class="data-table-title">
                             <i class="fas fa-table me-2"></i>Student Database
                         </h2>

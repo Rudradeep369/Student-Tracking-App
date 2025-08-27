@@ -136,8 +136,17 @@
         overflow: hidden;
     }
 
+    .table-scrollable-container {
+        max-height: 800px;
+        overflow-y: auto;
+        overflow-x: auto;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+    }
+
     .table-modern {
         margin: 0;
+        min-width: 800px;
     }
 
     .table-modern thead th {
@@ -147,6 +156,9 @@
         border: none;
         padding: 15px;
         font-size: 0.9rem;
+        position: sticky;
+        top: 0;
+        z-index: 10;
     }
 
     .table-modern tbody tr {
@@ -162,6 +174,7 @@
         border: none;
         border-bottom: 1px solid #e5e7eb;
         font-size: 0.9rem;
+        white-space: nowrap;
     }
 
     .batch-link {
@@ -245,6 +258,231 @@
         margin-bottom: 15px;
         color: var(--light-gray);
     }
+
+    /* Mobile Responsive Styles */
+    @media (min-width: 768px) {
+        .controls-section .d-flex {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .controls-section .d-flex > div:first-child {
+            flex-direction: row;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .controls-section .d-flex {
+            flex-direction: column;
+            gap: 15px;
+            align-items: stretch;
+        }
+
+        .search-container {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .search-container form {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            flex: 1;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .table-scrollable-container {
+            max-height: 700px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .main-container {
+            margin: 10px;
+            border-radius: 15px;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+        }
+
+        .controls-section {
+            padding: 20px;
+        }
+
+        .btn-action {
+            width: 100%;
+            margin-bottom: 10px;
+            margin-right: 0;
+            padding: 12px 20px;
+            font-size: 1rem;
+        }
+
+        .search-input,
+        .btn-search {
+            padding: 12px 15px;
+            font-size: 1rem;
+        }
+
+        .btn-search {
+            border-radius: 0 8px 8px 0;
+        }
+
+        .search-input {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .table-scrollable-container {
+            max-height: 600px;
+            border-radius: 6px;
+        }
+
+        .table-modern {
+            min-width: 700px;
+            font-size: 0.8rem;
+        }
+
+        .table-modern thead th {
+            padding: 10px 8px;
+            font-size: 0.75rem;
+        }
+
+        .table-modern tbody td {
+            padding: 8px 6px;
+            font-size: 0.75rem;
+        }
+
+        .batch-schedule {
+            font-size: 0.7rem;
+            padding: 4px 6px;
+            margin: 1px 0;
+        }
+
+        .class-badge {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+        }
+
+        .btn-edit-action,
+        .btn-delete-action {
+            padding: 4px 8px;
+            font-size: 0.7rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .page-title {
+            font-size: 1.5rem;
+        }
+
+        .page-title i {
+            font-size: 1.2rem;
+        }
+
+        .controls-section {
+            padding: 15px;
+        }
+
+        .btn-action {
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+        }
+
+        .search-input,
+        .btn-search {
+            padding: 15px 20px;
+            font-size: 1.1rem;
+        }
+
+        .table-scrollable-container {
+            max-height: 500px;
+            border-radius: 4px;
+        }
+
+        .table-modern {
+            min-width: 600px;
+        }
+
+        .table-modern thead th {
+            padding: 12px 6px;
+            font-size: 0.7rem;
+        }
+
+        .table-modern tbody td {
+            padding: 10px 4px;
+            font-size: 0.7rem;
+        }
+
+        .batch-link,
+        .teacher-link {
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .batch-schedule {
+            font-size: 0.65rem;
+            padding: 3px 4px;
+        }
+
+        .class-badge {
+            font-size: 0.65rem;
+            padding: 2px 4px;
+        }
+
+        .btn-edit-action,
+        .btn-delete-action {
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            border-radius: 8px;
+        }
+
+        .no-batches {
+            padding: 30px 15px;
+        }
+
+        .no-batches i {
+            font-size: 2rem;
+        }
+    }
+
+    /* Extra small screens */
+    @media (max-width: 320px) {
+        .table-scrollable-container {
+            max-height: 400px;
+        }
+
+        .table-modern {
+            min-width: 500px;
+        }
+
+        .table-modern thead th,
+        .table-modern tbody td {
+            padding: 8px 2px;
+            font-size: 0.65rem;
+        }
+
+        .batch-schedule {
+            font-size: 0.6rem;
+            padding: 2px 3px;
+        }
+
+        .class-badge {
+            font-size: 0.6rem;
+            padding: 1px 3px;
+        }
+
+        .btn-edit-action,
+        .btn-delete-action {
+            padding: 4px 6px;
+            font-size: 0.7rem;
+        }
+    }
 </style>
 {% endblock style %}
 
@@ -260,8 +498,8 @@
     </div>
     <!-- Controls Section -->
     <div class="controls-section">
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
-            <div class="mb-2 mb-md-0">
+        <div class="d-flex justify-content-between align-items-center flex-nowrap gap-3">
+            <div class="d-flex flex-column flex-md-row justify-content-start gap-2 w-100 w-md-auto">
                 <button class="btn btn-action btn-edit" type="button" data-bs-toggle="collapse" data-bs-target=".edit-column" aria-expanded="false" aria-controls="edit-column">
                     <i class="fas fa-edit me-2"></i>Toggle Edit
                 </button>
@@ -269,7 +507,7 @@
                     <i class="fas fa-trash me-2"></i>Toggle Delete
                 </button>
             </div>
-            <div class="search-container">
+            <div class="search-container w-100 w-md-auto justify-content-end">
                 <form class="d-flex" method="GET" action="{% url 'view_batches' %}" role="search">
                     <input class="search-input" type="search" name="search" placeholder="Search batches..." aria-label="Search" value="{{ request.GET.search }}">
                     <button class="btn-search" type="submit">
@@ -282,7 +520,7 @@
 
     <!-- Batches Table -->
     <div class="table-container">
-        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+        <div class="table-scrollable-container mb-3">
             <table class="table table-modern text-center">
                 <thead class="sticky-top">
                     <tr>

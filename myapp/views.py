@@ -547,7 +547,10 @@ def all_payment(request):
             messages.success(request, f'Payment recorded successfully for {student.name}!')
             return redirect('all_payments')
     
-    payments = Payment.objects.all().order_by('-date')
+    # Get pagination parameter
+    per_page = int(request.GET.get("per_page", 10))  # Default 10 items per page
+    
+    payments = Payment.objects.all().order_by('-updated_date', '-date')
 
     # Date range filter
     start_date = request.GET.get('start_date')
@@ -568,12 +571,21 @@ def all_payment(request):
             Q(payment_method__icontains=search_query)
         )
 
-    # Calculate total amount if filtered payments exist
+    # Calculate total amount for all filtered payments (before pagination)
     total_amount = payments.aggregate(total_amount=models.Sum('amount'))['total_amount']
-    context['total_amount'] = total_amount if total_amount else 0
+    
+    # Pagination
+    paginator = Paginator(payments, per_page)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-    context['payments'] = payments
+    context['payments'] = page_obj  # Use paginated payments
+    context['page_obj'] = page_obj  # Add page object for pagination controls
+    context['total_amount'] = total_amount if total_amount else 0
+    context['total_payments'] = payments.count()  # Total count of filtered payments
     context['search'] = search_query  # Pass search query back to template to maintain the input
+    context['start_date'] = request.GET.get('start_date', '')
+    context['end_date'] = request.GET.get('end_date', '')
     context['students'] = Student.objects.all().order_by('name')  # For the payment form dropdown
     context['payment_form'] = PaymentForm()  # Add payment form to context
     return render(request, 'all_payments.html', context)
