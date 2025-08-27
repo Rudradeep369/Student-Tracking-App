@@ -229,6 +229,26 @@
         <form method="post" class="row">
             {% csrf_token %}
             
+            <!-- Display form-wide errors -->
+            {% if form.non_field_errors %}
+                <div class="col-12 mb-3">
+                    <div class="alert alert-danger">
+                        <strong>Form Errors:</strong>
+                        {{ form.non_field_errors }}
+                    </div>
+                </div>
+            {% endif %}
+            
+            <!-- Display all form errors for debugging -->
+            {% if form.errors %}
+                <div class="col-12 mb-3">
+                    <div class="alert alert-warning">
+                        <strong>Debug - All Form Errors:</strong>
+                        <pre>{{ form.errors }}</pre>
+                    </div>
+                </div>
+            {% endif %}
+            
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="{{ form.title.id_for_label }}" class="form-label">
@@ -334,4 +354,98 @@
     </div>
     {% endif %}
 </div>
+
+<script>
+function updateSubjectChoices() {
+    console.log('updateSubjectChoices called');
+    const classLevel = document.getElementById('id_class_level').value;
+    const subjectSelect = document.getElementById('id_subject');
+    
+    console.log('Selected class level:', classLevel);
+    
+    if (!classLevel) {
+        subjectSelect.innerHTML = '<option value="">Select a class first</option>';
+        return;
+    }
+    
+    // Show loading state
+    subjectSelect.innerHTML = '<option value="">Loading subjects...</option>';
+    subjectSelect.disabled = true;
+    
+    // Make AJAX request to get subjects for the selected class
+    fetch(`{% url 'get_subjects_for_class' %}?class_level=${classLevel}`)
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Received subjects data:', data);
+            subjectSelect.innerHTML = '<option value="">Select a subject</option>';
+            
+            data.subjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject.value;
+                option.textContent = subject.label;
+                subjectSelect.appendChild(option);
+            });
+            
+            subjectSelect.disabled = false;
+        })
+        .catch(error => {
+            console.error('Error fetching subjects:', error);
+            subjectSelect.innerHTML = '<option value="">Error loading subjects</option>';
+            subjectSelect.disabled = false;
+        });
+}
+
+// Initialize subjects on page load if class is already selected
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded');
+    const classLevelSelect = document.getElementById('id_class_level');
+    const subjectSelect = document.getElementById('id_subject');
+    
+    if (!classLevelSelect || !subjectSelect) {
+        console.error('Form elements not found!');
+        return;
+    }
+    
+    // Add event listener for class level changes
+    classLevelSelect.addEventListener('change', updateSubjectChoices);
+    
+    // Initialize subjects if class is already selected
+    const classLevel = classLevelSelect.value;
+    if (classLevel) {
+        console.log('Initial class level found:', classLevel);
+        updateSubjectChoices();
+    }
+    
+    // Add form submission debugging
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            console.log('Form submission attempted');
+            console.log('Class level:', classLevelSelect.value);
+            console.log('Subject:', subjectSelect.value);
+            
+            // Check if required fields are filled
+            if (!classLevelSelect.value) {
+                console.error('Class level not selected');
+                e.preventDefault();
+                alert('Please select a class level');
+                return false;
+            }
+            
+            if (!subjectSelect.value) {
+                console.error('Subject not selected');
+                e.preventDefault();
+                alert('Please select a subject');
+                return false;
+            }
+            
+            console.log('Form validation passed, submitting...');
+        });
+    }
+});
+</script>
+
 {% endblock body %}

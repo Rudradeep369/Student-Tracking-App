@@ -10,7 +10,7 @@ class Student(models.Model):
     phone_number = models.CharField(max_length=15, blank=True)
     phone_number2 = models.CharField(max_length=15, blank=True)
     board = models.CharField(max_length=50, choices=[('CBSE', 'CBSE'), ('WBBSE', 'WBBSE'), ('WBCHSE', 'WBCHSE'), ('ICSE', 'ICSE'), ('ISC', 'ISC')])
-    student_class = models.IntegerField(choices=[(1,1),(2,2),(3,3),(4,4),(5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10), (11, 11), (12, 12)])
+    student_class = models.IntegerField(choices=[(5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10), (11, 11), (12, 12)])
     subject = models.CharField(max_length=100, default='All')
     addmission_date = models.DateField(default=timezone.now)
     fees = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -48,6 +48,8 @@ class Payment(models.Model):
     date = models.DateField(default=timezone.now)
     months = MultiSelectField(choices=MONTH_CHOICES, default='1', max_length=100)
     modification  = models.CharField(blank=True, null=True, default="", max_length=50)
+    created_date = models.DateTimeField(default=timezone.now)
+    updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.student.name} - {self.amount} - {self.months}"
@@ -112,30 +114,21 @@ class StudyMaterial(models.Model):
     ]
     
     CLASS_CHOICES = [
-        (1, 'Class 1'), (2, 'Class 2'), (3, 'Class 3'), (4, 'Class 4'),
         (5, 'Class 5'), (6, 'Class 6'), (7, 'Class 7'), (8, 'Class 8'),
         (9, 'Class 9'), (10, 'Class 10'), (11, 'Class 11'), (12, 'Class 12')
     ]
     
     SUBJECT_CHOICES = [
-        ('Mathematics', 'Mathematics'),
         ('Science', 'Science'),
-        ('Arts', 'Arts'),
         ('English', 'English'),
-        ('Hindi', 'Hindi'),
-        ('Bengali', 'Bengali'),
-        ('Social Science', 'Social Science'),
+        ('Arts', 'Arts'),
+        ('Mathematics', 'Mathematics'),
         ('Physical Science', 'Physical Science'),
+        ('Life Science', 'Life Science'),
         ('Physics', 'Physics'),
-        ('Chemistry', 'Chemistry'),
         ('Biology', 'Biology'),
         ('Nutrition', 'Nutrition'),
-        ('Computer Science', 'Computer Science'),
-        ('Economics', 'Economics'),
-        ('Geography', 'Geography'),
-        ('History', 'History'),
-        ('Political Science', 'Political Science'),
-        ('All', 'All Subjects'),
+        ('Bengali', 'Bengali'),
     ]
     
     title = models.CharField(max_length=200, help_text="Title of the study material")

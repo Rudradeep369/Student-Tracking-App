@@ -295,6 +295,46 @@
     .student-link:hover {
         color: var(--secondary-blue);
     }
+    
+    /* Pagination Styles */
+    .pagination-modern {
+        justify-content: center;
+        margin: 0;
+    }
+    
+    .pagination-modern .page-item {
+        margin: 0 2px;
+    }
+    
+    .pagination-modern .page-link {
+        border: none;
+        padding: 10px 15px;
+        background: var(--light-gray);
+        color: var(--dark-gray);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .pagination-modern .page-link:hover {
+        background: var(--accent-blue);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+    
+    .pagination-modern .page-item.active .page-link {
+        background: var(--gradient-primary);
+        color: white;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    
+    .pagination-modern .page-item.disabled .page-link {
+        background: #e9ecef;
+        color: #6c757d;
+        cursor: not-allowed;
+    }
 
     .due-amount {
         font-weight: 700;
@@ -500,10 +540,6 @@
                         
                                 <select class="filter-select" name="Class" title="board_class">
                                     <option value="" {% if class_filter == '' %}selected{% endif %}>All Classes</option>
-                                    <option value="1" {% if class_filter == '1' %}selected{% endif %}>1</option>
-                                    <option value="2" {% if class_filter == '2' %}selected{% endif %}>2</option>
-                                    <option value="3" {% if class_filter == '3' %}selected{% endif %}>3</option>
-                                    <option value="4" {% if class_filter == '4' %}selected{% endif %}>4</option>
                                     <option value="5" {% if class_filter == '5' %}selected{% endif %}>5</option>
                                     <option value="6" {% if class_filter == '6' %}selected{% endif %}>6</option>
                                     <option value="7" {% if class_filter == '7' %}selected{% endif %}>7</option>
@@ -524,6 +560,34 @@
                     </div>
                 </div>
 
+                <!-- Items per page selector -->
+                <div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+                    <div>
+                        <form method="get" class="d-inline-flex align-items-center" style="gap: 10px;">
+                            {% if request.GET.search %}
+                                <input type="hidden" name="search" value="{{ request.GET.search }}">
+                            {% endif %}
+                            {% if request.GET.Board %}
+                                <input type="hidden" name="Board" value="{{ request.GET.Board }}">
+                            {% endif %}
+                            {% if request.GET.Class %}
+                                <input type="hidden" name="Class" value="{{ request.GET.Class }}">
+                            {% endif %}
+                            {% if request.GET.Subject %}
+                                <input type="hidden" name="Subject" value="{{ request.GET.Subject }}">
+                            {% endif %}
+                            <small class="text-muted">Show:</small>
+                            <select name="per_page" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()">
+                                <option value="10" {% if request.GET.per_page == "10" or not request.GET.per_page %}selected{% endif %}>10</option>
+                                <option value="25" {% if request.GET.per_page == "25" %}selected{% endif %}>25</option>
+                                <option value="50" {% if request.GET.per_page == "50" %}selected{% endif %}>50</option>
+                                <option value="100" {% if request.GET.per_page == "100" %}selected{% endif %}>100</option>
+                            </select>
+                            <small class="text-muted">students per page</small>
+                        </form>
+                    </div>
+                </div>
+                
                 <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
                     <table class="table table-modern text-center m-0">
                         <thead class="sticky-top">
@@ -540,7 +604,7 @@
                         <tbody>
                             {% for student in students %}
                             <tr>
-                                <td>{{ forloop.counter }}</td>
+                                <td>{{ forloop.counter|add:page_obj.start_index|add:"-1" }}</td>
                                 <td>
                                     <a href="{% url 'student_profile' student.id %}" class="student-link">
                                         {{ student.name }}
@@ -571,6 +635,91 @@
                         </tbody>
                     </table>
                 </div>
+                
+                <!-- Pagination Controls -->
+                {% if page_obj.has_other_pages %}
+                <div class="d-flex justify-content-center mt-4">
+                    <nav aria-label="Student pagination">
+                        <ul class="pagination pagination-modern">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}{% if request.GET.Board %}Board={{ request.GET.Board }}&{% endif %}{% if request.GET.Class %}Class={{ request.GET.Class }}&{% endif %}{% if request.GET.Subject %}Subject={{ request.GET.Subject }}&{% endif %}{% if request.GET.per_page %}per_page={{ request.GET.per_page }}&{% endif %}page=1" aria-label="First">
+                                        <span aria-hidden="true">&laquo;&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}{% if request.GET.Board %}Board={{ request.GET.Board }}&{% endif %}{% if request.GET.Class %}Class={{ request.GET.Class }}&{% endif %}{% if request.GET.Subject %}Subject={{ request.GET.Subject }}&{% endif %}{% if request.GET.per_page %}per_page={{ request.GET.per_page }}&{% endif %}page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}{% if request.GET.Board %}Board={{ request.GET.Board }}&{% endif %}{% if request.GET.Class %}Class={{ request.GET.Class }}&{% endif %}{% if request.GET.Subject %}Subject={{ request.GET.Subject }}&{% endif %}{% if request.GET.per_page %}per_page={{ request.GET.per_page }}&{% endif %}page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}{% if request.GET.Board %}Board={{ request.GET.Board }}&{% endif %}{% if request.GET.Class %}Class={{ request.GET.Class }}&{% endif %}{% if request.GET.Subject %}Subject={{ request.GET.Subject }}&{% endif %}{% if request.GET.per_page %}per_page={{ request.GET.per_page }}&{% endif %}page={{ page_obj.next_page_number }}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}{% if request.GET.Board %}Board={{ request.GET.Board }}&{% endif %}{% if request.GET.Class %}Class={{ request.GET.Class }}&{% endif %}{% if request.GET.Subject %}Subject={{ request.GET.Subject }}&{% endif %}{% if request.GET.per_page %}per_page={{ request.GET.per_page }}&{% endif %}page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                                        <span aria-hidden="true">&raquo;&raquo;</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+                
+                <!-- Pagination Info -->
+                <div class="text-center mt-2">
+                    <small class="text-muted">
+                        Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} students
+                        {% if page_obj.paginator.num_pages > 1 %}
+                            (Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }})
+                        {% endif %}
+                    </small>
+                </div>
+                
+                <!-- Quick Page Navigation -->
+                {% if page_obj.paginator.num_pages > 5 %}
+                <div class="text-center mt-3">
+                    <form method="get" class="d-inline-flex align-items-center" style="gap: 10px;">
+                        {% if request.GET.search %}
+                            <input type="hidden" name="search" value="{{ request.GET.search }}">
+                        {% endif %}
+                        {% if request.GET.Board %}
+                            <input type="hidden" name="Board" value="{{ request.GET.Board }}">
+                        {% endif %}
+                        {% if request.GET.Class %}
+                            <input type="hidden" name="Class" value="{{ request.GET.Class }}">
+                        {% endif %}
+                        {% if request.GET.Subject %}
+                            <input type="hidden" name="Subject" value="{{ request.GET.Subject }}">
+                        {% endif %}
+                        {% if request.GET.per_page %}
+                            <input type="hidden" name="per_page" value="{{ request.GET.per_page }}">
+                        {% endif %}
+                        <small class="text-muted">Go to page:</small>
+                        <input type="number" name="page" min="1" max="{{ page_obj.paginator.num_pages }}" 
+                               value="{{ page_obj.number }}" class="form-control form-control-sm" 
+                               style="width: 80px;" onchange="this.form.submit()">
+                        <small class="text-muted">of {{ page_obj.paginator.num_pages }}</small>
+                    </form>
+                </div>
+                {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>

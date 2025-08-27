@@ -11,6 +11,7 @@ from .forms import LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 import os
 
 
@@ -46,6 +47,7 @@ def user_logout(request):
 @login_required(login_url='login')
 def index(request):
     search_query = request.GET.get("search", "")
+    per_page = int(request.GET.get("per_page", 10))  # Default 10 items per page
     students = Student.objects.all()
 
     if search_query:
@@ -56,6 +58,11 @@ def index(request):
             Q(student_class__icontains=search_query)
         )
 
+    # Pagination
+    paginator = Paginator(students, per_page)  # Use dynamic per_page value
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     total_students = students.count()
     cbse_students = students.filter(board='CBSE').count()
     wbbse_students = students.filter(board='WBBSE').count()
@@ -64,7 +71,8 @@ def index(request):
     isc_students = students.filter(board='ISC').count()
 
     context = {
-        'students': students,
+        'students': page_obj,  # Use paginated students
+        'page_obj': page_obj,  # Add page object for pagination controls
         'total_students': total_students,
         'cbse_students': cbse_students,
         'wbbse_students': wbbse_students,
@@ -79,6 +87,8 @@ def index(request):
 @login_required(login_url='login')
 def filter_students(request):
     print(request.GET)
+    per_page = int(request.GET.get("per_page", 10))  # Default 10 items per page
+    
     if request.GET.get("Board") or request.GET.get("Class") or request.GET.get("Subject"):
         filters = {}
     
@@ -94,9 +104,16 @@ def filter_students(request):
             filters['subject__icontains'] = subject
         
         students = Student.objects.filter(**filters)
+        
+        # Pagination for filtered results
+        paginator = Paginator(students, per_page)  # Use dynamic per_page value
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        
         # print("Students:", students)
         context = {
-            'students': students,
+            'students': page_obj,  # Use paginated students
+            'page_obj': page_obj,  # Add page object for pagination controls
             'total_students': students.count(),
             'cbse_students': students.filter(board='CBSE').count(),
             'wbbse_students': students.filter(board='WBBSE').count(),
@@ -108,8 +125,16 @@ def filter_students(request):
             'batch_form': BatchForm(),
         }
     else:
+        students = Student.objects.all()
+        
+        # Pagination for all students
+        paginator = Paginator(students, per_page)  # Use dynamic per_page value
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        
         context = {
-            'students': Student.objects.all(),
+            'students': page_obj,  # Use paginated students
+            'page_obj': page_obj,  # Add page object for pagination controls
             'total_students': Student.objects.count(),
             'cbse_students': Student.objects.filter(board='CBSE').count(),
             'wbbse_students': Student.objects.filter(board='WBBSE').count(),
@@ -194,7 +219,7 @@ def add_student(request):
 def student_profile(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     batches = Batch.objects.filter(students=student)
-    payments = Payment.objects.filter(student=student).order_by('-date')
+    payments = Payment.objects.filter(student=student).order_by('-updated_date')
     context = {
         'student': student,
         'batches': batches,
@@ -775,6 +800,9 @@ def add_study_material(request):
             messages.success(request, 'Study material added successfully!')
             return redirect('add_study_material')
         else:
+            # Add debugging information
+            print("Form errors:", form.errors)
+            print("Form non-field errors:", form.non_field_errors())
             messages.error(request, 'Please correct the errors below.')
     else:
         form = StudyMaterialForm()
@@ -835,3 +863,83 @@ def all_study_materials(request):
         'total_materials': study_materials.count(),
     }
     return render(request, 'all_study_materials.html', context)
+
+
+def study_materials_by_filter(request, class_level, subject, board):
+    """
+    View to display study materials filtered by class, subject, and board.
+    Used when clicking on board buttons in class_details.html
+    """
+    # Filter study materials based on the parameters
+    study_materials = StudyMaterial.objects.filter(
+        class_level=class_level,
+        subject=subject,
+        board=board,
+        is_active=True
+    ).order_by('-upload_date')
+    
+    # Additional search functionality
+    search_query = request.GET.get('search', '')
+    if search_query:
+        study_materials = study_materials.filter(
+            Q(title__icontains=search_query) |
+            Q(description__icontains=search_query)
+        )
+    
+    context = {
+        'study_materials': study_materials,
+        'class_level': class_level,
+        'subject': subject,
+        'board': board,
+        'search_query': search_query,
+        'page_title': f'Class {class_level} {subject} - {board} Study Materials',
+        'total_materials': study_materials.count(),
+    }
+    
+    return render(request, 'study_materials_filtered.html', context)
+
+
+from django.http import JsonResponse
+
+def get_subjects_for_class(request):
+    """
+    AJAX view to return available subjects for a selected class level
+    """
+    class_level = request.GET.get('class_level')
+    
+    if not class_level:
+        return JsonResponse({'subjects': []})
+    
+    try:
+        class_level = int(class_level)
+    except ValueError:
+        return JsonResponse({'subjects': []})
+    
+    # Define subject choices based on class level
+    if class_level in [5, 6, 7]:
+        subjects = [
+            {'value': 'Science', 'label': 'Science'},
+            {'value': 'English', 'label': 'English'},
+            {'value': 'Arts', 'label': 'Arts'},
+        ]
+    elif class_level in [8, 9, 10]:
+        subjects = [
+            {'value': 'Mathematics', 'label': 'Mathematics'},
+            {'value': 'Physical Science', 'label': 'Physical Science'},
+            {'value': 'Life Science', 'label': 'Life Science'},
+            {'value': 'Arts', 'label': 'Arts'},
+            {'value': 'English', 'label': 'English'},
+        ]
+    elif class_level in [11, 12]:
+        subjects = [
+            {'value': 'Mathematics', 'label': 'Mathematics'},
+            {'value': 'Physics', 'label': 'Physics'},
+            {'value': 'Biology', 'label': 'Biology'},
+            {'value': 'Nutrition', 'label': 'Nutrition'},
+            {'value': 'English', 'label': 'English'},
+            {'value': 'Bengali', 'label': 'Bengali'},
+        ]
+    else:
+        subjects = []
+    
+    return JsonResponse({'subjects': subjects})

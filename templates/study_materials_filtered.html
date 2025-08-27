@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title }} - The Learner's Point{% endblock title %}
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "css/index.css" %}">
+    <link rel="stylesheet" href="{% static "css/footer.css" %}">
+    <style>
+        .study-material-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .study-material-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .material-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .board-badge {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        .material-info {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        .download-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: none;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        .download-btn:hover {
+            transform: scale(1.05);
+            color: white;
+            text-decoration: none;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+        .back-btn {
+            background: linear-gradient(45deg, #6c757d, #495057);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 20px;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        .back-btn:hover {
+            color: white;
+            text-decoration: none;
+            opacity: 0.9;
+        }
+        .search-container {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+    </style>
+{% endblock style %}
+
+{% block body %}
+{% include "message.html" %}
+
+<div class="container my-5">
+    <!-- Back Button -->
+    <a href="{% url 'class_details' %}" class="back-btn">
+        <i class="bi bi-arrow-left"></i> Back to Class Details
+    </a>
+
+    <!-- Header Section -->
+    <div class="material-header mb-4">
+        <h1 class="display-5 mb-0">{{ page_title }}</h1>
+        <p class="lead mb-0">{{ total_materials }} material{{ total_materials|pluralize }} found</p>
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-container">
+        <form method="GET" class="row g-3">
+            <div class="col-md-10">
+                <input type="text" 
+                       class="form-control form-control-lg" 
+                       name="search" 
+                       value="{{ search_query }}" 
+                       placeholder="Search in titles and descriptions..."
+                       style="border-radius: 25px;">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary btn-lg w-100" style="border-radius: 25px;">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Filter Information -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="material-info">
+                <h5 class="mb-3"><i class="bi bi-funnel"></i> Current Filters:</h5>
+                <div class="row">
+                    <div class="col-md-4">
+                        <strong>Class:</strong> <span class="badge bg-primary">Class {{ class_level }}</span>
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Subject:</strong> <span class="badge bg-info">{{ subject }}</span>
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Board:</strong> <span class="board-badge">{{ board }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Study Materials Grid -->
+    {% if study_materials %}
+        <div class="row g-4">
+            {% for material in study_materials %}
+                <div class="col-lg-6 col-xl-4">
+                    <div class="card study-material-card h-100">
+                        <div class="card-body p-4">
+                            <!-- Title -->
+                            <h5 class="card-title text-primary mb-3">
+                                <i class="bi bi-book"></i> {{ material.title }}
+                            </h5>
+                            
+                            <!-- Description -->
+                            {% if material.description %}
+                                <p class="card-text text-muted mb-3">{{ material.description|truncatewords:20 }}</p>
+                            {% endif %}
+                            
+                            <!-- Material Details -->
+                            <div class="row text-center mb-3">
+                                <div class="col-4">
+                                    <small class="text-muted d-block">Class</small>
+                                    <strong class="text-primary">{{ material.class_level }}</strong>
+                                </div>
+                                <div class="col-4">
+                                    <small class="text-muted d-block">Subject</small>
+                                    <strong class="text-info">{{ material.subject }}</strong>
+                                </div>
+                                <div class="col-4">
+                                    <small class="text-muted d-block">Board</small>
+                                    <strong class="text-success">{{ material.board }}</strong>
+                                </div>
+                            </div>
+                            
+                            <!-- Upload Date -->
+                            <p class="text-muted small mb-3">
+                                <i class="bi bi-calendar"></i> Uploaded: {{ material.upload_date|date:"M d, Y" }}
+                            </p>
+                            
+                            <!-- Download Button -->
+                            <div class="text-center">
+                                <a href="{{ material.google_drive_link }}" 
+                                   target="_blank" 
+                                   class="download-btn">
+                                    <i class="bi bi-download"></i> Access Material
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- Empty State -->
+        <div class="empty-state">
+            <i class="bi bi-inbox display-1 text-muted mb-3"></i>
+            <h3 class="text-muted">No Study Materials Found</h3>
+            <p class="text-muted mb-4">
+                {% if search_query %}
+                    No materials match your search "{{ search_query }}" for Class {{ class_level }} {{ subject }} ({{ board }}).
+                {% else %}
+                    No study materials are currently available for Class {{ class_level }} {{ subject }} ({{ board }}).
+                {% endif %}
+            </p>
+            {% if search_query %}
+                <a href="{% url 'study_materials_by_filter' class_level subject board %}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-clockwise"></i> Clear Search
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <!-- Action Buttons -->
+    {% if user.is_staff %}
+        <div class="text-center mt-5">
+            <a href="{% url 'add_study_material' %}" class="btn btn-success btn-lg">
+                <i class="bi bi-plus-circle"></i> Add New Study Material
+            </a>
+            <a href="{% url 'all_study_materials' %}" class="btn btn-outline-primary btn-lg ms-3">
+                <i class="bi bi-list"></i> Manage All Materials
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+{% include "footer.html" %}
+{% endblock body %}

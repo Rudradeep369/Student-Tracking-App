@@ -193,11 +193,14 @@ class StudyMaterialForm(forms.ModelForm):
             }),
             'class_level': forms.Select(attrs={
                 'class': 'form-control',
-                'required': True
+                'required': True,
+                'id': 'id_class_level',
+                'onchange': 'updateSubjectChoices()'
             }),
             'subject': forms.Select(attrs={
                 'class': 'form-control',
-                'required': True
+                'required': True,
+                'id': 'id_subject'
             }),
             'google_drive_link': forms.URLInput(attrs={
                 'class': 'form-control',
@@ -217,6 +220,56 @@ class StudyMaterialForm(forms.ModelForm):
             'google_drive_link': 'Google Drive Link',
             'is_active': 'Active Status'
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Always set all possible subject choices to avoid validation errors
+        # The frontend JavaScript will filter the display
+        all_subjects = [
+            ('', 'Select a subject'),
+            ('Science', 'Science'),
+            ('English', 'English'),
+            ('Arts', 'Arts'),
+            ('Mathematics', 'Mathematics'),
+            ('Physical Science', 'Physical Science'),
+            ('Life Science', 'Life Science'),
+            ('Physics', 'Physics'),
+            ('Biology', 'Biology'),
+            ('Nutrition', 'Nutrition'),
+            ('Bengali', 'Bengali'),
+        ]
+        
+        self.fields['subject'].choices = all_subjects
+
+    def get_valid_subjects_for_class(self, class_level):
+        """Return list of valid subjects for a given class level"""
+        if class_level in [5, 6, 7]:
+            return ['Science', 'English', 'Arts']
+        elif class_level in [8, 9, 10]:
+            return ['Mathematics', 'Physical Science', 'Life Science', 'Arts', 'English']
+        elif class_level in [11, 12]:
+            return ['Mathematics', 'Physics', 'Biology', 'Nutrition', 'English', 'Bengali']
+        else:
+            # Fallback - allow all subjects
+            return ['Science', 'English', 'Arts', 'Mathematics', 'Physical Science', 
+                   'Life Science', 'Physics', 'Biology', 'Nutrition', 'Bengali']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        class_level = cleaned_data.get('class_level')
+        subject = cleaned_data.get('subject')
+        
+        if class_level and subject:
+            # Validate that the selected subject is appropriate for the class level
+            valid_subjects = self.get_valid_subjects_for_class(class_level)
+            if subject not in valid_subjects:
+                raise forms.ValidationError(
+                    f"The subject '{subject}' is not available for Class {class_level}. "
+                    f"Available subjects: {', '.join(valid_subjects)}"
+                )
+        
+        return cleaned_data
 
     def clean_title(self):
         title = self.cleaned_data.get('title')
