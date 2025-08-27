@@ -1,0 +1,337 @@
+{% extends "base.html" %}
+{% block title %}Add Study Material{% endblock title %}
+{% load static %}
+
+{% block style %}
+<style>
+    /* Professional Color Palette */
+    :root {
+        --primary-blue: #2563eb;
+        --secondary-blue: #1e40af;
+        --accent-blue: #3b82f6;
+        --light-blue: #dbeafe;
+        --success-green: #059669;
+        --warning-orange: #d97706;
+        --danger-red: #dc2626;
+        --dark-gray: #374151;
+        --medium-gray: #6b7280;
+        --light-gray: #f3f4f6;
+        --white: #ffffff;
+        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+
+    .main-container {
+        background: var(--white);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        margin: 20px;
+        overflow: hidden;
+    }
+
+    .header-section {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+    }
+
+    .page-title {
+        position: relative;
+        z-index: 2;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .form-container {
+        background: var(--white);
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        margin: 30px;
+    }
+
+    .form-section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--dark-gray);
+        margin-bottom: 20px;
+        border-bottom: 2px solid var(--light-blue);
+        padding-bottom: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--dark-gray);
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 12px 15px;
+        transition: border-color 0.3s ease;
+        font-size: 1rem;
+        width: 100%;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        outline: none;
+    }
+
+    .btn-submit {
+        background: var(--gradient-success);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        padding: 15px 30px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        color: white;
+    }
+
+    .btn-back {
+        background: var(--gradient-primary);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        padding: 12px 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        margin-right: 15px;
+    }
+
+    .btn-back:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        color: white;
+    }
+
+    .recent-materials {
+        background: var(--light-gray);
+        border-radius: 15px;
+        padding: 25px;
+        margin: 30px;
+    }
+
+    .material-item {
+        background: var(--white);
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        transition: transform 0.2s ease;
+    }
+
+    .material-item:hover {
+        transform: translateY(-2px);
+    }
+
+    .material-title {
+        font-weight: 700;
+        color: var(--dark-gray);
+        margin-bottom: 5px;
+    }
+
+    .material-details {
+        color: var(--medium-gray);
+        font-size: 0.9rem;
+    }
+
+    .board-badge {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: white;
+    }
+
+    .board-cbse { background: var(--success-green); }
+    .board-wbbse { background: var(--primary-blue); }
+    .board-icse { background: var(--warning-orange); }
+    .board-wbchse { background: var(--danger-red); }
+    .board-isc { background: var(--accent-blue); }
+
+    .form-check {
+        margin-top: 10px;
+    }
+
+    .form-check-input {
+        margin-right: 10px;
+    }
+
+    .form-check-label {
+        color: var(--dark-gray);
+        font-weight: 600;
+    }
+
+    .error-message {
+        color: var(--danger-red);
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+{% include "message.html" %}
+<div class="main-container">
+    <!-- Header Section -->
+    <div class="header-section">
+        <h1 class="page-title">
+            <i class="fas fa-book me-3"></i>Add Study Material
+        </h1>
+        <p class="lead mb-0" style="position: relative; z-index: 2;">Upload and manage educational resources</p>
+    </div>
+
+    <!-- Form Section -->
+    <div class="form-container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="form-section-title mb-0">
+                <i class="fas fa-plus-circle me-2"></i>New Study Material
+            </h2>
+            <div>
+                <a href="{% url 'index' %}" class="btn-back">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+                <a href="{% url 'all_study_materials' %}" class="btn-back">
+                    <i class="fas fa-library me-2"></i>View All Materials
+                </a>
+            </div>
+        </div>
+
+        <form method="post" class="row">
+            {% csrf_token %}
+            
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="{{ form.title.id_for_label }}" class="form-label">
+                        <i class="fas fa-heading me-1"></i>{{ form.title.label }}
+                    </label>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                        <div class="error-message">{{ form.title.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.board.id_for_label }}" class="form-label">
+                        <i class="fas fa-graduation-cap me-1"></i>{{ form.board.label }}
+                    </label>
+                    {{ form.board }}
+                    {% if form.board.errors %}
+                        <div class="error-message">{{ form.board.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.class_level.id_for_label }}" class="form-label">
+                        <i class="fas fa-chalkboard me-1"></i>{{ form.class_level.label }}
+                    </label>
+                    {{ form.class_level }}
+                    {% if form.class_level.errors %}
+                        <div class="error-message">{{ form.class_level.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.subject.id_for_label }}" class="form-label">
+                        <i class="fas fa-book-open me-1"></i>{{ form.subject.label }}
+                    </label>
+                    {{ form.subject }}
+                    {% if form.subject.errors %}
+                        <div class="error-message">{{ form.subject.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="{{ form.google_drive_link.id_for_label }}" class="form-label">
+                        <i class="fab fa-google-drive me-1"></i>{{ form.google_drive_link.label }}
+                    </label>
+                    {{ form.google_drive_link }}
+                    {% if form.google_drive_link.errors %}
+                        <div class="error-message">{{ form.google_drive_link.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.description.id_for_label }}" class="form-label">
+                        <i class="fas fa-align-left me-1"></i>{{ form.description.label }}
+                    </label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <div class="error-message">{{ form.description.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-check">
+                    {{ form.is_active }}
+                    <label for="{{ form.is_active.id_for_label }}" class="form-check-label">
+                        <i class="fas fa-toggle-on me-1"></i>{{ form.is_active.label }}
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-12 mt-4">
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-save me-2"></i>Add Study Material
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Recent Materials Section -->
+    {% if study_materials %}
+    <div class="recent-materials">
+        <h3 class="form-section-title">
+            <i class="fas fa-clock me-2"></i>Recently Added Materials
+        </h3>
+        {% for material in study_materials|slice:":5" %}
+        <div class="material-item">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="material-title">{{ material.title }}</div>
+                    <div class="material-details">
+                        <span class="board-badge board-{{ material.board|lower }}">{{ material.board }}</span>
+                        <span class="ms-2">Class {{ material.class_level }} • {{ material.subject }}</span>
+                        <span class="ms-2 text-muted">{{ material.upload_date|date:"M d, Y" }}</span>
+                    </div>
+                </div>
+                <a href="{{ material.google_drive_link }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-external-link-alt me-1"></i>Open
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock body %}

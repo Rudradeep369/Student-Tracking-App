@@ -60,6 +60,10 @@ urlpatterns = [
     path('edit_achievement/<int:achievement_id>/', views.edit_achievement, name='edit_achievement'),
     path('delete_achievement/<int:achievement_id>/', views.delete_achievement, name='delete_achievement'),
 
+    # Study Material URLs
+    path('add-study-material/', views.add_study_material, name='add_study_material'),
+    path('all-study-materials/', views.all_study_materials, name='all_study_materials'),
+
 ]
 
 

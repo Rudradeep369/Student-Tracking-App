@@ -110,6 +110,14 @@
         background: var(--gradient-secondary);
     }
 
+    .stats-card.wbchse-students::before {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    }
+
+    .stats-card.isc-students::before {
+        background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    }
+
     .stats-number {
         font-size: 2.5rem;
         font-weight: 800;
@@ -179,6 +187,16 @@
     .action-btn.view-students {
         background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
         color: var(--dark-gray);
+    }
+
+    .action-btn.study-material {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+    }
+
+    .action-btn.view-materials {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
     }
 
     .action-btn:hover {
@@ -367,28 +385,40 @@
                 <div class="col-lg-9 col-md-8 col-sm-12">
                     <!-- Statistics Section -->
                     <div class="row mb-4 g-3">
-                        <div class="col-6 col-md-6 col-lg-3">
+                        <div class="col-6 col-md-4 col-lg-2">
                             <div class="stats-card total-students">
                                 <div class="stats-number">{{ total_students }}</div>
-                                <div class="stats-label">Total Students</div>
+                                <div class="stats-label">Total</div>
                             </div>
                         </div>
-                        <div class="col-6 col-md-6 col-lg-3">
+                        <div class="col-6 col-md-4 col-lg-2">
                             <div class="stats-card cbse-students">
                                 <div class="stats-number">{{ cbse_students }}</div>
-                                <div class="stats-label">CBSE Students</div>
+                                <div class="stats-label">CBSE</div>
                             </div>
                         </div>
-                        <div class="col-6 col-md-6 col-lg-3">
+                        <div class="col-6 col-md-4 col-lg-2">
                             <div class="stats-card wbbse-students">
                                 <div class="stats-number">{{ wbbse_students }}</div>
-                                <div class="stats-label">WBBSE Students</div>
+                                <div class="stats-label">WBBSE</div>
                             </div>
                         </div>
-                        <div class="col-6 col-md-6 col-lg-3">
+                        <div class="col-6 col-md-4 col-lg-2">
                             <div class="stats-card icse-students">
                                 <div class="stats-number">{{ icse_students }}</div>
-                                <div class="stats-label">ICSE Students</div>
+                                <div class="stats-label">ICSE</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-2">
+                            <div class="stats-card wbchse-students">
+                                <div class="stats-number">{{ wbchse_students }}</div>
+                                <div class="stats-label">WBCHSE</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-2">
+                            <div class="stats-card isc-students">
+                                <div class="stats-number">{{ isc_students }}</div>
+                                <div class="stats-label">ISC</div>
                             </div>
                         </div>
                     </div>
@@ -396,34 +426,44 @@
                     <!-- Action Buttons -->
                     <div class="action-buttons-container">
                         <div class="row g-3">
-                            <div class="col-6 col-md-6 col-lg-4">
+                            <div class="col-6 col-md-4 col-lg-3">
                                 <a href="#" class="action-btn create-batch w-100" data-bs-toggle="modal" data-bs-target="#createBatchModal">
                                     <i class="fas fa-plus-circle me-2"></i>Create Batch
                                 </a>
                             </div>
-                            <div class="col-6 col-md-6 col-lg-4">
+                            <div class="col-6 col-md-4 col-lg-3">
                                 <a href="{% url 'view_batches' %}" class="action-btn view-batch w-100">
                                     <i class="fas fa-eye me-2"></i>View Batches
                                 </a>
                             </div>
-                            <div class="col-6 col-md-6 col-lg-4">
+                            <div class="col-6 col-md-4 col-lg-3">
                                 <a href="{% url 'add_teacher' %}" class="action-btn add-teacher w-100">
                                     <i class="fas fa-user-plus me-2"></i>Add Teacher
                                 </a>
                             </div>
-                            <div class="col-6 col-md-6 col-lg-4">
+                            <div class="col-6 col-md-4 col-lg-3">
                                 <a href="{% url 'all_payments' %}" class="action-btn all-payments w-100">
                                     <i class="fas fa-money-bill-wave me-2"></i>All Payments
                                 </a>
                             </div>
-                            <div class="col-6 col-md-6 col-lg-4">
+                            <div class="col-6 col-md-4 col-lg-3">
                                 <a href="{% url 'achievement' %}" class="action-btn achievement w-100">
                                     <i class="fas fa-trophy me-2"></i>Achievements
                                 </a>
                             </div>
-                            <div class="col-6 col-md-6 col-lg-4">
+                            <div class="col-6 col-md-4 col-lg-3">
                                 <a href="{% url 'all_students' %}" class="action-btn view-students w-100">
                                     <i class="fas fa-users me-2"></i>View All Students
+                                </a>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <a href="{% url 'add_study_material' %}" class="action-btn study-material w-100">
+                                    <i class="fas fa-book me-2"></i>Add Study Material
+                                </a>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <a href="{% url 'all_study_materials' %}" class="action-btn view-materials w-100">
+                                    <i class="fas fa-library me-2"></i>View Materials
                                 </a>
                             </div>
                         </div>
@@ -454,6 +494,8 @@
                                     <option value="CBSE" {% if board_filter == 'CBSE' %}selected{% endif %}>CBSE</option>
                                     <option value="WBBSE" {% if board_filter == 'WBBSE' %}selected{% endif %}>WBBSE</option>
                                     <option value="ICSE" {% if board_filter == 'ICSE' %}selected{% endif %}>ICSE</option>
+                                    <option value="WBCHSE" {% if board_filter == 'WBCHSE' %}selected{% endif %}>WBCHSE</option>
+                                    <option value="ISC" {% if board_filter == 'ISC' %}selected{% endif %}>ISC</option>
                                 </select>
                         
                                 <select class="filter-select" name="Class" title="board_class">

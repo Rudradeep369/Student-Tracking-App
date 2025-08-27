@@ -1,0 +1,531 @@
+{% extends "base.html" %}
+{% block title %}All Study Materials{% endblock title %}
+{% load static %}
+
+{% block style %}
+<style>
+    /* Professional Color Palette */
+    :root {
+        --primary-blue: #2563eb;
+        --secondary-blue: #1e40af;
+        --accent-blue: #3b82f6;
+        --light-blue: #dbeafe;
+        --success-green: #059669;
+        --warning-orange: #d97706;
+        --danger-red: #dc2626;
+        --dark-gray: #374151;
+        --medium-gray: #6b7280;
+        --light-gray: #f3f4f6;
+        --white: #ffffff;
+        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+
+    .main-container {
+        background: var(--white);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        margin: 20px;
+        overflow: hidden;
+    }
+
+    .header-section {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+    }
+
+    .page-title {
+        position: relative;
+        z-index: 2;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .stats-badge {
+        position: relative;
+        z-index: 2;
+        background: rgba(255,255,255,0.2);
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 25px;
+        color: white;
+        padding: 8px 20px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-top: 15px;
+        display: inline-block;
+    }
+
+    .controls-section {
+        background: var(--light-gray);
+        padding: 25px;
+        border-radius: 15px;
+        margin: 30px;
+    }
+
+    .controls-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .btn-add-material {
+        background: var(--gradient-success);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        padding: 12px 25px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .btn-add-material:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        color: white;
+    }
+
+    .btn-dashboard {
+        background: var(--gradient-primary);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        padding: 12px 25px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        margin-left: 10px;
+    }
+
+    .btn-dashboard:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        color: white;
+    }
+
+    .filter-form {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr auto;
+        gap: 15px;
+        align-items: end;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-label-modern {
+        font-weight: 600;
+        color: var(--dark-gray);
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+    }
+
+    .form-control-modern {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 10px 15px;
+        transition: border-color 0.3s ease;
+        font-size: 0.9rem;
+    }
+
+    .form-control-modern:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        outline: none;
+    }
+
+    .btn-filter {
+        background: var(--primary-blue);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        padding: 10px 20px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        height: fit-content;
+    }
+
+    .btn-filter:hover {
+        background: var(--secondary-blue);
+        transform: translateY(-1px);
+    }
+
+    .btn-clear-filters {
+        background: var(--medium-gray);
+        border: none;
+        border-radius: 6px;
+        color: white;
+        padding: 6px 15px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 0.8rem;
+        margin-top: 15px;
+    }
+
+    .btn-clear-filters:hover {
+        background: var(--dark-gray);
+        color: white;
+    }
+
+    .materials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        gap: 25px;
+        margin: 30px;
+    }
+
+    .material-card {
+        background: var(--white);
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        height: 100%;
+    }
+
+    .material-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        border-color: var(--light-blue);
+    }
+
+    .material-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .material-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--dark-gray);
+        margin: 0;
+        flex: 1;
+        line-height: 1.3;
+    }
+
+    .material-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .detail-item {
+        background: var(--light-gray);
+        padding: 12px;
+        border-radius: 8px;
+    }
+
+    .detail-label {
+        font-size: 0.8rem;
+        color: var(--medium-gray);
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .detail-value {
+        font-weight: 600;
+        color: var(--dark-gray);
+        font-size: 0.9rem;
+    }
+
+    .board-badge {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: white;
+    }
+
+    .board-cbse { background: var(--success-green); }
+    .board-wbbse { background: var(--primary-blue); }
+    .board-icse { background: var(--warning-orange); }
+    .board-wbchse { background: var(--danger-red); }
+    .board-isc { background: var(--accent-blue); }
+
+    .material-description {
+        color: var(--medium-gray);
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+
+    .material-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .btn-open-material {
+        background: var(--gradient-success);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        padding: 10px 20px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .btn-open-material:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        color: white;
+    }
+
+    .upload-date {
+        color: var(--medium-gray);
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--medium-gray);
+        margin: 30px;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        color: var(--light-blue);
+    }
+
+    .empty-state h3 {
+        color: var(--dark-gray);
+        margin-bottom: 15px;
+    }
+
+    .btn-show-all {
+        background: var(--gradient-primary);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        padding: 12px 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        margin-top: 15px;
+    }
+
+    .btn-show-all:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        .filter-form {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .controls-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .materials-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .material-details {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+{% include "message.html" %}
+<div class="main-container">
+    <!-- Header Section -->
+    <div class="header-section">
+        <h1 class="page-title">
+            <i class="fas fa-library me-3"></i>All Study Materials
+        </h1>
+        <p class="lead mb-0" style="position: relative; z-index: 2;">Browse and access educational resources</p>
+        <div class="stats-badge">
+            <i class="fas fa-book me-2"></i>Total Materials: {{ total_materials }}
+        </div>
+    </div>
+
+    <!-- Controls Section -->
+    <div class="controls-section">
+        <div class="controls-header">
+            <h3 style="margin: 0; color: var(--dark-gray); font-weight: 700;">
+                <i class="fas fa-filter me-2"></i>Search & Filter
+            </h3>
+            <div>
+                <a href="{% url 'add_study_material' %}" class="btn-add-material">
+                    <i class="fas fa-plus me-2"></i>Add New Material
+                </a>
+                <a href="{% url 'index' %}" class="btn-dashboard">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+
+        <!-- Filter Form -->
+        <form method="GET" class="filter-form">
+            <div class="form-group">
+                <label for="search" class="form-label-modern">
+                    <i class="fas fa-search me-1"></i>Search Materials
+                </label>
+                <input type="text" class="form-control-modern" id="search" name="search" 
+                       value="{{ search_query }}" placeholder="Search by title, description, subject...">
+            </div>
+            <div class="form-group">
+                <label for="board" class="form-label-modern">
+                    <i class="fas fa-graduation-cap me-1"></i>Filter by Board
+                </label>
+                <select class="form-control-modern" id="board" name="board">
+                    <option value="">All Boards</option>
+                    {% for board in boards %}
+                        <option value="{{ board }}" {% if board == board_filter %}selected{% endif %}>
+                            {{ board }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="class" class="form-label-modern">
+                    <i class="fas fa-chalkboard me-1"></i>Filter by Class
+                </label>
+                <select class="form-control-modern" id="class" name="class">
+                    <option value="">All Classes</option>
+                    {% for class in classes %}
+                        <option value="{{ class }}" {% if class == class_filter %}selected{% endif %}>
+                            Class {{ class }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="subject" class="form-label-modern">
+                    <i class="fas fa-book-open me-1"></i>Filter by Subject
+                </label>
+                <select class="form-control-modern" id="subject" name="subject">
+                    <option value="">All Subjects</option>
+                    {% for subject in subjects %}
+                        <option value="{{ subject }}" {% if subject == subject_filter %}selected{% endif %}>
+                            {{ subject }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn-filter">
+                    <i class="fas fa-filter me-2"></i>Apply Filter
+                </button>
+            </div>
+        </form>
+
+        {% if search_query or board_filter or class_filter or subject_filter %}
+            <button onclick="window.location.href='{% url 'all_study_materials' %}'" class="btn-clear-filters">
+                <i class="fas fa-times me-1"></i>Clear All Filters
+            </button>
+        {% endif %}
+    </div>
+
+    <!-- Materials Grid -->
+    {% if study_materials %}
+        <div class="materials-grid">
+            {% for material in study_materials %}
+            <div class="material-card">
+                <div class="material-header">
+                    <h5 class="material-title">{{ material.title }}</h5>
+                </div>
+                
+                <div class="material-details">
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-graduation-cap me-1"></i>Board
+                        </div>
+                        <div class="detail-value">
+                            <span class="board-badge board-{{ material.board|lower }}">{{ material.board }}</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-chalkboard me-1"></i>Class
+                        </div>
+                        <div class="detail-value">Class {{ material.class_level }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-book-open me-1"></i>Subject
+                        </div>
+                        <div class="detail-value">{{ material.subject }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-calendar me-1"></i>Uploaded
+                        </div>
+                        <div class="detail-value">{{ material.upload_date|date:"M d, Y" }}</div>
+                    </div>
+                </div>
+
+                {% if material.description %}
+                <div class="material-description">
+                    {{ material.description|truncatewords:20 }}
+                </div>
+                {% endif %}
+                
+                <div class="material-actions">
+                    <a href="{{ material.google_drive_link }}" target="_blank" class="btn-open-material">
+                        <i class="fab fa-google-drive me-1"></i>Open in Drive
+                    </a>
+                    <div class="upload-date">
+                        <i class="fas fa-clock me-1"></i>
+                        {{ material.upload_date|timesince }} ago
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-book-open"></i>
+            <h3>No Study Materials Found</h3>
+            {% if search_query or board_filter or class_filter or subject_filter %}
+                <p>Try adjusting your search criteria or filters.</p>
+                <a href="{% url 'all_study_materials' %}" class="btn-show-all">
+                    <i class="fas fa-refresh me-2"></i>Show All Materials
+                </a>
+            {% else %}
+                <p>No study materials have been added yet.</p>
+                <a href="{% url 'add_study_material' %}" class="btn-show-all">
+                    <i class="fas fa-plus me-2"></i>Add Your First Material
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock body %}

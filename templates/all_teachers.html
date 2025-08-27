@@ -518,12 +518,14 @@
     <div class="content-section">
         <!-- Controls Section -->
         <div class="controls-section">
-            <a href="{% url 'add_teacher' %}" class="btn-add-teacher">
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a href="{% url 'add_teacher' %}" class="btn-add-teacher flex-grow-1" style="min-width:200px;">
                 <i class="fas fa-plus me-2"></i>Add New Teacher
             </a>
-            <a href="{% url 'view_batches' %}" class="btn-view-batches">
+            <a href="{% url 'view_batches' %}" class="btn-view-batches flex-grow-1" style="min-width:200px;">
                 <i class="fas fa-chalkboard me-2"></i>View Batches
             </a>
+            </div>
         </div>
 
         <!-- Teachers Grid -->

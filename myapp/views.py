@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Student, Batch,Teacher, Payment, Parent, Achievement
-from .forms import StudentForm, BatchForm,TeacherForm, PaymentForm, ParentForm, AchievementForm
+from .models import Student, Batch,Teacher, Payment, Parent, Achievement, StudyMaterial
+from .forms import StudentForm, BatchForm,TeacherForm, PaymentForm, ParentForm, AchievementForm, StudyMaterialForm
 from django.contrib import messages
 from django.views.generic import DetailView
 from django.db.models import Q
@@ -60,6 +60,8 @@ def index(request):
     cbse_students = students.filter(board='CBSE').count()
     wbbse_students = students.filter(board='WBBSE').count()
     icse_students = students.filter(board='ICSE').count()
+    wbchse_students = students.filter(board='WBCHSE').count()
+    isc_students = students.filter(board='ISC').count()
 
     context = {
         'students': students,
@@ -67,6 +69,8 @@ def index(request):
         'cbse_students': cbse_students,
         'wbbse_students': wbbse_students,
         'icse_students': icse_students,
+        'wbchse_students': wbchse_students,
+        'isc_students': isc_students,
         'search': search_query,
         'batch_form': BatchForm(),
     }
@@ -441,7 +445,7 @@ def delete_teacher(request, teacher_id):
     if request.method == 'POST':
         teacher.delete()  # Signal handler will automatically delete the image
         messages.success(request, 'Teacher deleted successfully!')
-        return redirect('all_teacher')
+        return redirect('all_teachers')
     # For GET requests, redirect to teacher list or show confirmation
     return redirect('all_teachers')
 
@@ -759,3 +763,75 @@ def all_teachers(request):
     }
     
     return render(request, 'all_teachers.html', context)
+
+
+# Add Study Material
+@login_required(login_url='login')
+def add_study_material(request):
+    if request.method == 'POST':
+        form = StudyMaterialForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Study material added successfully!')
+            return redirect('add_study_material')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = StudyMaterialForm()
+    
+    # Get all study materials for display
+    study_materials = StudyMaterial.objects.filter(is_active=True).order_by('-upload_date')[:5]
+    
+    context = {
+        'form': form,
+        'study_materials': study_materials,
+    }
+    return render(request, 'add_study_material.html', context)
+
+
+# View All Study Materials
+@login_required(login_url='login')
+def all_study_materials(request):
+    # Get filter parameters
+    board_filter = request.GET.get('board', '')
+    class_filter = request.GET.get('class', '')
+    subject_filter = request.GET.get('subject', '')
+    search_query = request.GET.get('search', '')
+    
+    # Start with all study materials
+    study_materials = StudyMaterial.objects.filter(is_active=True)
+    
+    # Apply filters
+    if board_filter:
+        study_materials = study_materials.filter(board=board_filter)
+    if class_filter:
+        study_materials = study_materials.filter(class_level=class_filter)
+    if subject_filter:
+        study_materials = study_materials.filter(subject=subject_filter)
+    if search_query:
+        study_materials = study_materials.filter(
+            Q(title__icontains=search_query) |
+            Q(description__icontains=search_query) |
+            Q(subject__icontains=search_query)
+        )
+    
+    # Order by latest first
+    study_materials = study_materials.order_by('-upload_date')
+    
+    # Get unique values for filters
+    boards = StudyMaterial.objects.values_list('board', flat=True).distinct()
+    classes = StudyMaterial.objects.values_list('class_level', flat=True).distinct().order_by('class_level')
+    subjects = StudyMaterial.objects.values_list('subject', flat=True).distinct()
+    
+    context = {
+        'study_materials': study_materials,
+        'boards': boards,
+        'classes': classes,
+        'subjects': subjects,
+        'board_filter': board_filter,
+        'class_filter': class_filter,
+        'subject_filter': subject_filter,
+        'search_query': search_query,
+        'total_materials': study_materials.count(),
+    }
+    return render(request, 'all_study_materials.html', context)

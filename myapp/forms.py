@@ -1,5 +1,5 @@
 from django import forms
-from .models import Student,Batch,Teacher, Payment, Parent , Achievement
+from .models import Student,Batch,Teacher, Payment, Parent , Achievement, StudyMaterial
 from datetime import datetime
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
@@ -170,3 +170,71 @@ class AchievementForm(forms.ModelForm):
             if not board_name:
                 raise forms.ValidationError("Board name is required.")
         return board_name
+
+
+class StudyMaterialForm(forms.ModelForm):
+    class Meta:
+        model = StudyMaterial
+        fields = ['title', 'description', 'board', 'class_level', 'subject', 'google_drive_link', 'is_active']
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter study material title',
+                'required': True
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter description (optional)',
+                'rows': 4
+            }),
+            'board': forms.Select(attrs={
+                'class': 'form-control',
+                'required': True
+            }),
+            'class_level': forms.Select(attrs={
+                'class': 'form-control',
+                'required': True
+            }),
+            'subject': forms.Select(attrs={
+                'class': 'form-control',
+                'required': True
+            }),
+            'google_drive_link': forms.URLInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter Google Drive sharing link',
+                'required': True
+            }),
+            'is_active': forms.CheckboxInput(attrs={
+                'class': 'form-check-input'
+            })
+        }
+        labels = {
+            'title': 'Study Material Title',
+            'description': 'Description',
+            'board': 'Educational Board',
+            'class_level': 'Class Level',
+            'subject': 'Subject',
+            'google_drive_link': 'Google Drive Link',
+            'is_active': 'Active Status'
+        }
+
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if title:
+            title = title.strip()
+            if len(title) < 3:
+                raise forms.ValidationError("Title must be at least 3 characters long.")
+        return title
+
+    def clean_google_drive_link(self):
+        link = self.cleaned_data.get('google_drive_link')
+        if link:
+            if 'drive.google.com' not in link and 'docs.google.com' not in link:
+                raise forms.ValidationError("Please enter a valid Google Drive link.")
+        return link
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
+        if description:
+            return description.strip()
+        return description
