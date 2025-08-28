@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Student, Batch,Teacher, Payment, Parent, Achievement
-from .forms import StudentForm, BatchForm,TeacherForm, PaymentForm, ParentForm, AchievementForm
+from .models import Student, Batch,Teacher, Payment, Parent, Achievement, StudyMaterial
+from .forms import StudentForm, BatchForm,TeacherForm, PaymentForm, ParentForm, AchievementForm, StudyMaterialForm
 from django.contrib import messages
 from django.views.generic import DetailView
 from django.db.models import Q
@@ -11,6 +11,7 @@ from .forms import LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 import os
 
 
@@ -46,6 +47,7 @@ def user_logout(request):
 @login_required(login_url='login')
 def index(request):
     search_query = request.GET.get("search", "")
+    per_page = int(request.GET.get("per_page", 10))  # Default 10 items per page
     students = Student.objects.all()
 
     if search_query:
@@ -56,17 +58,27 @@ def index(request):
             Q(student_class__icontains=search_query)
         )
 
+    # Pagination
+    paginator = Paginator(students, per_page)  # Use dynamic per_page value
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     total_students = students.count()
     cbse_students = students.filter(board='CBSE').count()
     wbbse_students = students.filter(board='WBBSE').count()
     icse_students = students.filter(board='ICSE').count()
+    wbchse_students = students.filter(board='WBCHSE').count()
+    isc_students = students.filter(board='ISC').count()
 
     context = {
-        'students': students,
+        'students': page_obj,  # Use paginated students
+        'page_obj': page_obj,  # Add page object for pagination controls
         'total_students': total_students,
         'cbse_students': cbse_students,
         'wbbse_students': wbbse_students,
         'icse_students': icse_students,
+        'wbchse_students': wbchse_students,
+        'isc_students': isc_students,
         'search': search_query,
         'batch_form': BatchForm(),
     }
@@ -75,6 +87,8 @@ def index(request):
 @login_required(login_url='login')
 def filter_students(request):
     print(request.GET)
+    per_page = int(request.GET.get("per_page", 10))  # Default 10 items per page
+    
     if request.GET.get("Board") or request.GET.get("Class") or request.GET.get("Subject"):
         filters = {}
     
@@ -90,9 +104,16 @@ def filter_students(request):
             filters['subject__icontains'] = subject
         
         students = Student.objects.filter(**filters)
+        
+        # Pagination for filtered results
+        paginator = Paginator(students, per_page)  # Use dynamic per_page value
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        
         # print("Students:", students)
         context = {
-            'students': students,
+            'students': page_obj,  # Use paginated students
+            'page_obj': page_obj,  # Add page object for pagination controls
             'total_students': students.count(),
             'cbse_students': students.filter(board='CBSE').count(),
             'wbbse_students': students.filter(board='WBBSE').count(),
@@ -104,8 +125,16 @@ def filter_students(request):
             'batch_form': BatchForm(),
         }
     else:
+        students = Student.objects.all()
+        
+        # Pagination for all students
+        paginator = Paginator(students, per_page)  # Use dynamic per_page value
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        
         context = {
-            'students': Student.objects.all(),
+            'students': page_obj,  # Use paginated students
+            'page_obj': page_obj,  # Add page object for pagination controls
             'total_students': Student.objects.count(),
             'cbse_students': Student.objects.filter(board='CBSE').count(),
             'wbbse_students': Student.objects.filter(board='WBBSE').count(),
@@ -190,7 +219,7 @@ def add_student(request):
 def student_profile(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     batches = Batch.objects.filter(students=student)
-    payments = Payment.objects.filter(student=student).order_by('-date')
+    payments = Payment.objects.filter(student=student).order_by('-updated_date')
     context = {
         'student': student,
         'batches': batches,
@@ -441,7 +470,7 @@ def delete_teacher(request, teacher_id):
     if request.method == 'POST':
         teacher.delete()  # Signal handler will automatically delete the image
         messages.success(request, 'Teacher deleted successfully!')
-        return redirect('all_teacher')
+        return redirect('all_teachers')
     # For GET requests, redirect to teacher list or show confirmation
     return redirect('all_teachers')
 
@@ -518,7 +547,10 @@ def all_payment(request):
             messages.success(request, f'Payment recorded successfully for {student.name}!')
             return redirect('all_payments')
     
-    payments = Payment.objects.all().order_by('-date')
+    # Get pagination parameter
+    per_page = int(request.GET.get("per_page", 10))  # Default 10 items per page
+    
+    payments = Payment.objects.all().order_by('-updated_date', '-date')
 
     # Date range filter
     start_date = request.GET.get('start_date')
@@ -539,12 +571,21 @@ def all_payment(request):
             Q(payment_method__icontains=search_query)
         )
 
-    # Calculate total amount if filtered payments exist
+    # Calculate total amount for all filtered payments (before pagination)
     total_amount = payments.aggregate(total_amount=models.Sum('amount'))['total_amount']
-    context['total_amount'] = total_amount if total_amount else 0
+    
+    # Pagination
+    paginator = Paginator(payments, per_page)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-    context['payments'] = payments
+    context['payments'] = page_obj  # Use paginated payments
+    context['page_obj'] = page_obj  # Add page object for pagination controls
+    context['total_amount'] = total_amount if total_amount else 0
+    context['total_payments'] = payments.count()  # Total count of filtered payments
     context['search'] = search_query  # Pass search query back to template to maintain the input
+    context['start_date'] = request.GET.get('start_date', '')
+    context['end_date'] = request.GET.get('end_date', '')
     context['students'] = Student.objects.all().order_by('name')  # For the payment form dropdown
     context['payment_form'] = PaymentForm()  # Add payment form to context
     return render(request, 'all_payments.html', context)
@@ -759,3 +800,158 @@ def all_teachers(request):
     }
     
     return render(request, 'all_teachers.html', context)
+
+
+# Add Study Material
+@login_required(login_url='login')
+def add_study_material(request):
+    if request.method == 'POST':
+        form = StudyMaterialForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Study material added successfully!')
+            return redirect('add_study_material')
+        else:
+            # Add debugging information
+            print("Form errors:", form.errors)
+            print("Form non-field errors:", form.non_field_errors())
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = StudyMaterialForm()
+    
+    # Get all study materials for display
+    study_materials = StudyMaterial.objects.filter(is_active=True).order_by('-upload_date')[:5]
+    
+    context = {
+        'form': form,
+        'study_materials': study_materials,
+    }
+    return render(request, 'add_study_material.html', context)
+
+
+# View All Study Materials
+@login_required(login_url='login')
+def all_study_materials(request):
+    # Get filter parameters
+    board_filter = request.GET.get('board', '')
+    class_filter = request.GET.get('class', '')
+    subject_filter = request.GET.get('subject', '')
+    search_query = request.GET.get('search', '')
+    
+    # Start with all study materials
+    study_materials = StudyMaterial.objects.filter(is_active=True)
+    
+    # Apply filters
+    if board_filter:
+        study_materials = study_materials.filter(board=board_filter)
+    if class_filter:
+        study_materials = study_materials.filter(class_level=class_filter)
+    if subject_filter:
+        study_materials = study_materials.filter(subject=subject_filter)
+    if search_query:
+        study_materials = study_materials.filter(
+            Q(title__icontains=search_query) |
+            Q(description__icontains=search_query) |
+            Q(subject__icontains=search_query)
+        )
+    
+    # Order by latest first
+    study_materials = study_materials.order_by('-upload_date')
+    
+    # Get unique values for filters
+    boards = StudyMaterial.objects.values_list('board', flat=True).distinct()
+    classes = StudyMaterial.objects.values_list('class_level', flat=True).distinct().order_by('class_level')
+    subjects = StudyMaterial.objects.values_list('subject', flat=True).distinct()
+    
+    context = {
+        'study_materials': study_materials,
+        'boards': boards,
+        'classes': classes,
+        'subjects': subjects,
+        'board_filter': board_filter,
+        'class_filter': class_filter,
+        'subject_filter': subject_filter,
+        'search_query': search_query,
+        'total_materials': study_materials.count(),
+    }
+    return render(request, 'all_study_materials.html', context)
+
+
+def study_materials_by_filter(request, class_level, subject, board):
+    """
+    View to display study materials filtered by class, subject, and board.
+    Used when clicking on board buttons in class_details.html
+    """
+    # Filter study materials based on the parameters
+    study_materials = StudyMaterial.objects.filter(
+        class_level=class_level,
+        subject=subject,
+        board=board,
+        is_active=True
+    ).order_by('-upload_date')
+    
+    # Additional search functionality
+    search_query = request.GET.get('search', '')
+    if search_query:
+        study_materials = study_materials.filter(
+            Q(title__icontains=search_query) |
+            Q(description__icontains=search_query)
+        )
+    
+    context = {
+        'study_materials': study_materials,
+        'class_level': class_level,
+        'subject': subject,
+        'board': board,
+        'search_query': search_query,
+        'page_title': f'Class {class_level} {subject} - {board} Study Materials',
+        'total_materials': study_materials.count(),
+    }
+    
+    return render(request, 'study_materials_filtered.html', context)
+
+
+from django.http import JsonResponse
+
+def get_subjects_for_class(request):
+    """
+    AJAX view to return available subjects for a selected class level
+    """
+    class_level = request.GET.get('class_level')
+    
+    if not class_level:
+        return JsonResponse({'subjects': []})
+    
+    try:
+        class_level = int(class_level)
+    except ValueError:
+        return JsonResponse({'subjects': []})
+    
+    # Define subject choices based on class level
+    if class_level in [5, 6, 7]:
+        subjects = [
+            {'value': 'Science', 'label': 'Science'},
+            {'value': 'English', 'label': 'English'},
+            {'value': 'Arts', 'label': 'Arts'},
+        ]
+    elif class_level in [8, 9, 10]:
+        subjects = [
+            {'value': 'Mathematics', 'label': 'Mathematics'},
+            {'value': 'Physical Science', 'label': 'Physical Science'},
+            {'value': 'Life Science', 'label': 'Life Science'},
+            {'value': 'Arts', 'label': 'Arts'},
+            {'value': 'English', 'label': 'English'},
+        ]
+    elif class_level in [11, 12]:
+        subjects = [
+            {'value': 'Mathematics', 'label': 'Mathematics'},
+            {'value': 'Physics', 'label': 'Physics'},
+            {'value': 'Biology', 'label': 'Biology'},
+            {'value': 'Nutrition', 'label': 'Nutrition'},
+            {'value': 'English', 'label': 'English'},
+            {'value': 'Bengali', 'label': 'Bengali'},
+        ]
+    else:
+        subjects = []
+    
+    return JsonResponse({'subjects': subjects})

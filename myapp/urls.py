@@ -60,6 +60,12 @@ urlpatterns = [
     path('edit_achievement/<int:achievement_id>/', views.edit_achievement, name='edit_achievement'),
     path('delete_achievement/<int:achievement_id>/', views.delete_achievement, name='delete_achievement'),
 
+    # Study Material URLs
+    path('add-study-material/', views.add_study_material, name='add_study_material'),
+    path('all-study-materials/', views.all_study_materials, name='all_study_materials'),
+    path('study-materials/<int:class_level>/<str:subject>/<str:board>/', views.study_materials_by_filter, name='study_materials_by_filter'),
+    path('ajax/get-subjects/', views.get_subjects_for_class, name='get_subjects_for_class'),
+
 ]
 
 

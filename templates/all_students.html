@@ -99,6 +99,12 @@
         gap: 15px;
     }
 
+    .controls-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
     .btn-add-student {
         background: var(--gradient-success);
         border: none;
@@ -109,6 +115,7 @@
         font-size: 1rem;
         transition: all 0.3s ease;
         text-decoration: none;
+        white-space: nowrap;
     }
 
     .btn-add-student:hover {
@@ -127,7 +134,7 @@
         font-size: 1rem;
         transition: all 0.3s ease;
         text-decoration: none;
-        margin-left: 10px;
+        white-space: nowrap;
     }
 
     .btn-dashboard:hover {
@@ -304,6 +311,8 @@
     .board-cbse { background: var(--success-green); }
     .board-wbbse { background: var(--primary-blue); }
     .board-icse { background: var(--warning-orange); }
+    .board-wbchse { background: var(--danger-red); }
+    .board-isc { background: var(--accent-blue); }
 
     .student-actions {
         display: flex;
@@ -382,6 +391,27 @@
         .controls-header {
             flex-direction: column;
             align-items: stretch;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .controls-header h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0;
+        }
+
+        .controls-buttons {
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn-add-student,
+        .btn-dashboard {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 20px;
+            font-size: 1rem;
+            text-align: center;
         }
 
         .students-grid {
@@ -390,6 +420,102 @@
 
         .student-details {
             grid-template-columns: 1fr;
+        }
+
+        .page-title {
+            font-size: 2rem;
+        }
+
+        .content-section {
+            padding: 20px;
+        }
+
+        .controls-section {
+            padding: 20px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .main-container {
+            margin: 10px;
+            border-radius: 15px;
+        }
+
+        .header-section {
+            padding: 20px;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+        }
+
+        .controls-header {
+            gap: 15px;
+        }
+
+        .controls-header h3 {
+            font-size: 1.1rem;
+        }
+
+        .controls-buttons {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .btn-add-student,
+        .btn-dashboard {
+            width: 100%;
+            padding: 18px 25px;
+            font-size: 1.1rem;
+            border-radius: 15px;
+        }
+
+        .filter-form {
+            gap: 20px;
+        }
+
+        .form-control-modern {
+            padding: 12px 15px;
+            font-size: 1rem;
+        }
+
+        .btn-filter {
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 10px;
+        }
+
+        .content-section {
+            padding: 15px;
+        }
+
+        .controls-section {
+            padding: 15px;
+        }
+
+        .student-card {
+            padding: 20px;
+        }
+    }
+
+    @media (max-width: 320px) {
+        .page-title {
+            font-size: 1.5rem;
+        }
+
+        .controls-header h3 {
+            font-size: 1rem;
+        }
+
+        .btn-add-student,
+        .btn-dashboard {
+            padding: 15px 20px;
+            font-size: 1rem;
+        }
+
+        .form-control-modern {
+            padding: 10px 12px;
+            font-size: 0.9rem;
         }
     }
 </style>
@@ -416,7 +542,7 @@
                 <h3 style="margin: 0; color: var(--dark-gray); font-weight: 700;">
                     <i class="fas fa-filter me-2"></i>Search & Filter
                 </h3>
-                <div>
+                <div class="controls-buttons">
                     <a href="{% url 'add_student' %}" class="btn-add-student">
                         <i class="fas fa-user-plus me-2"></i>Add New Student
                     </a>

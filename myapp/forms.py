@@ -1,5 +1,5 @@
 from django import forms
-from .models import Student,Batch,Teacher, Payment, Parent , Achievement
+from .models import Student,Batch,Teacher, Payment, Parent , Achievement, StudyMaterial
 from datetime import datetime
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
@@ -170,3 +170,124 @@ class AchievementForm(forms.ModelForm):
             if not board_name:
                 raise forms.ValidationError("Board name is required.")
         return board_name
+
+
+class StudyMaterialForm(forms.ModelForm):
+    class Meta:
+        model = StudyMaterial
+        fields = ['title', 'description', 'board', 'class_level', 'subject', 'google_drive_link', 'is_active']
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter study material title',
+                'required': True
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter description (optional)',
+                'rows': 4
+            }),
+            'board': forms.Select(attrs={
+                'class': 'form-control',
+                'required': True
+            }),
+            'class_level': forms.Select(attrs={
+                'class': 'form-control',
+                'required': True,
+                'id': 'id_class_level',
+                'onchange': 'updateSubjectChoices()'
+            }),
+            'subject': forms.Select(attrs={
+                'class': 'form-control',
+                'required': True,
+                'id': 'id_subject'
+            }),
+            'google_drive_link': forms.URLInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter Google Drive sharing link',
+                'required': True
+            }),
+            'is_active': forms.CheckboxInput(attrs={
+                'class': 'form-check-input'
+            })
+        }
+        labels = {
+            'title': 'Study Material Title',
+            'description': 'Description',
+            'board': 'Educational Board',
+            'class_level': 'Class Level',
+            'subject': 'Subject',
+            'google_drive_link': 'Google Drive Link',
+            'is_active': 'Active Status'
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Always set all possible subject choices to avoid validation errors
+        # The frontend JavaScript will filter the display
+        all_subjects = [
+            ('', 'Select a subject'),
+            ('Science', 'Science'),
+            ('English', 'English'),
+            ('Arts', 'Arts'),
+            ('Mathematics', 'Mathematics'),
+            ('Physical Science', 'Physical Science'),
+            ('Life Science', 'Life Science'),
+            ('Physics', 'Physics'),
+            ('Biology', 'Biology'),
+            ('Nutrition', 'Nutrition'),
+            ('Bengali', 'Bengali'),
+        ]
+        
+        self.fields['subject'].choices = all_subjects
+
+    def get_valid_subjects_for_class(self, class_level):
+        """Return list of valid subjects for a given class level"""
+        if class_level in [5, 6, 7]:
+            return ['Science', 'English', 'Arts']
+        elif class_level in [8, 9, 10]:
+            return ['Mathematics', 'Physical Science', 'Life Science', 'Arts', 'English']
+        elif class_level in [11, 12]:
+            return ['Mathematics', 'Physics', 'Biology', 'Nutrition', 'English', 'Bengali']
+        else:
+            # Fallback - allow all subjects
+            return ['Science', 'English', 'Arts', 'Mathematics', 'Physical Science', 
+                   'Life Science', 'Physics', 'Biology', 'Nutrition', 'Bengali']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        class_level = cleaned_data.get('class_level')
+        subject = cleaned_data.get('subject')
+        
+        if class_level and subject:
+            # Validate that the selected subject is appropriate for the class level
+            valid_subjects = self.get_valid_subjects_for_class(class_level)
+            if subject not in valid_subjects:
+                raise forms.ValidationError(
+                    f"The subject '{subject}' is not available for Class {class_level}. "
+                    f"Available subjects: {', '.join(valid_subjects)}"
+                )
+        
+        return cleaned_data
+
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if title:
+            title = title.strip()
+            if len(title) < 3:
+                raise forms.ValidationError("Title must be at least 3 characters long.")
+        return title
+
+    def clean_google_drive_link(self):
+        link = self.cleaned_data.get('google_drive_link')
+        if link:
+            if 'drive.google.com' not in link and 'docs.google.com' not in link:
+                raise forms.ValidationError("Please enter a valid Google Drive link.")
+        return link
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
+        if description:
+            return description.strip()
+        return description

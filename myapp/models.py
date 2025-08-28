@@ -9,8 +9,8 @@ class Student(models.Model):
     name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=15, blank=True)
     phone_number2 = models.CharField(max_length=15, blank=True)
-    board = models.CharField(max_length=50, choices=[('CBSE', 'CBSE'), ('WBBSE', 'WBBSE'), ('ICSE', 'ICSE')])
-    student_class = models.IntegerField(choices=[(1,1),(2,2),(3,3),(4,4),(5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10), (11, 11), (12, 12)])
+    board = models.CharField(max_length=50, choices=[('CBSE', 'CBSE'), ('WBBSE', 'WBBSE'), ('WBCHSE', 'WBCHSE'), ('ICSE', 'ICSE'), ('ISC', 'ISC')])
+    student_class = models.IntegerField(choices=[(5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10), (11, 11), (12, 12)])
     subject = models.CharField(max_length=100, default='All')
     addmission_date = models.DateField(default=timezone.now)
     fees = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -48,6 +48,8 @@ class Payment(models.Model):
     date = models.DateField(default=timezone.now)
     months = MultiSelectField(choices=MONTH_CHOICES, default='1', max_length=100)
     modification  = models.CharField(blank=True, null=True, default="", max_length=50)
+    created_date = models.DateTimeField(default=timezone.now)
+    updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.student.name} - {self.amount} - {self.months}"
@@ -100,6 +102,63 @@ class Achievement(models.Model):
 
     def __str__(self):
         return self.student_name
+
+
+class StudyMaterial(models.Model):
+    BOARD_CHOICES = [
+        ('CBSE', 'CBSE'),
+        ('WBBSE', 'WBBSE'),
+        ('WBCHSE', 'WBCHSE'),
+        ('ICSE', 'ICSE'),
+        ('ISC', 'ISC'),
+    ]
+    
+    CLASS_CHOICES = [
+        (5, 'Class 5'), (6, 'Class 6'), (7, 'Class 7'), (8, 'Class 8'),
+        (9, 'Class 9'), (10, 'Class 10'), (11, 'Class 11'), (12, 'Class 12')
+    ]
+    
+    SUBJECT_CHOICES = [
+        ('Science', 'Science'),
+        ('English', 'English'),
+        ('Arts', 'Arts'),
+        ('Mathematics', 'Mathematics'),
+        ('Physical Science', 'Physical Science'),
+        ('Life Science', 'Life Science'),
+        ('Physics', 'Physics'),
+        ('Biology', 'Biology'),
+        ('Nutrition', 'Nutrition'),
+        ('Bengali', 'Bengali'),
+    ]
+    
+    title = models.CharField(max_length=200, help_text="Title of the study material")
+    description = models.TextField(blank=True, null=True, help_text="Brief description of the material")
+    board = models.CharField(max_length=50, choices=BOARD_CHOICES, help_text="Educational board")
+    class_level = models.IntegerField(choices=CLASS_CHOICES, help_text="Class level")
+    subject = models.CharField(max_length=100, choices=SUBJECT_CHOICES, help_text="Subject")
+    google_drive_link = models.URLField(max_length=500, help_text="Google Drive sharing link")
+    upload_date = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True, help_text="Whether this material is currently available")
+    
+    class Meta:
+        ordering = ['board', 'class_level', 'subject', 'title']
+        verbose_name = "Study Material"
+        verbose_name_plural = "Study Materials"
+    
+    def __str__(self):
+        return f"{self.board} - Class {self.class_level} - {self.subject} - {self.title}"
+    
+    def get_board_display_name(self):
+        """Return the full board name for display"""
+        board_names = {
+            'CBSE': 'Central Board of Secondary Education',
+            'WBBSE': 'West Bengal Board of Secondary Education',
+            'WBCHSE': 'West Bengal Council of Higher Secondary Education',
+            'ICSE': 'Indian Certificate of Secondary Education',
+            'ISC': 'Indian School Certificate',
+        }
+        return board_names.get(self.board, self.board)
 
 
 # Signal handlers for automatic media file deletion

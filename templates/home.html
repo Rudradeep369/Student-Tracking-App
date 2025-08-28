@@ -316,11 +316,11 @@
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
           <div class="row g-4 align-items-center">
             <div class="col-lg-6 col-md-12">
-              <div class="card border-0 shadow">
+              <div class="card border-0 shadow" style="overflow: hidden;">
                 {% if teacher.profile_image %}
-                  <img src="{{ teacher.profile_image.url }}" class="img-fluid rounded mentor-image" alt="Mentor Image">
+                  <img src="{{ teacher.profile_image.url }}" class="img-fluid mentor-image" alt="Mentor Image" style="display: block;">
                 {% else %}
-                  <img src="{% static 'images/home/default_img.jpg' %}" class="img-fluid rounded mentor-image" alt="Default Mentor Image">
+                  <img src="{% static 'images/home/default_img.jpg' %}" class="img-fluid mentor-image" alt="Default Mentor Image" style="display: block;">
                 {% endif %}
               </div>
             </div>
