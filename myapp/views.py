@@ -615,7 +615,9 @@ def edit_payment(request, id, std_id):
 @login_required(login_url='login')
 def add_parent(request, std_id):
     student = get_object_or_404(Student, id=std_id)
-    context = {}
+    context = {
+        "student": student
+    }
     if request.method == 'POST':
         form = ParentForm(request.POST)
         if form.is_valid():
